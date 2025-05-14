@@ -17,13 +17,14 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;707&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Personalización de Tailwind y estilos adicionales */
         body {
             font-family: 'Montserrat', sans-serif;
-            color: #4A4A4A; /* Gris Medio/Oscuro para texto base */
+            color: #4A4A4A;
+            overflow-x: hidden;
+            box-sizing: border-box;
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Poppins', sans-serif;
@@ -41,7 +42,7 @@
             @apply bg-[#00BFFF] text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out;
         }
         .btn-secondary {
-            @apply bg-[#1E90FF] text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out;
+            @apply bg-[#1E90FF] text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out text-sm;
         }
         .section-title {
             @apply text-3xl md:text-4xl font-bold text-center mb-4 text-[#1E90FF];
@@ -59,6 +60,7 @@
         .swiper-container-hero {
             width: 100%;
             height: 100vh;
+            overflow: hidden;
         }
         .swiper-slide {
             text-align: center;
@@ -67,10 +69,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-size: 120%; /* Aumentado para mejor efecto parallax */
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 100vh; /* Asegura espacio para el parallax */
+            min-height: 100vh;
         }
         .swiper-pagination-bullet-active {
             background-color: #00BFFF !important;
@@ -83,6 +85,31 @@
         }
         .swiper-button-next:after, .swiper-button-prev:after {
             font-size: 24px !important;
+        }
+        .swiper-container-project {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .swiper-container-project img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .swiper-container-project .swiper-button-next, 
+        .swiper-container-project .swiper-button-prev {
+            color: #1E90FF !important;
+            background-color: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 4px;
+            transform: scale(1.2);
+        }
+        .swiper-container-project .swiper-button-next:after, 
+        .swiper-container-project .swiper-button-prev:after {
+            font-size: 16px !important;
         }
         .hamburger {
             width: 24px;
@@ -114,14 +141,14 @@
         }
         @keyframes float {
             0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); } /* Reducido de -10px a -5px para un movimiento más leve */
+            50% { transform: translateY(-5px); }
             100% { transform: translateY(0); }
         }
         .whatsapp-float {
             animation: float 3s ease-in-out infinite;
         }
         .announcement-bar {
-            background-color: #1E90FF; /* Mismo color que WEC Piscinas */
+            background-color: #1E90FF;
             color: white;
             font-size: 0.75rem;
             font-weight: 600;
@@ -141,13 +168,13 @@
         }
         .announcement-text {
             display: inline-block;
-            animation: marquee 80s linear infinite; /* Levemente más lenta: 80s */
+            animation: marquee 80s linear infinite;
         }
         .announcement-text span {
-            margin-right: 10rem; /* Separación entre frases */
+            margin-right: 10rem;
         }
         @keyframes marquee {
-            0% { transform: translateX(50vw); } /* Comienza desde el centro */
+            0% { transform: translateX(50vw); }
             100% { transform: translateX(-100%); }
         }
         .modal-project, .modal-terms {
@@ -162,14 +189,47 @@
             display: block;
         }
         #header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 50;
             top: 0.65rem;
+            min-height: 80px;
+        }
+        #header.main-header {
+            height: 80px;
+        }
+        .modal-project #header {
+            top: 0.65rem;
+            height: 80px;
+            min-height: 80px;
+        }
+        #header .flex {
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 2rem;
+        }
+        #header .container {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
         @media (min-width: 640px) {
             #header {
                 top: 0.9rem;
             }
+            #header.main-header {
+                height: 80px;
+            }
+            .modal-project #header {
+                top: 0.9rem;
+                height: 80px;
+                min-height: 80px;
+            }
         }
-        /* Textura para Proyectos y Contacto */
+        #mobile-menu a {
+            font-size: 1.1rem;
+            padding: 1rem;
+        }
         .noise-texture::before {
             content: '';
             position: absolute;
@@ -179,7 +239,7 @@
             height: 100%;
             background: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
             background-size: 4px 4px;
-            opacity: 0.05; /* Muy sutil */
+            opacity: 0.05;
             pointer-events: none;
             z-index: 0;
         }
@@ -187,24 +247,22 @@
             position: relative;
         }
         #proyectos {
-            background-color: #F0F0F0; /* Fondo gris claro */
+            background-color: #F0F0F0;
         }
         #contacto {
-            background: white; /* Fondo blanco sin parallax */
+            background: white;
         }
-        /* Animaciones de flotación más lentas y leves para las tarjetas de Cómo Trabajamos */
         .float-1 { animation: float 5s ease-in-out infinite; }
         .float-2 { animation: float 5.5s ease-in-out infinite; }
         .float-3 { animation: float 6s ease-in-out infinite; }
         .float-4 { animation: float 6.5s ease-in-out infinite; }
-        /* Ajustes para las tarjetas de Proyectos */
         .project-card {
             display: flex;
             flex-direction: column;
-            min-height: 380px; /* Altura fija para todas las tarjetas */
+            min-height: 380px;
         }
         .project-card img {
-            height: 224px; /* Reducido de 288px a 224px */
+            height: 224px;
             object-fit: cover;
         }
         .project-card .content {
@@ -213,26 +271,25 @@
             flex-direction: column;
             justify-content: space-between;
         }
-        /* Estilos para las preguntas frecuentes */
         .faq-container {
             max-width: 800px;
             margin: 0 auto;
         }
         .faq-item {
-            margin-bottom: 1rem;
+            margin-bottom: 0.25rem;
         }
         .faq-question {
             display: block;
-            padding: 1rem;
+            padding: 0.75rem;
             font-size: 1.125rem;
             font-weight: 500;
-            color: #1E90FF; /* Color del diseño */
+            color: #1E90FF;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
-            text-align: center; /* Centrado */
+            text-align: center;
         }
         .faq-question:hover {
-            color: #00BFFF; /* Celeste más claro al pasar el cursor */
+            color: #00BFFF;
             transform: scale(1.05);
         }
         .faq-answer {
@@ -250,12 +307,133 @@
             opacity: 1;
             padding: 1rem;
         }
-        /* Estilo para el cuadrado estético del botón de atrás */
         .back-button-box {
             border: 2px solid #1E90FF;
             padding: 0.5rem;
             border-radius: 0.5rem;
             display: inline-block;
+        }
+        .project-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .project-images img {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+        @media (max-width: 1024px) {
+            .project-images {
+                display: none;
+            }
+            .swiper-container-project {
+                display: block;
+            }
+        }
+        @media (min-width: 1025px) {
+            .swiper-container-project {
+                display: none;
+            }
+        }
+        @media (max-width: 768px) {
+            .swiper-slide {
+                background-size: cover;
+                background-position: center;
+                min-height: 60vh;
+            }
+            .swiper-container-hero {
+                height: 60vh;
+            }
+            .project-card {
+                min-height: auto;
+            }
+            .project-card img {
+                height: 150px;
+            }
+            .faq-item {
+                margin-bottom: 0.125rem;
+            }
+            .faq-question {
+                font-size: 1rem;
+                padding: 0.5rem;
+            }
+            .faq-answer {
+                font-size: 0.875rem;
+            }
+            .btn-secondary {
+                padding: 0.75rem 2rem;
+                font-size: 0.875rem;
+            }
+            .swiper-container-project {
+                max-width: 360px;
+            }
+        }
+        @media (max-width: 640px) {
+            html, body {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+            }
+            .container {
+                max-width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                box-sizing: border-box;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            #header {
+                top: 0;
+            }
+            .announcement-bar {
+                font-size: 0.7rem;
+            }
+            .modal-project .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            .swiper-container-project {
+                max-width: 280px;
+            }
+        }
+        .back-button-box .btn-primary {
+            transition: all 0.3s ease-in-out;
+        }
+        .back-button-box .btn-primary:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 191, 255, 0.5);
+            transform: translateY(-5px);
+        }
+        .project-card:hover img {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-project .container {
+            padding-top: 8rem;
+        }
+        .modal-project h2 {
+            margin-top: 1.5rem;
+        }
+        .modal-project footer, .modal-terms footer {
+            width: 100%;
+            position: relative;
+        }
+        .modal-project footer .container, .modal-terms footer .container {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        #como-trabajamos .faq-container {
+            margin-top: 2rem;
         }
     </style>
 </head>
@@ -266,21 +444,20 @@
             <span>METRO CUADRADO DESDE USD$ 200</span>
             <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
             <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-            <!-- Duplicado para efecto continuo -->
             <span>METRO CUADRADO DESDE USD$ 200</span>
             <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
             <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
         </div>
     </div>
 
-    <header id="header" class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
+    <header id="header" class="fixed w-full z-50 bg-white shadow-md main-header">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-full">
                 <div class="flex-shrink-0">
                     <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
                 </div>
                 <div class="hidden md:block">
-                    <nav class="ml-10 flex items-baseline space-x-4">
+                    <nav class="ml-10 flex items-center space-x-4">
                         <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
                         <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
                         <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
@@ -324,7 +501,7 @@
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
                 <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">Calidad y Diseño</h1>
-                    <p class="text-xl sm:text-2xl md:text-3xl mb-8 text-shadow-custom">Innovación en cada proyecto que realizamos.</p>
+                    <p class="text-xl sm:text-2xl text-shadow-custom">Innovación en cada proyecto que realizamos.</p>
                     <a href="#proyectos" class="btn-primary text-lg">Ver Proyectos</a>
                 </div>
             </div>
@@ -357,7 +534,7 @@
                                 <h3 class="text-xl font-semibold text-[#1E90FF] mb-3">Piscina Rectangular 8x4m</h3>
                                 <p class="text-gray-600 text-sm mb-6">Diseño clásico con solárium húmedo y luces LED. Perfecta para disfrutar en familia.</p>
                             </div>
-                            <div class="btn-secondary text-sm text-center block">Ver Más</div>
+                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg">Ver Más</div>
                         </div>
                     </div>
                 </a>
@@ -369,7 +546,7 @@
                                 <h3 class="text-xl font-semibold text-[#1E90FF] mb-3">Piscina Diseño Libre con Desborde</h3>
                                 <p class="text-gray-600 text-sm mb-6">Innovador diseño con borde infinito y climatización. Un lujo para tus sentidos.</p>
                             </div>
-                            <div class="btn-secondary text-sm text-center block">Ver Más</div>
+                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg">Ver Más</div>
                         </div>
                     </div>
                 </a>
@@ -381,295 +558,321 @@
                                 <h3 class="text-xl font-semibold text-[#1E90FF] mb-3">Piscina Minimalista 10x3m</h3>
                                 <p class="text-gray-600 text-sm mb-6">Líneas puras y elegancia. Ideal para espacios modernos y entrenamiento.</p>
                             </div>
-                            <div class="btn-secondary text-sm text-center block">Ver Más</div>
+                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg">Ver Más</div>
                         </div>
                     </div>
                 </a>
             </div>
         </div>
+    </section>
 
-        <!-- Modales de detalle de proyectos -->
-        <section id="project-1" class="modal-project">
-            <div class="announcement-bar">
-                <div class="announcement-text">
-                    <span>METRO CUADRADO DESDE USD$ 200</span>
-                    <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                    <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                    <span>METRO CUADRADO DESDE USD$ 200</span>
-                    <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                    <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                </div>
+    <section id="project-1" class="modal-project">
+        <div class="announcement-bar">
+            <div class="announcement-text">
+                <span>METRO CUADRADO DESDE USD$ 200</span>
+                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span>METRO CUADRADO DESDE USD$ 200</span>
+                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
             </div>
+        </div>
 
-            <header id="header" class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
-                <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between h-20">
-                        <div class="flex-shrink-0">
-                            <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
-                        </div>
-                        <div class="hidden md:block">
-                            <nav class="ml-10 flex items-baseline space-x-4">
-                                <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
-                                <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
-                                <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
-                                <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Sobre Nosotros</a>
-                                <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Contacto</a>
-                            </nav>
-                        </div>
-                        <div class="md:hidden flex items-center">
-                            <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
-                                <div class="hamburger">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                            </button>
-                        </div>
+        <header id="header" class="fixed w-full z-50 bg-white shadow-md">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-full">
+                    <div class="flex-shrink-0">
+                        <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
+                    </div>
+                    <div class="hidden md:block">
+                        <nav class="ml-10 flex items-center space-x-4">
+                            <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
+                            <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
+                            <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
+                            <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Sobre Nosotros</a>
+                            <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Contacto</a>
+                        </nav>
+                    </div>
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
+                            <div class="hamburger">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
                     </div>
                 </div>
-                <div id="mobile-menu" class="md:hidden hidden">
-                    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
-                        <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
-                        <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
-                        <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
-                        <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
-                    </div>
-                </div>
-            </header>
-
-            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Rectangular 8x4m</h2>
-                <div class="back-button-box mb-8">
-                    <a href="#proyectos" class="btn-primary close-modal">Volver</a>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8 mb-8">
-                    <img src="proyecto1-1.jpg" alt="Piscina 8x4m Imagen 1" class="w-full h-64 object-cover rounded-lg">
-                    <img src="proyecto1-2.jpg" alt="Piscina 8x4m Imagen 2" class="w-full h-64 object-cover rounded-lg">
-                    <img src="proyecto1-3.jpg" alt="Piscina 8x4m Imagen 3" class="w-full h-64 object-cover rounded-lg">
-                </div>
-                <div class="prose max-w-none">
-                    <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
-                    <p class="text-gray-600 mb-4">Esta piscina rectangular de 8x4 metros es un diseño clásico que combina funcionalidad y estética. Incluye un solárium húmedo integrado, ideal para relajarse, y un sistema de iluminación LED que crea un ambiente espectacular durante la noche. Perfecta para familias que buscan un espacio para disfrutar y compartir momentos inolvidables.</p>
-                    <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
-                    <ul class="list-disc pl-5 text-gray-600 mb-4">
-                        <li>Hormigón armado de alta resistencia</li>
-                        <li>Revestimiento de venecitas premium</li>
-                        <li>Sistema de filtrado de alta eficiencia</li>
-                        <li>Iluminación LED de bajo consumo</li>
-                        <li>Borde atérmico antideslizante</li>
-                    </ul>
-                </div>
-                <div class="text-center my-12">
-                    <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">
-                        Escribinos que cotizamos la piscina de tus sueños
-                    </a>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
                 </div>
             </div>
+        </header>
 
-            <footer class="bg-[#1E90FF] text-white">
-                <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 text-center">
-                    <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
-                    <p class="text-sm text-blue-200">
-                        <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
-                    </p>
-                </div>
-            </footer>
-
-            <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-               class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
-               data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
-                <span>WhatsApp</span>
-            </a>
-        </section>
-
-        <section id="project-2" class="modal-project">
-            <div class="announcement-bar">
-                <div class="announcement-text">
-                    <span>METRO CUADRADO DESDE USD$ 200</span>
-                    <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                    <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                    <span>METRO CUADRADO DESDE USD$ 200</span>
-                    <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                    <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                </div>
+        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Rectangular 8x4m</h2>
+            <div class="back-button-box mb-8">
+                <a href="#proyectos" class="btn-primary close-modal">Volver</a>
             </div>
+            <div class="swiper-container-project mb-8">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="proyecto1-1.jpg" alt="Piscina 8x4m Imagen 1"></div>
+                    <div class="swiper-slide"><img src="proyecto1-2.jpg" alt="Piscina 8x4m Imagen 2"></div>
+                    <div class="swiper-slide"><img src="proyecto1-3.jpg" alt="Piscina 8x4m Imagen 3"></div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            <div class="project-images">
+                <img src="proyecto1-1.jpg" alt="Piscina 8x4m Imagen 1">
+                <img src="proyecto1-2.jpg" alt="Piscina 8x4m Imagen 2">
+                <img src="proyecto1-3.jpg" alt="Piscina 8x4m Imagen 3">
+            </div>
+            <div class="prose max-w-none">
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
+                <p class="text-gray-600 mb-4">Esta piscina rectangular de 8x4 metros es un diseño clásico que combina funcionalidad y estética. Incluye un solárium húmedo integrado, ideal para relajarse, y un sistema de iluminación LED que crea un ambiente espectacular durante la noche. Perfecta para familias que buscan un espacio para disfrutar y compartir momentos inolvidables.</p>
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
+                <ul class="list-disc pl-5 text-gray-600 mb-4">
+                    <li>Hormigón armado de alta resistencia</li>
+                    <li>Revestimiento de venecitas premium</li>
+                    <li>Sistema de filtrado de alta eficiencia</li>
+                    <li>Iluminación LED de bajo consumo</li>
+                    <li>Borde atérmico antideslizante</li>
+                </ul>
+            </div>
+            <div class="text-center my-12">
+                <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">
+                    Escribinos que cotizamos la piscina de tus sueños
+                </a>
+            </div>
+        </div>
 
-            <header id="header" class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
-                <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between h-20">
-                        <div class="flex-shrink-0">
-                            <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
-                        </div>
-                        <div class="hidden md:block">
-                            <nav class="ml-10 flex items-baseline space-x-4">
-                                <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
-                                <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
-                                <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
-                                <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Sobre Nosotros</a>
-                                <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Contacto</a>
-                            </nav>
-                        </div>
-                        <div class="md:hidden flex items-center">
-                            <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
-                                <div class="hamburger">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                            </button>
-                        </div>
+        <footer id="footer" class="bg-[#1E90FF] text-white">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
+                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="text-sm text-blue-200">
+                    <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
+                </p>
+            </div>
+        </footer>
+
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
+           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+            <span>WhatsApp</span>
+        </a>
+    </section>
+
+    <section id="project-2" class="modal-project">
+        <div class="announcement-bar">
+            <div class="announcement-text">
+                <span>METRO CUADRADO DESDE USD$ 200</span>
+                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span>METRO CUADRADO DESDE USD$ 200</span>
+                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            </div>
+        </div>
+
+        <header id="header" class="fixed w-full z-50 bg-white shadow-md">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-full">
+                    <div class="flex-shrink-0">
+                        <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
+                    </div>
+                    <div class="hidden md:block">
+                        <nav class="ml-10 flex items-center space-x-4">
+                            <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
+                            <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
+                            <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
+                            <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Sobre Nosotros</a>
+                            <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Contacto</a>
+                        </nav>
+                    </div>
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
+                            <div class="hamburger">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
                     </div>
                 </div>
-                <div id="mobile-menu" class="md:hidden hidden">
-                    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
-                        <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
-                        <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
-                        <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
-                        <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
-                    </div>
-                </div>
-            </header>
-
-            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Diseño Libre con Desborde</h2>
-                <div class="back-button-box mb-8">
-                    <a href="#proyectos" class="btn-primary close-modal">Volver</a>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8 mb-8">
-                    <img src="proyecto2-1.jpg" alt="Piscina Diseño Libre Imagen 1" class="w-full h-64 object-cover rounded-lg">
-                    <img src="proyecto2-2.jpg" alt="Piscina Diseño Libre Imagen 2" class="w-full h-64 object-cover rounded-lg">
-                    <img src="proyecto2-3.jpg" alt="Piscina Diseño Libre Imagen 3" class="w-full h-64 object-cover rounded-lg">
-                </div>
-                <div class="prose max-w-none">
-                    <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
-                    <p class="text-gray-600 mb-4">Este diseño libre con borde infinito ofrece una experiencia visual única, integrándose perfectamente con el entorno. La climatización permite disfrutar de la piscina durante todo el año, mientras que el sistema de desborde crea un efecto de espejo que eleva la estética del espacio. Un proyecto de lujo para quienes buscan exclusividad.</p>
-                    <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
-                    <ul class="list-disc pl-5 text-gray-600 mb-4">
-                        <li>Hormigón armado con tratamiento impermeabilizante</li>
-                        <li>Revestimiento de vidrio templado</li>
-                        <li>Sistema de climatización de alta eficiencia</li>
-                        <li>Bomba de filtrado de última generación</li>
-                        <li>Borde infinito con canal de desborde</li>
-                    </ul>
-                </div>
-                <div class="text-center my-12">
-                    <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">
-                        Escribinos que cotizamos la piscina de tus sueños
-                    </a>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
                 </div>
             </div>
+        </header>
 
-            <footer class="bg-[#1E90FF] text-white">
-                <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 text-center">
-                    <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
-                    <p class="text-sm text-blue-200">
-                        <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
-                    </p>
-                </div>
-            </footer>
-
-            <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-               class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
-               data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
-                <span>WhatsApp</span>
-            </a>
-        </section>
-
-        <section id="project-3" class="modal-project">
-            <div class="announcement-bar">
-                <div class="announcement-text">
-                    <span>METRO CUADRADO DESDE USD$ 200</span>
-                    <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                    <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                    <span>METRO CUADRADO DESDE USD$ 200</span>
-                    <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                    <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                </div>
+        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Diseño Libre con Desborde</h2>
+            <div class="back-button-box mb-8">
+                <a href="#proyectos" class="btn-primary close-modal">Volver</a>
             </div>
+            <div class="swiper-container-project mb-8">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="proyecto2-1.jpg" alt="Piscina Diseño Libre Imagen 1"></div>
+                    <div class="swiper-slide"><img src="proyecto2-2.jpg" alt="Piscina Diseño Libre Imagen 2"></div>
+                    <div class="swiper-slide"><img src="proyecto2-3.jpg" alt="Piscina Diseño Libre Imagen 3"></div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            <div class="project-images">
+                <img src="proyecto2-1.jpg" alt="Piscina Diseño Libre Imagen 1">
+                <img src="proyecto2-2.jpg" alt="Piscina Diseño Libre Imagen 2">
+                <img src="proyecto2-3.jpg" alt="Piscina Diseño Libre Imagen 3">
+            </div>
+            <div class="prose max-w-none">
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
+                <p class="text-gray-600 mb-4">Este diseño libre con borde infinito ofrece una experiencia visual única, integrándose perfectamente con el entorno. La climatización permite disfrutar de la piscina durante todo el año, mientras que el sistema de desborde crea un efecto de espejo que eleva la estética del espacio. Un proyecto de lujo para quienes buscan exclusividad.</p>
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
+                <ul class="list-disc pl-5 text-gray-600 mb-4">
+                    <li>Hormigón armado con tratamiento impermeabilizante</li>
+                    <li>Revestimiento de vidrio templado</li>
+                    <li>Sistema de climatización de alta eficiencia</li>
+                    <li>Bomba de filtrado de última generación</li>
+                    <li>Borde infinito con canal de desborde</li>
+                </ul>
+            </div>
+            <div class="text-center my-12">
+                <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">
+                    Escribinos que cotizamos la piscina de tus sueños
+                </a>
+            </div>
+        </div>
 
-            <header id="header" class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
-                <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between h-20">
-                        <div class="flex-shrink-0">
-                            <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
-                        </div>
-                        <div class="hidden md:block">
-                            <nav class="ml-10 flex items-baseline space-x-4">
-                                <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
-                                <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
-                                <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
-                                <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Sobre Nosotros</a>
-                                <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Contacto</a>
-                            </nav>
-                        </div>
-                        <div class="md:hidden flex items-center">
-                            <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
-                                <div class="hamburger">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                            </button>
-                        </div>
+        <footer id="footer" class="bg-[#1E90FF] text-white">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
+                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="text-sm text-blue-200">
+                    <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
+                </p>
+            </div>
+        </footer>
+
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
+           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+            <span>WhatsApp</span>
+        </a>
+    </section>
+
+    <section id="project-3" class="modal-project">
+        <div class="announcement-bar">
+            <div class="announcement-text">
+                <span>METRO CUADRADO DESDE USD$ 200</span>
+                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span>METRO CUADRADO DESDE USD$ 200</span>
+                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            </div>
+        </div>
+
+        <header id="header" class="fixed w-full z-50 bg-white shadow-md">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-full">
+                    <div class="flex-shrink-0">
+                        <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
+                    </div>
+                    <div class="hidden md:block">
+                        <nav class="ml-10 flex items-center space-x-4">
+                            <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
+                            <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
+                            <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
+                            <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Sobre Nosotros</a>
+                            <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Contacto</a>
+                        </nav>
+                    </div>
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
+                            <div class="hamburger">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
                     </div>
                 </div>
-                <div id="mobile-menu" class="md:hidden hidden">
-                    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
-                        <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
-                        <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
-                        <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
-                        <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
-                    </div>
-                </div>
-            </header>
-
-            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Minimalista 10x3m</h2>
-                <div class="back-button-box mb-8">
-                    <a href="#proyectos" class="btn-primary close-modal">Volver</a>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8 mb-8">
-                    <img src="proyecto3-1.jpg" alt="Piscina Minimalista Imagen 1" class="w-full h-64 object-cover rounded-lg">
-                    <img src="proyecto3-2.jpg" alt="Piscina Minimalista Imagen 2" class="w-full h-64 object-cover rounded-lg">
-                    <img src="proyecto3-3.jpg" alt="Piscina Minimalista Imagen 3" class="w-full h-64 object-cover rounded-lg">
-                </div>
-                <div class="prose max-w-none">
-                    <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
-                    <p class="text-gray-600 mb-4">Esta piscina minimalista de 10x3 metros destaca por sus líneas puras y su diseño elegante, ideal para espacios modernos. Su formato alargado es perfecto para nadar y entrenar, mientras que el revestimiento claro aporta luminosidad y sofisticación. Un diseño funcional y estilizado.</p>
-                    <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
-                    <ul class="list-disc pl-5 text-gray-600 mb-4">
-                        <li>Hormigón pulido de alta durabilidad</li>
-                        <li>Revestimiento de cerámica de gran formato</li>
-                        <li>Sistema de filtrado compacto</li>
-                        <li>Iluminación perimetral LED</li>
-                        <li>Borde minimalista antideslizante</li>
-                    </ul>
-                </div>
-                <div class="text-center my-12">
-                    <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">
-                        Escribinos que cotizamos la piscina de tus sueños
-                    </a>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
                 </div>
             </div>
+        </header>
 
-            <footer class="bg-[#1E90FF] text-white">
-                <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 text-center">
-                    <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
-                    <p class="text-sm text-blue-200">
-                        <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
-                    </p>
+        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Minimalista 10x3m</h2>
+            <div class="back-button-box mb-8">
+                <a href="#proyectos" class="btn-primary close-modal">Volver</a>
+            </div>
+            <div class="swiper-container-project mb-8">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="proyecto3-1.jpg" alt="Piscina Minimalista Imagen 1"></div>
+                    <div class="swiper-slide"><img src="proyecto3-2.jpg" alt="Piscina Minimalista Imagen 2"></div>
+                    <div class="swiper-slide"><img src="proyecto3-3.jpg" alt="Piscina Minimalista Imagen 3"></div>
                 </div>
-            </footer>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            <div class="project-images">
+                <img src="proyecto3-1.jpg" alt="Piscina Minimalista Imagen 1">
+                <img src="proyecto3-2.jpg" alt="Piscina Minimalista Imagen 2">
+                <img src="proyecto3-3.jpg" alt="Piscina Minimalista Imagen 3">
+            </div>
+            <div class="prose max-w-none">
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
+                <p class="text-gray-600 mb-4">Esta piscina minimalista de 10x3 metros destaca por sus líneas puras y su diseño elegante, ideal para espacios modernos. Su formato alargado es perfecto para nadar y entrenar, mientras que el revestimiento claro aporta luminosidad y sofisticación. Un diseño funcional y estilizado.</p>
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
+                <ul class="list-disc pl-5 text-gray-600 mb-4">
+                    <li>Hormigón pulido de alta durabilidad</li>
+                    <li>Revestimiento de cerámica de gran formato</li>
+                    <li>Sistema de filtrado compacto</li>
+                    <li>Iluminación perimetral LED</li>
+                    <li>Borde minimalista antideslizante</li>
+                </ul>
+            </div>
+            <div class="text-center my-12">
+                <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">
+                    Escribinos que cotizamos la piscina de tus sueños
+                </a>
+            </div>
+        </div>
 
-            <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-               class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
-               data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
-                <span>WhatsApp</span>
-            </a>
-        </section>
+        <footer id="footer" class="bg-[#1E90FF] text-white">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
+                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="text-sm text-blue-200">
+                    <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
+                </p>
+            </div>
+        </footer>
+
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
+           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+            <span>WhatsApp</span>
+        </a>
     </section>
 
     <section id="como-trabajamos" class="py-16 md:py-24 bg-white">
@@ -709,28 +912,27 @@
                 </div>
             </div>
 
-            <!-- Preguntas Frecuentes -->
             <div class="text-center mt-12">
-                <h2 class="section-title">Preguntas Frecuentes</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-4" data-aos="fade-up">Preguntas Frecuentes</h2>
             </div>
             <div class="faq-container">
-                <div class="faq-item">
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
                     <div class="faq-question">¿Cuánto tiempo tarda la construcción de una piscina?</div>
                     <div class="faq-answer">Depende del diseño y tamaño, pero generalmente entre 30 y 60 días desde la excavación hasta la entrega final.</div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
                     <div class="faq-question">¿Ofrecen garantía en sus piscinas?</div>
                     <div class="faq-answer">¡Sí! Todas nuestras piscinas tienen una garantía de 10 años en la estructura y 2 años en sistemas de filtrado e iluminación.</div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
                     <div class="faq-question">¿Puedo personalizar el diseño de mi piscina?</div>
                     <div class="faq-answer">Absolutamente, trabajamos contigo para crear un diseño único que refleje tus gustos y necesidades.</div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
                     <div class="faq-question">¿Qué mantenimiento requiere una piscina de WEC?</div>
                     <div class="faq-answer">Recomendamos un mantenimiento básico semanal, como limpieza del filtro y control del pH, además de revisiones anuales que podemos realizar por ti.</div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="600">
                     <div class="faq-question">¿Construyen piscinas en cualquier terreno?</div>
                     <div class="faq-answer">Evaluamos cada terreno para asegurar su viabilidad, adaptándonos a diferentes condiciones con técnicas especializadas.</div>
                 </div>
@@ -799,7 +1001,6 @@
         </div>
     </footer>
 
-    <!-- Sección de Términos y Condiciones -->
     <section id="terms" class="modal-terms">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8 text-center">Términos y Condiciones</h2>
@@ -821,24 +1022,31 @@
                 <p class="mb-4">Si el cliente decide cancelar el proyecto una vez iniciado, el anticipo no será reembolsable, y se facturarán los costos incurridos hasta la fecha de cancelación, incluyendo materiales adquiridos y horas de trabajo realizadas. Las cancelaciones deben notificarse por escrito con un mínimo de 15 días de aviso.</p>
 
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">4. Garantías y Responsabilidad</h3>
-                <p class="mb-4">WEC Piscinas ofrece una garantía de 10 años sobre la estructura de la piscina y 2 años sobre los sistemas de filtrado e iluminación, siempre que se cumplan las condiciones de mantenimiento recomendadas. Esta garantía no cubre daños causados por mal uso, negligencia, desastres naturales o modificaciones realizadas por terceros.</p>
-                <p class="mb-4">No nos hacemos responsables por daños a propiedades adyacentes que no sean directamente atribuibles a nuestra negligencia comprobada. El cliente es responsable de obtener los permisos municipales necesarios para la construcción, aunque WEC Piscinas puede asistir en este proceso si así se acuerda.</p>
+                <p class="mb-4">WEC Piscinas ofrece una garantía de 10 años sobre la estructura de la piscina y 2 años sobre los sistemas de filtrado e iluminación, siempre que se cumplan las condiciones de mantenimiento recomendadas. Esta garantía cubre defectos de fabricación y construcción, pero no incluye daños causados por mal uso, falta de mantenimiento, desastres naturales o modificaciones no autorizadas por WEC Piscinas.</p>
+                <p class="mb-4">El cliente será responsable de obtener los permisos municipales necesarios para la construcción de la piscina, así como de garantizar el acceso al terreno para nuestro equipo y maquinaria. WEC Piscinas no se hace responsable por daños a terceros o al terreno causados por condiciones preexistentes no informadas por el cliente.</p>
 
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">5. Propiedad Intelectual</h3>
-                <p class="mb-4">Todos los diseños, planos y materiales promocionales creados por WEC Piscinas son de nuestra exclusiva propiedad intelectual. El cliente no podrá reproducir, distribuir ni utilizar estos materiales sin nuestro consentimiento expreso. Las imágenes de los proyectos finalizados podrán ser utilizadas por WEC Piscinas con fines promocionales, respetando la privacidad del cliente.</p>
+                <p class="mb-4">Todos los diseños, planos y materiales promocionales creados por WEC Piscinas son propiedad intelectual de la empresa y no pueden ser reproducidos, distribuidos o utilizados sin nuestro consentimiento expreso. Las imágenes de nuestros proyectos publicadas en este sitio web tienen fines ilustrativos y no pueden ser utilizadas para otros fines sin autorización.</p>
 
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">6. Confidencialidad y Protección de Datos</h3>
-                <p class="mb-4">WEC Piscinas se compromete a proteger la información personal proporcionada por los clientes, utilizándola únicamente para los fines relacionados con la ejecución del proyecto y la comunicación necesaria. No compartiremos sus datos con terceros sin su consentimiento, salvo que sea requerido por la ley.</p>
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">6. Privacidad y Datos Personales</h3>
+                <p class="mb-4">WEC Piscinas se compromete a proteger la privacidad de sus clientes. Los datos personales proporcionados (como nombre, teléfono, email y dirección) serán utilizados únicamente para fines relacionados con la cotización, contratación y ejecución de los proyectos, y no serán compartidos con terceros sin su consentimiento, salvo que sea requerido por ley.</p>
 
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">7. Resolución de Conflictos</h3>
-                <p class="mb-4">Cualquier controversia derivada de la interpretación o cumplimiento de estos términos y condiciones será resuelta mediante negociación directa entre las partes. De no llegar a un acuerdo, las partes se someten a la jurisdicción de los tribunales competentes de la Ciudad Autónoma de Buenos Aires, renunciando a cualquier otro fuero que pudiera corresponderles.</p>
+                <p class="mb-4">Cualquier disputa que surja en relación con estos términos y condiciones o con los servicios prestados por WEC Piscinas será resuelta mediante negociación directa entre las partes. En caso de no llegar a un acuerdo, ambas partes acuerdan someterse a la jurisdicción de los tribunales de la Ciudad Autónoma de Buenos Aires, renunciando a cualquier otro fuero que pudiera corresponder.</p>
 
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">8. Aceptación de los Términos</h3>
-                <p class="mb-4">La contratación de nuestros servicios implica la aceptación plena y sin reservas de estos términos y condiciones. Si tiene alguna duda, le invitamos a contactarnos antes de proceder con su solicitud.</p>
-
-                <p class="mb-4">Última actualización: 13 de mayo de 2025.</p>
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">8. Contacto</h3>
+                <p class="mb-4">Si tiene alguna pregunta sobre estos términos y condiciones, no dude en contactarnos a través de nuestro correo electrónico <a href="mailto:info@wecpiscinas.com" class="text-[#00BFFF] hover:underline">info@wecpiscinas.com</a> o al teléfono <a href="tel:+541112345678" class="text-[#00BFFF] hover:underline">(011) 1234-5678</a>.</p>
             </div>
         </div>
+
+        <footer id="footer" class="bg-[#1E90FF] text-white">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
+                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="text-sm text-blue-200">
+                    <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
+                </p>
+            </div>
+        </footer>
     </section>
 
     <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
@@ -848,151 +1056,15 @@
     </a>
 
     <script>
-        // Inicializar AOS
+        // Initialize AOS
         AOS.init({
             duration: 800,
-            once: false, // Cambiado a false para que las animaciones se repitan al volver a la sección
+            once: true,
         });
 
-        // Reiniciar animaciones al volver a la sección Inicio
-        const inicioSection = document.querySelector('#inicio');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    AOS.refresh(); // Refresca las animaciones de AOS cuando la sección vuelve a ser visible
-                }
-            });
-        }, { threshold: 0.1 });
-
-        observer.observe(inicioSection);
-
-        // Mobile menu toggle
-        const mobileMenuButtons = document.querySelectorAll('#mobile-menu-button');
-        mobileMenuButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const mobileMenu = button.closest('header').querySelector('#mobile-menu');
-                const hamburger = button.querySelector('.hamburger');
-                mobileMenu.classList.toggle('hidden');
-                hamburger.classList.toggle('open');
-            });
-        });
-
-        // Cerrar menú móvil al hacer clic en un enlace
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                const mobileMenu = link.closest('#mobile-menu');
-                const hamburger = mobileMenu.previousElementSibling.querySelector('.hamburger');
-                mobileMenu.classList.add('hidden');
-                hamburger.classList.remove('open');
-            });
-        });
-
-        // Smooth scroll para anclas con ajuste mejorado
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const header = document.getElementById('header');
-                    const announcementBar = document.querySelector('.announcement-bar');
-                    const headerHeight = header ? header.offsetHeight : 0;
-                    const announcementHeight = announcementBar ? announcementBar.offsetHeight : 0;
-                    const extraOffset = 30; // Offset adicional ajustado
-                    const totalOffset = headerHeight + announcementHeight + extraOffset;
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - totalOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
-
-                    // Verificar y ajustar posición después del desplazamiento
-                    setTimeout(() => {
-                        const newPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - totalOffset;
-                        if (Math.abs(window.pageYOffset - newPosition) > 1) {
-                            window.scrollTo({
-                                top: newPosition,
-                                behavior: "smooth"
-                            });
-                        }
-                    }, 1000);
-                }
-            });
-        });
-
-        // Gestión de modales de proyectos
-        const openModalButtons = document.querySelectorAll('.open-modal');
-        const closeModalButtons = document.querySelectorAll('.close-modal');
-        const modals = document.querySelectorAll('.modal-project');
-
-        openModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetId = button.getAttribute('href');
-                modals.forEach(modal => modal.classList.remove('active'));
-                document.querySelector(targetId).classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        closeModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                modals.forEach(modal => modal.classList.remove('active'));
-                document.body.style.overflow = 'auto';
-            });
-        });
-
-        // Gestión de modal de términos y condiciones
-        const openTermsButton = document.querySelector('.open-terms');
-        const closeTermsButton = document.querySelector('.close-terms');
-        const termsModal = document.querySelector('.modal-terms');
-
-        openTermsButton.addEventListener('click', () => {
-            termsModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        closeTermsButton.addEventListener('click', () => {
-            termsModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-
-        // Gestión de preguntas frecuentes
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        document.addEventListener('click', (e) => {
-            // Cerrar todas las preguntas si se hace clic fuera de una pregunta
-            if (!e.target.classList.contains('faq-question')) {
-                faqQuestions.forEach(question => {
-                    const answer = question.nextElementSibling;
-                    answer.classList.remove('active');
-                });
-            }
-        });
-
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', (e) => {
-                e.stopPropagation(); // Evitar que el clic se propague al documento
-                const answer = question.nextElementSibling;
-                const isActive = answer.classList.contains('active');
-
-                // Cerrar todas las demás respuestas
-                faqQuestions.forEach(q => {
-                    const otherAnswer = q.nextElementSibling;
-                    otherAnswer.classList.remove('active');
-                });
-
-                // Alternar la respuesta actual
-                if (!isActive) {
-                    answer.classList.add('active');
-                }
-            });
-        });
-
-        // Slider Principal con Swiper JS
-        var heroSwiper = new Swiper('.swiper-container-hero', {
+        // Hero Swiper
+        const heroSwiper = new Swiper('.swiper-container-hero', {
             loop: true,
-            effect: 'fade',
             autoplay: {
                 delay: 5000,
                 disableOnInteraction: false,
@@ -1007,24 +1079,152 @@
             },
         });
 
-        // Parallax effect for hero slider images
-        window.addEventListener('scroll', () => {
-            const slides = document.querySelectorAll('.swiper-slide');
-            const scrollPosition = window.pageYOffset;
-
-            slides.forEach(slide => {
-                const slidePosition = slide.getBoundingClientRect().top + window.pageYOffset;
-                const relativePosition = scrollPosition - slidePosition;
-                const parallaxSpeed = 0.5; // Aumentado para mayor efecto
-                const backgroundPositionY = relativePosition * parallaxSpeed;
-
-                slide.style.backgroundPositionY = `calc(50% + ${backgroundPositionY}px)`;
+        // Project Swiper (used in modal-project)
+        const projectSwipers = document.querySelectorAll('.swiper-container-project');
+        projectSwipers.forEach(swiper => {
+            new Swiper(swiper, {
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: swiper.querySelector('.swiper-button-next'),
+                    prevEl: swiper.querySelector('.swiper-button-prev'),
+                },
             });
         });
 
-        // Actualizar año en footer
-        document.querySelectorAll('#currentYear').forEach(element => {
-            element.textContent = new Date().getFullYear();
+        // Hamburger Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.querySelector('.hamburger').classList.toggle('open');
+        });
+
+        // Modal Project Handling
+        const projectLinks = document.querySelectorAll('.open-modal');
+        const projectModals = document.querySelectorAll('.modal-project');
+        const closeProjectLinks = document.querySelectorAll('.close-modal');
+
+        projectLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetModalId = link.getAttribute('href');
+                const targetModal = document.querySelector(targetModalId);
+                targetModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                window.scrollTo(0, 0);
+                AOS.refresh();
+            });
+        });
+
+        closeProjectLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                projectModals.forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+                const targetSection = document.querySelector(link.getAttribute('href'));
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+                AOS.refresh();
+            });
+        });
+
+        // Modal Terms Handling
+        const termsLinks = document.querySelectorAll('.open-terms');
+        const termsModal = document.querySelector('.modal-terms');
+        const closeTermsLinks = document.querySelectorAll('.close-terms');
+
+        termsLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                termsModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                window.scrollTo(0, 0);
+                AOS.refresh();
+            });
+        });
+
+        closeTermsLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                termsModal.classList.remove('active');
+                document.body.style.overflow = '';
+                const targetSection = document.querySelector(link.getAttribute('href'));
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+                AOS.refresh();
+            });
+        });
+
+        // FAQ Toggle
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = answer.classList.contains('active');
+
+                // Close all answers
+                document.querySelectorAll('.faq-answer').forEach(ans => {
+                    ans.classList.remove('active');
+                });
+
+                // Toggle clicked answer
+                if (!isActive) {
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Set current year in footer
+        const currentYear = new Date().getFullYear();
+        document.querySelectorAll('#currentYear').forEach(span => {
+            span.textContent = currentYear;
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.classList.contains('open-modal') || this.classList.contains('close-modal') || 
+                    this.classList.contains('open-terms') || this.classList.contains('close-terms')) {
+                    return;
+                }
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Close mobile menu when clicking a link
+        const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const mobileMenu = link.closest('#mobile-menu');
+                const hamburger = mobileMenu.previousElementSibling.querySelector('.hamburger');
+                mobileMenu.classList.add('hidden');
+                hamburger.classList.remove('open');
+            });
+        });
+
+        // Adjust header on scroll
+        window.addEventListener('scroll', () => {
+            const headers = document.querySelectorAll('#header');
+            headers.forEach(header => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-md');
+                    header.style.top = '0';
+                } else {
+                    header.classList.remove('shadow-md');
+                    header.style.top = header.classList.contains('main-header') ? '0.65rem' : '0.9rem';
+                }
+            });
         });
     </script>
 </body>
