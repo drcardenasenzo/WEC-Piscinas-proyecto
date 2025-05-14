@@ -136,8 +136,12 @@
         .hamburger.open span:nth-child(3) {
             transform: translateY(-7.5px) rotate(-45deg);
         }
+        #mobile-menu {
+            background-color: white; /* Fondo blanco para el menú desplegable */
+        }
         #mobile-menu a {
             text-align: center;
+            color: #00BFFF; /* Letras celeste (#00BFFF) */
         }
         @keyframes float {
             0% { transform: translateY(0); }
@@ -153,22 +157,35 @@
             font-size: 0.75rem;
             font-weight: 600;
             text-align: center;
-            padding: 0.1rem 0;
+            padding: 0.25rem 0;
+            line-height: 1;
             overflow: hidden;
             white-space: nowrap;
             z-index: 60;
             position: fixed;
             top: 0;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         @media (min-width: 640px) {
             .announcement-bar {
                 font-size: 0.875rem;
+                padding: 0.25rem 0;
+                line-height: 1;
+            }
+        }
+        @media (max-width: 639px) {
+            .announcement-bar {
+                padding: 0.25rem 0;
+                font-size: 0.6rem;
             }
         }
         .announcement-text {
             display: inline-block;
-            animation: marquee 80s linear infinite;
+            animation: marquee 80s linear infinite; /* Restaurada la velocidad original */
+            animation-iteration-count: infinite;
         }
         .announcement-text span {
             margin-right: 10rem;
@@ -205,9 +222,9 @@
         }
         #header .flex {
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             height: 100%;
-            gap: 2rem;
+            gap: 0;
         }
         #header .container {
             padding-top: 1rem;
@@ -224,6 +241,53 @@
                 top: 0.9rem;
                 height: 80px;
                 min-height: 80px;
+            }
+        }
+        @media (min-width: 768px) {
+            #header nav a {
+                padding: 1.5rem 0.75rem;
+                margin-right: 0.5rem;
+            }
+            #header .flex {
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+            #header .flex-shrink-0 {
+                padding-top: 1.5rem; /* Subido levemente en PC */
+            }
+            #header nav {
+                margin-left: 0;
+            }
+            #header .container {
+                padding-top: 0.5rem;
+                padding-bottom: 1rem;
+            }
+        }
+        @media (max-width: 767px) {
+            #header .flex {
+                align-items: flex-start;
+                padding: 1rem 0;
+            }
+            #header .flex-shrink-0 {
+                padding-top: 0.5rem; /* Subido ligeramente en móvil */
+            }
+            #header .hamburger {
+                margin-left: 1rem;
+                margin-top: 0.25rem; /* Subido bastante en móvil */
+            }
+            #header.main-header {
+                height: 96px;
+                min-height: 96px;
+            }
+            .modal-project #header {
+                height: 96px;
+                min-height: 96px;
+            }
+            .swiper-container-hero .swiper-pagination {
+                bottom: 25rem !important; /* Bajado 5rem */
+            }
+            .modal-project .swiper-container-project {
+                margin-top: 2rem !important; /* Ya ajustado previamente en móvil */
             }
         }
         #mobile-menu a {
@@ -309,7 +373,7 @@
         }
         .back-button-box {
             border: 2px solid #1E90FF;
-            padding: 0.5rem;
+            padding: 0.25rem;
             border-radius: 0.5rem;
             display: inline-block;
         }
@@ -321,7 +385,7 @@
         }
         .project-images img {
             width: 100%;
-            max-width: 320px;
+            max-width: 400px;
             aspect-ratio: 1/1;
             object-fit: cover;
             border-radius: 8px;
@@ -338,7 +402,7 @@
         }
         @media (min-width: 1025px) {
             .swiper-container-project {
-                display: none;
+                display: block; /* Aseguro que el carrusel sea visible también en PC */
             }
         }
         @media (max-width: 768px) {
@@ -396,9 +460,6 @@
             #header {
                 top: 0;
             }
-            .announcement-bar {
-                font-size: 0.7rem;
-            }
             .modal-project .container {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
@@ -424,6 +485,9 @@
         .modal-project h2 {
             margin-top: 1.5rem;
         }
+        .modal-project .swiper-container-project {
+            margin-top: 4rem; /* Subido el carrusel en general (PC y móvil) */
+        }
         .modal-project footer, .modal-terms footer {
             width: 100%;
             position: relative;
@@ -434,6 +498,9 @@
         }
         #como-trabajamos .faq-container {
             margin-top: 2rem;
+        }
+        .swiper-container-project img {
+            max-width: 400px;
         }
     </style>
 </head>
@@ -478,11 +545,11 @@
         </div>
         <div id="mobile-menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
-                <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
-                <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
-                <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
-                <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
+                <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
             </div>
         </div>
     </header>
@@ -606,11 +673,11 @@
             </div>
             <div id="mobile-menu" class="md:hidden hidden">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
-                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
-                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
-                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
-                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
+                    <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                    <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                    <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                    <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
                 </div>
             </div>
         </header>
@@ -709,11 +776,11 @@
             </div>
             <div id="mobile-menu" class="md:hidden hidden">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
-                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
-                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
-                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
-                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
+                    <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                    <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                    <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                    <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
                 </div>
             </div>
         </header>
@@ -812,11 +879,11 @@
             </div>
             <div id="mobile-menu" class="md:hidden hidden">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
-                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
-                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
-                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
-                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
+                    <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                    <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                    <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                    <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
                 </div>
             </div>
         </header>
@@ -1028,14 +1095,16 @@
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">5. Propiedad Intelectual</h3>
                 <p class="mb-4">Todos los diseños, planos y materiales promocionales creados por WEC Piscinas son propiedad intelectual de la empresa y no pueden ser reproducidos, distribuidos o utilizados sin nuestro consentimiento expreso. Las imágenes de nuestros proyectos publicadas en este sitio web tienen fines ilustrativos y no pueden ser utilizadas para otros fines sin autorización.</p>
 
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">6. Privacidad y Datos Personales</h3>
-                <p class="mb-4">WEC Piscinas se compromete a proteger la privacidad de sus clientes. Los datos personales proporcionados (como nombre, teléfono, email y dirección) serán utilizados únicamente para fines relacionados con la cotización, contratación y ejecución de los proyectos, y no serán compartidos con terceros sin su consentimiento, salvo que sea requerido por ley.</p>
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">6. Privacidad</h3>
+                <p class="mb-4">En WEC Piscinas, nos comprometemos a proteger su privacidad. La información personal que nos proporcione, como su nombre, dirección, número de teléfono y correo electrónico, será utilizada únicamente para procesar su solicitud, cotización o proyecto, y no será compartida con terceros sin su consentimiento, salvo que sea requerido por la ley. Para más información sobre cómo manejamos sus datos, puede contactarnos directamente.</p>
 
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">7. Resolución de Conflictos</h3>
-                <p class="mb-4">Cualquier disputa que surja en relación con estos términos y condiciones o con los servicios prestados por WEC Piscinas será resuelta mediante negociación directa entre las partes. En caso de no llegar a un acuerdo, ambas partes acuerdan someterse a la jurisdicción de los tribunales de la Ciudad Autónoma de Buenos Aires, renunciando a cualquier otro fuero que pudiera corresponder.</p>
+                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">7. Ley Aplicable y Jurisdicción</h3>
+                <p class="mb-4">Estos términos y condiciones se rigen por las leyes de la República Argentina. Cualquier disputa que surja en relación con nuestros servicios será sometida a la jurisdicción de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires, renunciando expresamente a cualquier otro fuero o jurisdicción que pudiera corresponder.</p>
 
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">8. Contacto</h3>
-                <p class="mb-4">Si tiene alguna pregunta sobre estos términos y condiciones, no dude en contactarnos a través de nuestro correo electrónico <a href="mailto:info@wecpiscinas.com" class="text-[#00BFFF] hover:underline">info@wecpiscinas.com</a> o al teléfono <a href="tel:+541112345678" class="text-[#00BFFF] hover:underline">(011) 1234-5678</a>.</p>
+               <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">8. Contacto</h3>
+                <p class="mb-4">Si tienes alguna pregunta sobre estos términos y condiciones, no dudes en contactarnos a través de nuestro correo electrónico <a href="mailto:info@wecpiscinas.com" class="text-[#1E90FF] hover:text-[#00BFFF] transition-colors">info@wecpiscinas.com</a> o por teléfono al <a href="tel:+541112345678" class="text-[#1E90FF] hover:text-[#00BFFF] transition-colors">(011) 1234-5678</a>. También puedes escribirnos directamente por WhatsApp haciendo clic en el botón de contacto.</p>
+
+                <p class="mt-8 text-center">Última actualización: 14 de mayo de 2025</p>
             </div>
         </div>
 
@@ -1047,6 +1116,12 @@
                 </p>
             </div>
         </footer>
+
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
+           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+            <span>WhatsApp</span>
+        </a>
     </section>
 
     <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
@@ -1056,14 +1131,18 @@
     </a>
 
     <script>
-        // Initialize AOS
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
         AOS.init({
-            duration: 800,
-            once: true,
+            duration: 1000,
+            once: false, // Animaciones se reinician al hacer scroll hacia arriba
         });
 
-        // Hero Swiper
-        const heroSwiper = new Swiper('.swiper-container-hero', {
+        window.addEventListener('scroll', () => {
+            AOS.refresh();
+        });
+
+        const swiperHero = new Swiper('.swiper-container-hero', {
             loop: true,
             autoplay: {
                 delay: 5000,
@@ -1079,23 +1158,17 @@
             },
         });
 
-        // Project Swiper (used in modal-project)
         const projectSwipers = document.querySelectorAll('.swiper-container-project');
         projectSwipers.forEach(swiper => {
             new Swiper(swiper, {
                 loop: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
                 navigation: {
-                    nextEl: swiper.querySelector('.swiper-button-next'),
-                    prevEl: swiper.querySelector('.swiper-button-prev'),
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
                 },
             });
         });
 
-        // Hamburger Menu Toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         mobileMenuButton.addEventListener('click', () => {
@@ -1103,40 +1176,48 @@
             mobileMenuButton.querySelector('.hamburger').classList.toggle('open');
         });
 
-        // Modal Project Handling
-        const projectLinks = document.querySelectorAll('.open-modal');
-        const projectModals = document.querySelectorAll('.modal-project');
-        const closeProjectLinks = document.querySelectorAll('.close-modal');
-
-        projectLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetModalId = link.getAttribute('href');
-                const targetModal = document.querySelector(targetModalId);
-                targetModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                window.scrollTo(0, 0);
-                AOS.refresh();
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.querySelector('.hamburger').classList.remove('open');
             });
         });
 
-        closeProjectLinks.forEach(link => {
+        const modalLinks = document.querySelectorAll('.open-modal');
+        const modals = document.querySelectorAll('.modal-project');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+
+        modalLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                projectModals.forEach(modal => {
-                    modal.classList.remove('active');
-                });
+                const targetModalId = link.getAttribute('href').substring(1);
+                const targetModal = document.getElementById(targetModalId);
+                if (targetModal) {
+                    modals.forEach(modal => modal.classList.remove('active'));
+                    targetModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    window.scrollTo(0, 0);
+                }
+            });
+        });
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                modals.forEach(modal => modal.classList.remove('active'));
                 document.body.style.overflow = '';
-                const targetSection = document.querySelector(link.getAttribute('href'));
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-                AOS.refresh();
+                const targetSection = button.getAttribute('href').substring(1);
+                const section = document.getElementById(targetSection);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         });
 
-        // Modal Terms Handling
         const termsLinks = document.querySelectorAll('.open-terms');
-        const termsModal = document.querySelector('.modal-terms');
-        const closeTermsLinks = document.querySelectorAll('.close-terms');
+        const termsModal = document.getElementById('terms');
+        const closeTermsButtons = document.querySelectorAll('.close-terms');
 
         termsLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -1144,85 +1225,53 @@
                 termsModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 window.scrollTo(0, 0);
-                AOS.refresh();
             });
         });
 
-        closeTermsLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
+        closeTermsButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
                 e.preventDefault();
                 termsModal.classList.remove('active');
                 document.body.style.overflow = '';
-                const targetSection = document.querySelector(link.getAttribute('href'));
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-                AOS.refresh();
+                const targetSection = button.getAttribute('href').substring(1);
+                const section = document.getElementById(targetSection);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         });
 
-        // FAQ Toggle
         const faqQuestions = document.querySelectorAll('.faq-question');
         faqQuestions.forEach(question => {
             question.addEventListener('click', () => {
                 const answer = question.nextElementSibling;
                 const isActive = answer.classList.contains('active');
-
-                // Close all answers
                 document.querySelectorAll('.faq-answer').forEach(ans => {
                     ans.classList.remove('active');
+                    ans.style.maxHeight = '0';
+                    ans.style.opacity = '0';
+                    ans.style.padding = '0 1rem';
                 });
-
-                // Toggle clicked answer
                 if (!isActive) {
                     answer.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    answer.style.opacity = '1';
+                    answer.style.padding = '1rem';
                 }
             });
         });
 
-        // Set current year in footer
-        const currentYear = new Date().getFullYear();
-        document.querySelectorAll('#currentYear').forEach(span => {
-            span.textContent = currentYear;
-        });
-
-        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                if (this.classList.contains('open-modal') || this.classList.contains('close-modal') || 
-                    this.classList.contains('open-terms') || this.classList.contains('close-terms')) {
-                    return;
-                }
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Close mobile menu when clicking a link
-        const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                const mobileMenu = link.closest('#mobile-menu');
-                const hamburger = mobileMenu.previousElementSibling.querySelector('.hamburger');
-                mobileMenu.classList.add('hidden');
-                hamburger.classList.remove('open');
-            });
-        });
-
-        // Adjust header on scroll
-        window.addEventListener('scroll', () => {
-            const headers = document.querySelectorAll('#header');
-            headers.forEach(header => {
-                if (window.scrollY > 50) {
-                    header.classList.add('shadow-md');
-                    header.style.top = '0';
-                } else {
-                    header.classList.remove('shadow-md');
-                    header.style.top = header.classList.contains('main-header') ? '0.65rem' : '0.9rem';
+                if (!this.classList.contains('open-modal') && !this.classList.contains('open-terms') && !this.classList.contains('close-modal') && !this.classList.contains('close-terms')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             });
         });
