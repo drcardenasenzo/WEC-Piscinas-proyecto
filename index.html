@@ -10,21 +10,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* Base styles for body and headings */
+        html {
+            scroll-padding-top: 120px; /* Offset for fixed header when navigating to anchor links */
+        }
         body {
             font-family: 'Montserrat', sans-serif;
             color: #4A4A4A;
             overflow-x: hidden;
             box-sizing: border-box;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Poppins', sans-serif;
@@ -32,24 +35,32 @@
         .text-shadow-custom {
             text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
         }
+
+        /* Custom brand colors */
         .bg-wec-celeste-principal { background-color: #00BFFF; }
         .text-wec-celeste-principal { color: #00BFFF; }
         .border-wec-celeste-principal { border-color: #00BFFF; }
         .bg-wec-celeste-secundario { background-color: #87CEEB; }
         .bg-wec-azul-profundo { background-color: #1E90FF; }
         .text-wec-azul-profundo { color: #1E90FF; }
+
+        /* Button styles */
         .btn-primary {
             @apply bg-[#00BFFF] text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out;
         }
         .btn-secondary {
             @apply bg-[#1E90FF] text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out text-sm;
         }
+
+        /* Section titles and subtitles */
         .section-title {
             @apply text-3xl md:text-4xl font-bold text-center mb-4 text-[#1E90FF];
         }
         .section-subtitle {
-            @apply text-lg text-center text-gray-600 mb-12;
+            @apply text-lg text-center text-gray-600 mb-12; /* Increased margin-bottom for more space */
         }
+
+        /* Card hover effect */
         .card-hover-effect {
             @apply transition-all duration-300 ease-in-out relative z-10;
         }
@@ -57,6 +68,8 @@
             box-shadow: 0 10px 15px -3px rgba(0, 191, 255, 0.5) !important;
             transform: translateY(-0.25rem) !important;
         }
+
+        /* Swiper Hero styles (main carousel) */
         .swiper-container-hero {
             width: 100%;
             height: 100vh;
@@ -86,20 +99,27 @@
         .swiper-button-next:after, .swiper-button-prev:after {
             font-size: 24px !important;
         }
+        /* Hide pagination dots */
+        .swiper-pagination {
+            display: none !important;
+        }
+
+        /* Swiper Project styles (modal carousels) */
         .swiper-container-project {
             width: 100%;
-            max-width: 480px;
+            max-width: 480px; /* Adjusted for better mobile display */
             margin: 0 auto;
             overflow: hidden;
+            height: 300px; /* Fixed height for project swipers */
         }
         .swiper-container-project img {
             width: 100%;
-            aspect-ratio: 1/1;
+            height: 100%; /* Ensure image fills container height */
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .swiper-container-project .swiper-button-next, 
+        .swiper-container-project .swiper-button-next,
         .swiper-container-project .swiper-button-prev {
             color: #1E90FF !important;
             background-color: rgba(255,255,255,0.9);
@@ -107,42 +127,71 @@
             border-radius: 4px;
             transform: scale(1.2);
         }
-        .swiper-container-project .swiper-button-next:after, 
-        .swiper-container-project .swiper-button-prev:after {
+        .swiper-button-next:after, .swiper-button-prev:after {
             font-size: 16px !important;
         }
+
+        /* Hamburger menu icon animation */
         .hamburger {
             width: 24px;
-            height: 18px;
+            height: 13px; /* Adjusted height for closer lines */
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            z-index: 60; /* Ensure it's above other elements */
         }
         .hamburger span {
+            display: block; /* Important for width/height */
             width: 100%;
             height: 3px;
             background-color: #4A4A4A;
             border-radius: 2px;
             transition: all 0.3s ease-in-out;
+            transform-origin: center; /* For rotation */
         }
         .hamburger.open span:nth-child(1) {
-            transform: translateY(7.5px) rotate(45deg);
+            transform: translateY(5px) rotate(45deg); /* Adjusted translateY */
         }
         .hamburger.open span:nth-child(2) {
             opacity: 0;
         }
         .hamburger.open span:nth-child(3) {
-            transform: translateY(-7.5px) rotate(-45deg);
+            transform: translateY(-5px) rotate(-45deg); /* Adjusted translateY */
         }
+
+        /* Mobile menu specific styles */
         #mobile-menu {
-            background-color: white; /* Fondo blanco para el menú desplegable */
+            background-color: white; /* White background for dropdown menu */
+            position: absolute; /* Position relative to header */
+            top: 100%; /* Start right below the header */
+            left: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-height: 0; /* Hidden by default */
+            opacity: 0; /* Hidden by default */
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out; /* Smooth animation */
+            z-index: 55; /* Below header, above content */
+        }
+        #mobile-menu.active {
+            max-height: 300px; /* Max height to reveal content */
+            opacity: 1;
         }
         #mobile-menu a {
             text-align: center;
-            color: #00BFFF; /* Letras celeste (#00BFFF) */
+            color: #00BFFF; /* Celeste letters */
+            padding: 0.75rem; /* Slightly reduced padding for closer items */
+            display: block;
+            border-radius: 0.5rem; /* Added rounded corners for menu items */
+            margin-bottom: 0.25rem; /* Added space between menu items */
         }
+        #mobile-menu a:hover {
+            background-color: #E0F7FA; /* Light blue on hover */
+        }
+
+        /* Floating WhatsApp button animation */
         @keyframes float {
             0% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
@@ -151,6 +200,8 @@
         .whatsapp-float {
             animation: float 3s ease-in-out infinite;
         }
+
+        /* Announcement bar styles */
         .announcement-bar {
             background-color: #1E90FF;
             color: white;
@@ -159,8 +210,7 @@
             text-align: center;
             padding: 0.25rem 0;
             line-height: 1;
-            overflow: hidden;
-            white-space: nowrap;
+            overflow: hidden; /* Hide overflowing content */
             z-index: 60;
             position: fixed;
             top: 0;
@@ -182,18 +232,21 @@
                 font-size: 0.6rem;
             }
         }
-        .announcement-text {
-            display: inline-block;
-            animation: marquee 80s linear infinite; /* Restaurada la velocidad original */
-            animation-iteration-count: infinite;
+        .announcement-text-wrapper {
+            display: flex; /* Arrange content side-by-side */
+            width: max-content; /* Allow content to dictate width */
+            animation: marquee 10s linear infinite; /* Adjusted animation speed to 10s */
         }
-        .announcement-text span {
-            margin-right: 10rem;
+        .announcement-text {
+            white-space: nowrap; /* Keep text on one line */
+            padding-right: 100rem; /* Increased space between duplicated content blocks */
         }
         @keyframes marquee {
-            0% { transform: translateX(50vw); }
-            100% { transform: translateX(-100%); }
+            0% { transform: translateX(0%); } /* Start from the beginning */
+            100% { transform: translateX(-50%); } /* Move by half the total width for seamless loop */
         }
+
+        /* Modal styles (project and terms) */
         .modal-project, .modal-terms {
             display: none;
             position: fixed;
@@ -205,19 +258,14 @@
         .modal-project.active, .modal-terms.active {
             display: block;
         }
+
+        /* Header positioning - Unified for main page and modals */
         #header {
             background-color: white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             z-index: 50;
-            top: 0.65rem;
-            min-height: 80px;
-        }
-        #header.main-header {
-            height: 80px;
-        }
-        .modal-project #header {
-            top: 0.65rem;
-            height: 80px;
+            top: 0.65rem; /* Adjusted for announcement bar */
+            height: 80px; /* Default height for desktop */
             min-height: 80px;
         }
         #header .flex {
@@ -234,14 +282,6 @@
             #header {
                 top: 0.9rem;
             }
-            #header.main-header {
-                height: 80px;
-            }
-            .modal-project #header {
-                top: 0.9rem;
-                height: 80px;
-                min-height: 80px;
-            }
         }
         @media (min-width: 768px) {
             #header nav a {
@@ -250,10 +290,10 @@
             }
             #header .flex {
                 justify-content: space-between;
-                align-items: flex-start;
+                align-items: center; /* Adjusted for better alignment */
             }
             #header .flex-shrink-0 {
-                padding-top: 1.5rem; /* Subido levemente en PC */
+                padding-top: 0; /* Reset padding for desktop */
             }
             #header nav {
                 margin-left: 0;
@@ -263,37 +303,35 @@
                 padding-bottom: 1rem;
             }
         }
+        /* Mobile specific header adjustments: Height and padding kept as per last request */
         @media (max-width: 767px) {
             #header .flex {
-                align-items: flex-start;
-                padding: 1rem 0;
+                align-items: center; /* Center align items in header for mobile */
+                padding: 0.5rem 0; /* Consistent padding */
             }
             #header .flex-shrink-0 {
-                padding-top: 0.5rem; /* Subido ligeramente en móvil */
+                padding-top: 0.75rem; /* Slightly lower WEC Piscinas */
+                margin-left: 1.5rem;
             }
             #header .hamburger {
-                margin-left: 1rem;
-                margin-top: 0.25rem; /* Subido bastante en móvil */
+                padding-top: 0.75rem; /* Slightly lower hamburger */
+                margin-right: 1.5rem;
             }
-            #header.main-header {
-                height: 96px;
-                min-height: 96px;
+            #header {
+                height: 110px; /* Kept as per last request */
+                min-height: 110px; /* Kept as per last request */
             }
-            .modal-project #header {
-                height: 96px;
-                min-height: 96px;
-            }
-            .swiper-container-hero .swiper-pagination {
-                bottom: 25rem !important; /* Bajado 5rem */
-            }
-            .modal-project .swiper-container-project {
-                margin-top: 2rem !important; /* Ya ajustado previamente en móvil */
+            /* Contact section order for mobile */
+            #contacto .flex-col-reverse-mobile {
+                flex-direction: column-reverse;
             }
         }
         #mobile-menu a {
             font-size: 1.1rem;
-            padding: 1rem;
+            padding: 0.75rem; /* Adjusted for closer items */
         }
+
+        /* Noise texture for sections */
         .noise-texture::before {
             content: '';
             position: absolute;
@@ -316,18 +354,27 @@
         #contacto {
             background: white;
         }
+
+        /* Floating elements (e.g., process steps) */
         .float-1 { animation: float 5s ease-in-out infinite; }
         .float-2 { animation: float 5.5s ease-in-out infinite; }
         .float-3 { animation: float 6s ease-in-out infinite; }
         .float-4 { animation: float 6.5s ease-in-out infinite; }
+
+        /* Project card specific styles */
         .project-card {
             display: flex;
             flex-direction: column;
             min-height: 380px;
+            position: relative; /* Needed for discount badge */
+            overflow: visible; /* Crucial for discount badge to show outside */
         }
         .project-card img {
             height: 224px;
             object-fit: cover;
+            /* No hover effect for images */
+            transition: none;
+            transform: none;
         }
         .project-card .content {
             flex-grow: 1;
@@ -335,42 +382,46 @@
             flex-direction: column;
             justify-content: space-between;
         }
+
+        /* FAQ styles */
         .faq-container {
             max-width: 800px;
             margin: 0 auto;
         }
         .faq-item {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem; /* Space between FAQ items */
         }
         .faq-question {
             display: block;
             padding: 0.75rem;
-            font-size: 1.125rem;
+            font-size: 1.25rem; /* Slightly larger font size */
             font-weight: 500;
-            color: #1E90FF;
+            color: #00BFFF; /* Celeste color for questions */
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease; /* Smoother transition */
             text-align: center;
+            /* Removed background-color, border-radius, and box-shadow */
         }
         .faq-question:hover {
-            color: #00BFFF;
-            transform: scale(1.05);
+            color: #1E90FF; /* Darker blue on hover */
+            transform: scale(1.02); /* Slight scale on hover */
         }
         .faq-answer {
             max-height: 0;
             opacity: 0;
-            padding: 0 1rem;
+            padding: 0 1rem; /* Initial padding when closed */
             color: #4A4A4A;
-            background-color: #F0F0F0;
-            border-radius: 0 0 8px 8px;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+            background-color: #F0F0F0; /* Grey background for answers */
+            overflow: hidden; /* Crucial for hiding content beyond max-height */
+            transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease; /* Smoother transition */
         }
         .faq-answer.active {
-            max-height: 200px;
+            max-height: 9999px; /* A very large value to ensure full expansion */
             opacity: 1;
-            padding: 1rem;
+            padding: 1rem; /* Full padding when active */
         }
+
+        /* Back button styling */
         .back-button-box {
             border: 2px solid #1E90FF;
             padding: 0.25rem;
@@ -394,15 +445,15 @@
         }
         @media (max-width: 1024px) {
             .project-images {
-                display: none;
+                display: none; /* Hide grid images on smaller screens */
             }
             .swiper-container-project {
-                display: block;
+                display: block; /* Show swiper on smaller screens */
             }
         }
         @media (min-width: 1025px) {
             .swiper-container-project {
-                display: block; /* Aseguro que el carrusel sea visible también en PC */
+                display: block; /* Ensure swiper is visible on desktop too */
             }
         }
         @media (max-width: 768px) {
@@ -475,18 +526,14 @@
             box-shadow: 0 10px 15px -3px rgba(0, 191, 255, 0.5);
             transform: translateY(-5px);
         }
-        .project-card:hover img {
-            transform: scale(1.05);
-            transition: transform 0.3s ease-in-out;
-        }
         .modal-project .container {
-            padding-top: 8rem;
+            padding-top: 120px; /* Consistent padding for modals */
         }
         .modal-project h2 {
             margin-top: 1.5rem;
         }
         .modal-project .swiper-container-project {
-            margin-top: 4rem; /* Subido el carrusel en general (PC y móvil) */
+            margin-top: 4rem; /* Lifted carousel generally (PC and mobile) */
         }
         .modal-project footer, .modal-terms footer {
             width: 100%;
@@ -502,22 +549,146 @@
         .swiper-container-project img {
             max-width: 400px;
         }
+
+        /* Scroll indicator for mobile */
+        @keyframes bounce-down {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(10px);
+            }
+            60% {
+                transform: translateY(4px);
+            }
+        }
+        .scroll-indicator {
+            display: none; /* Controlled by JS */
+            position: fixed; /* Fixed position relative to viewport */
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #1E90FF;
+            font-size: 3rem;
+            animation: bounce-down 1.8s infinite;
+            text-align: center;
+            line-height: 1;
+            z-index: 30;
+        }
+        @media (max-width: 767px) {
+            .scroll-indicator {
+                display: block; /* Show on mobile by default, then JS controls visibility */
+            }
+        }
+
+        /* Discount Badge */
+        @keyframes pulse {
+            0% { transform: scale(1) rotate(45deg); }
+            50% { transform: scale(1.05) rotate(45deg); }
+            100% { transform: scale(1) rotate(45deg); }
+        }
+        .discount-badge {
+            position: absolute;
+            top: 45px; /* Adjusted to be lower */
+            right: -10px; /* Adjusted to be closer to the edge */
+            background-color: #FF6347; /* Tomato color for discount */
+            color: white;
+            font-weight: bold;
+            padding: 0.3rem 1rem;
+            transform: rotate(45deg);
+            transform-origin: 100% 0%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 20;
+            font-size: 0.75rem;
+            animation: pulse 2s infinite; /* Kept pulse animation */
+        }
+        .discount-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -10px; /* Adjust for triangular shape */
+            border-top: 10px solid transparent;
+            border-right: 10px solid #C0392B; /* Darker red for shadow */
+        }
+        .discount-badge::after {
+            content: '';
+            position: absolute;
+            bottom: -10px; /* Adjust for triangular shape */
+            right: 0;
+            border-top: 10px solid #C0392B; /* Darker red for shadow */
+            border-right: 10px solid transparent;
+        }
+
+        /* Shimmer effect for "Oferta especial" text */
+        .shimmer-text {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            background: linear-gradient(to right, #FF6347 0%, #FFD700 20%, #FF6347 40%, #FF6347 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 10s infinite linear;
+            margin-top: 2.5rem; /* Increased margin-top for slight downward shift */
+            margin-bottom: 4rem; /* Added margin-bottom for spacing below it */
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Padding for sections to account for fixed header */
+        section:not(.swiper-container-hero):not(.modal-project):not(.modal-terms) {
+            padding-top: 96px; /* Adjusted padding-top for sections */
+        }
+        #inicio {
+            padding-top: 0;
+            margin-top: 0;
+        }
+        .modal-project .container, .modal-terms .container {
+            padding-top: 120px; /* Consistent padding for modals */
+        }
+        /* Ensure FAQ section has enough bottom padding */
+        #como-trabajamos {
+            padding-bottom: 96px; /* Adjusted padding-bottom for FAQ section */
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1E90FF;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-white overflow-x-hidden">
 
     <div class="announcement-bar">
-        <div class="announcement-text">
-            <span>METRO CUADRADO DESDE USD$ 200</span>
-            <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-            <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-            <span>METRO CUADRADO DESDE USD$ 200</span>
-            <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-            <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+        <div class="announcement-text-wrapper">
+            <div class="announcement-text">
+                METRO CUADRADO DESDE USD$ 200
+                ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+            </div>
+            <div class="announcement-text">
+                METRO CUADRADO DESDE USD$ 200
+                ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+            </div>
         </div>
     </div>
 
-    <header id="header" class="fixed w-full z-50 bg-white shadow-md main-header">
+    <header id="header" class="fixed w-full z-50 bg-white shadow-md">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-full">
                 <div class="flex-shrink-0">
@@ -586,46 +757,68 @@
         <div class="swiper-button-prev"></div>
     </section>
 
+    <div id="scroll-indicator" class="scroll-indicator md:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+    </div>
+
     <section id="proyectos" class="py-16 md:py-24 noise-texture">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-4" data-aos="fade-up">Proyectos Que Inspiran</h2>
                 <p class="text-lg text-gray-600" data-aos="fade-up" data-aos-delay="100">Descubrí la calidad y el diseño en cada piscina que construimos.</p>
+                <h3 class="text-2xl md:text-3xl font-bold text-[#FF6347] shimmer-text" data-aos="fade-up" data-aos-delay="200">Oferta especial de otoño/invierno ¡30% OFF!</h3>
             </div>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <a href="#project-1" class="block w-full h-full open-modal">
-                    <div class="bg-white rounded-xl shadow-xl overflow-hidden group border border-gray-100 hover:border-[#00BFFF] card-hover-effect project-card" data-aos="fade-up" data-aos-delay="200">
-                        <img src="proyecto1.jpg" alt="Piscina 8x4m con solarium" class="w-full transition-transform duration-300">
+                    <div class="bg-white rounded-xl shadow-xl group border border-gray-100 hover:border-[#00BFFF] card-hover-effect project-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="discount-badge">30% OFF</div>
+                        <img src="proyecto1.jpg" alt="Piscina 8x4m con solarium" class="w-full">
                         <div class="p-6 content">
                             <div>
                                 <h3 class="text-xl font-semibold text-[#1E90FF] mb-3">Piscina Rectangular 8x4m</h3>
-                                <p class="text-gray-600 text-sm mb-6">Diseño clásico con solárium húmedo y luces LED. Perfecta para disfrutar en familia.</p>
+                                <p class="text-gray-600 text-sm mb-2">Diseño clásico con solárium húmedo y luces LED. Perfecta para disfrutar en familia.</p>
+                                <div class="text-center mt-4">
+                                    <p class="text-gray-500 line-through text-sm">$9.000.000</p>
+                                    <p class="text-xl font-bold text-green-600">$6.300.000</p>
+                                </div>
                             </div>
-                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg">Ver Más</div>
+                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg mt-4">Ver Más</div>
                         </div>
                     </div>
                 </a>
                 <a href="#project-2" class="block w-full h-full open-modal">
-                    <div class="bg-white rounded-xl shadow-xl overflow-hidden group border border-gray-100 hover:border-[#00BFFF] card-hover-effect project-card" data-aos="fade-up" data-aos-delay="300">
-                        <img src="proyecto2.jpg" alt="Piscina con diseño libre" class="w-full transition-transform duration-300">
+                    <div class="bg-white rounded-xl shadow-xl group border border-gray-100 hover:border-[#00BFFF] card-hover-effect project-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="discount-badge">30% OFF</div>
+                        <img src="proyecto2.jpg" alt="Piscina con diseño libre" class="w-full">
                         <div class="p-6 content">
                             <div>
                                 <h3 class="text-xl font-semibold text-[#1E90FF] mb-3">Piscina Diseño Libre con Desborde</h3>
-                                <p class="text-gray-600 text-sm mb-6">Innovador diseño con borde infinito y climatización. Un lujo para tus sentidos.</p>
+                                <p class="text-gray-600 text-sm mb-2">Innovador diseño con borde infinito y climatización. Un lujo para tus sentidos.</p>
+                                <div class="text-center mt-4">
+                                    <p class="text-gray-500 line-through text-sm">$12.000.000</p>
+                                    <p class="text-xl font-bold text-green-600">$8.400.000</p>
+                                </div>
                             </div>
-                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg">Ver Más</div>
+                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg mt-4">Ver Más</div>
                         </div>
                     </div>
                 </a>
                 <a href="#project-3" class="block w-full h-full open-modal">
-                    <div class="bg-white rounded-xl shadow-xl overflow-hidden group border border-gray-100 hover:border-[#00BFFF] card-hover-effect project-card" data-aos="fade-up" data-aos-delay="400">
-                        <img src="proyecto3.jpg" alt="Piscina minimalista" class="w-full transition-transform duration-300">
+                    <div class="bg-white rounded-xl shadow-xl group border border-gray-100 hover:border-[#00BFFF] card-hover-effect project-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="discount-badge">30% OFF</div>
+                        <img src="proyecto3.jpg" alt="Piscina minimalista" class="w-full">
                         <div class="p-6 content">
                             <div>
                                 <h3 class="text-xl font-semibold text-[#1E90FF] mb-3">Piscina Minimalista 10x3m</h3>
-                                <p class="text-gray-600 text-sm mb-6">Líneas puras y elegancia. Ideal para espacios modernos y entrenamiento.</p>
+                                <p class="text-gray-600 text-sm mb-2">Líneas puras y elegancia. Ideal para espacios modernos y entrenamiento.</p>
+                                <div class="text-center mt-4">
+                                    <p class="text-gray-500 line-through text-sm">$18.000.000</p>
+                                    <p class="text-xl font-bold text-green-600">$12.600.000</p>
+                                </div>
                             </div>
-                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg">Ver Más</div>
+                            <div class="btn-secondary text-center block w-fit mx-auto rounded-lg mt-4">Ver Más</div>
                         </div>
                     </div>
                 </a>
@@ -635,13 +828,17 @@
 
     <section id="project-1" class="modal-project">
         <div class="announcement-bar">
-            <div class="announcement-text">
-                <span>METRO CUADRADO DESDE USD$ 200</span>
-                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                <span>METRO CUADRADO DESDE USD$ 200</span>
-                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            <div class="announcement-text-wrapper">
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
             </div>
         </div>
 
@@ -661,7 +858,7 @@
                         </nav>
                     </div>
                     <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
+                        <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
                             <div class="hamburger">
                                 <span></span>
                                 <span></span>
@@ -671,7 +868,7 @@
                     </div>
                 </div>
             </div>
-            <div id="mobile-menu" class="md:hidden hidden">
+            <div id="mobile-menu-modal-1" class="md:hidden hidden mobile-menu-modal">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                     <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
                     <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
@@ -722,7 +919,7 @@
 
         <footer id="footer" class="bg-[#1E90FF] text-white">
             <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
-                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="mb-2">© <span id="currentYearFooter1"></span> WEC Piscinas. Todos los derechos reservados.</p>
                 <p class="text-sm text-blue-200">
                     <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
                 </p>
@@ -730,21 +927,24 @@
         </footer>
 
         <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
-           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float">
             <span>WhatsApp</span>
         </a>
     </section>
 
     <section id="project-2" class="modal-project">
         <div class="announcement-bar">
-            <div class="announcement-text">
-                <span>METRO CUADRADO DESDE USD$ 200</span>
-                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                <span>METRO CUADRADO DESDE USD$ 200</span>
-                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            <div class="announcement-text-wrapper">
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
             </div>
         </div>
 
@@ -764,7 +964,7 @@
                         </nav>
                     </div>
                     <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
+                        <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
                             <div class="hamburger">
                                 <span></span>
                                 <span></span>
@@ -774,7 +974,7 @@
                     </div>
                 </div>
             </div>
-            <div id="mobile-menu" class="md:hidden hidden">
+            <div id="mobile-menu-modal-2" class="md:hidden hidden mobile-menu-modal">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                     <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
                     <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
@@ -825,7 +1025,7 @@
 
         <footer id="footer" class="bg-[#1E90FF] text-white">
             <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
-                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="mb-2">© <span id="currentYearFooter2"></span> WEC Piscinas. Todos los derechos reservados.</p>
                 <p class="text-sm text-blue-200">
                     <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
                 </p>
@@ -833,21 +1033,24 @@
         </footer>
 
         <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
-           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float">
             <span>WhatsApp</span>
         </a>
     </section>
 
     <section id="project-3" class="modal-project">
         <div class="announcement-bar">
-            <div class="announcement-text">
-                <span>METRO CUADRADO DESDE USD$ 200</span>
-                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
-                <span>METRO CUADRADO DESDE USD$ 200</span>
-                <span>ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
-                <span>MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            <div class="announcement-text-wrapper">
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
             </div>
         </div>
 
@@ -867,7 +1070,7 @@
                         </nav>
                     </div>
                     <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
+                        <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
                             <div class="hamburger">
                                 <span></span>
                                 <span></span>
@@ -877,7 +1080,7 @@
                     </div>
                 </div>
             </div>
-            <div id="mobile-menu" class="md:hidden hidden">
+            <div id="mobile-menu-modal-3" class="md:hidden hidden mobile-menu-modal">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                     <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
                     <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
@@ -928,7 +1131,7 @@
 
         <footer id="footer" class="bg-[#1E90FF] text-white">
             <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
-                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="mb-2">© <span id="currentYearFooter3"></span> WEC Piscinas. Todos los derechos reservados.</p>
                 <p class="text-sm text-blue-200">
                     <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
                 </p>
@@ -936,8 +1139,7 @@
         </footer>
 
         <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
-           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float">
             <span>WhatsApp</span>
         </a>
     </section>
@@ -984,24 +1186,24 @@
             </div>
             <div class="faq-container">
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="faq-question">¿Cuánto tiempo tarda la construcción de una piscina?</div>
-                    <div class="faq-answer">Depende del diseño y tamaño, pero generalmente entre 30 y 60 días desde la excavación hasta la entrega final.</div>
+                    <div class="faq-question">¿Qué tipo de piscinas construyen?</div>
+                    <div class="faq-answer">Nos especializamos en piscinas de hormigón armado, lo que nos permite ofrecer diseños personalizados y la máxima durabilidad. También trabajamos con revestimientos de venecitas, cerámicos y otros materiales a elección del cliente.</div>
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="faq-question">¿Ofrecen garantía en sus piscinas?</div>
-                    <div class="faq-answer">¡Sí! Todas nuestras piscinas tienen una garantía de 10 años en la estructura y 2 años en sistemas de filtrado e iluminación.</div>
+                    <div class="faq-question">¿Cómo es el proceso de diseño y cotización?</div>
+                    <div class="faq-answer">Comenzamos con una visita a tu propiedad para evaluar el espacio y entender tus ideas. Luego, te presentamos un diseño 3D y un presupuesto detallado sin compromiso, ajustado a tus necesidades y preferencias.</div>
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
-                    <div class="faq-question">¿Puedo personalizar el diseño de mi piscina?</div>
-                    <div class="faq-answer">Absolutamente, trabajamos contigo para crear un diseño único que refleje tus gustos y necesidades.</div>
+                    <div class="faq-question">¿Ofrecen servicios de mantenimiento o post-venta?</div>
+                    <div class="faq-answer">Sí, ofrecemos servicios de mantenimiento y asesoramiento post-venta para asegurar que tu piscina se mantenga en óptimas condiciones. También brindamos garantía sobre la estructura y los equipos instalados.</div>
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
-                    <div class="faq-question">¿Qué mantenimiento requiere una piscina de WEC?</div>
-                    <div class="faq-answer">Recomendamos un mantenimiento básico semanal, como limpieza del filtro y control del pH, además de revisiones anuales que podemos realizar por ti.</div>
+                    <div class="faq-question">¿Qué duración tiene la construcción de una piscina?</div>
+                    <div class="faq-answer">El tiempo de construcción varía según el tamaño y la complejidad del diseño, pero en promedio, una piscina residencial estándar puede estar lista en 4 a 8 semanas desde el inicio de la obra.</div>
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="600">
-                    <div class="faq-question">¿Construyen piscinas en cualquier terreno?</div>
-                    <div class="faq-answer">Evaluamos cada terreno para asegurar su viabilidad, adaptándonos a diferentes condiciones con técnicas especializadas.</div>
+                    <div class="faq-question">¿Puedo añadir accesorios o características especiales a mi piscina?</div>
+                    <div class="faq-answer">¡Claro que sí! Podemos integrar una variedad de accesorios como sistemas de climatización, iluminación LED, cascadas, hidromasajes, soláriums húmedos y sistemas de nado contracorriente para hacer tu piscina aún más única.</div>
                 </div>
             </div>
         </div>
@@ -1036,14 +1238,19 @@
                 <p class="text-lg text-gray-700" data-aos="fade-up" data-aos-delay="100">Contactanos y hagamos realidad la piscina de tus sueños.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-16">
-                <div class="bg-gray-50 p-4 sm:p-6 rounded-md shadow-lg" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex flex-col sm:flex-row-reverse gap-16 flex-col-reverse-mobile">
+                <div class="bg-gray-50 p-4 sm:p-6 rounded-md shadow-lg flex-1" data-aos="fade-up" data-aos-delay="200">
                     <h3 class="text-xl font-semibold text-[#1E90FF] mb-4 text-center">Zonas de Servicio: CABA y Gran Buenos Aires</h3>
                     <div class="w-full aspect-[4/3]">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d419787.3686046476!2d-58.66883268125001!3d-34.61566280499999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca3b4ef90cbd%3A0xa0b3812e88e88e87!2sBuenos%20Aires%2C%20Argentina!5e0!3m2!1ses!2sar!4v1698851234567" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <!--
+                            Este es un iframe de Google Maps que muestra el área de Gran Buenos Aires y CABA.
+                            Puedes obtener tu propio código de incrustación de Google Maps buscando tu ubicación
+                            y utilizando la opción "Compartir" -> "Insertar un mapa".
+                        -->
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104975.3196924823!2d-58.58334466270634!3d-34.60373890288827!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcc9732168582b%3A0x44641684c3561a0d!2sBuenos%20Aires%2C%20Argentina!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
-                <div class="bg-gray-50 p-4 sm:p-6 rounded-md shadow-lg flex flex-col justify-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-gray-50 p-4 sm:p-6 rounded-md shadow-lg flex-1 flex flex-col justify-center" data-aos="fade-up" data-aos-delay="300">
                     <h3 class="text-2xl font-semibold text-[#1E90FF] mb-6 text-center">Datos de Contacto</h3>
                     <p class="text-gray-600 mb-6 text-center text-lg">
                         <a href="tel:+541112345678" class="hover:text-[#00BFFF] transition-colors">Teléfono: (011) 1234-5678</a>
@@ -1061,7 +1268,7 @@
 
     <footer id="footer" class="bg-[#1E90FF] text-white">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 text-center">
-            <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+            <p class="mb-2">© <span id="currentYearFooterMain"></span> WEC Piscinas. Todos los derechos reservados.</p>
             <p class="text-sm text-blue-200">
                 <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
             </p>
@@ -1069,6 +1276,57 @@
     </footer>
 
     <section id="terms" class="modal-terms">
+        <div class="announcement-bar">
+            <div class="announcement-text-wrapper">
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
+                <div class="announcement-text">
+                    METRO CUADRADO DESDE USD$ 200
+                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
+                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
+                </div>
+            </div>
+        </div>
+        <header id="header" class="fixed w-full z-50 bg-white shadow-md">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-full">
+                    <div class="flex-shrink-0">
+                        <a href="#inicio" class="text-3xl font-bold text-[#1E90FF]">WEC Piscinas</a>
+                    </div>
+                    <div class="hidden md:block">
+                        <nav class="ml-10 flex items-center space-x-4">
+                            <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Inicio</a>
+                            <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Proyectos</a>
+                            <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Cómo Trabajamos</a>
+                            <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Sobre Nosotros</a>
+                            <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium">Contacto</a>
+                        </nav>
+                    </div>
+                    <div class="md:hidden flex items-center">
+                        <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
+                            <div class="hamburger">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu-modal-terms" class="md:hidden hidden mobile-menu-modal">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+                    <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium">Proyectos</a>
+                    <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium">Sobre Nosotros</a>
+                    <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium">Contacto</a>
+                </div>
+            </div>
+        </header>
+
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8 text-center">Términos y Condiciones</h2>
             <div class="back-button-box mb-8">
@@ -1110,7 +1368,7 @@
 
         <footer id="footer" class="bg-[#1E90FF] text-white">
             <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center">
-                <p class="mb-2">© <span id="currentYear"></span> WEC Piscinas. Todos los derechos reservados.</p>
+                <p class="mb-2">© <span id="currentYearTerms"></span> WEC Piscinas. Todos los derechos reservados.</p>
                 <p class="text-sm text-blue-200">
                     <a href="#terms" class="hover:text-white transition-colors open-terms">Términos y Condiciones</a>
                 </p>
@@ -1118,8 +1376,7 @@
         </footer>
 
         <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
-           data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
+           class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float">
             <span>WhatsApp</span>
         </a>
     </section>
@@ -1130,18 +1387,28 @@
         <span>WhatsApp</span>
     </a>
 
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        // Set current year for all footers
+        document.getElementById('currentYearFooter1').textContent = new Date().getFullYear();
+        document.getElementById('currentYearFooter2').textContent = new Date().getFullYear();
+        document.getElementById('currentYearFooter3').textContent = new Date().getFullYear();
+        document.getElementById('currentYearFooterMain').textContent = new Date().getFullYear();
+        document.getElementById('currentYearTerms').textContent = new Date().getFullYear();
 
+        // Initialize AOS with faster duration
         AOS.init({
-            duration: 1000,
-            once: false, // Animaciones se reinician al hacer scroll hacia arriba
+            duration: 800, // Slightly slower duration for appearance (from 400 to 800)
+            once: false, // Animations restart on scroll up
         });
 
+        // Refresh AOS on scroll (important for dynamic content)
         window.addEventListener('scroll', () => {
             AOS.refresh();
         });
 
+        // Initialize Swiper for Hero section
         const swiperHero = new Swiper('.swiper-container-hero', {
             loop: true,
             autoplay: {
@@ -1158,6 +1425,7 @@
             },
         });
 
+        // Initialize Swiper for Project modals
         const projectSwipers = document.querySelectorAll('.swiper-container-project');
         projectSwipers.forEach(swiper => {
             new Swiper(swiper, {
@@ -1169,24 +1437,75 @@
             });
         });
 
+        // Mobile Menu Toggle (Main Header)
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
+
+        mobileMenuButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent document click from immediately closing
             mobileMenu.classList.toggle('hidden');
-            mobileMenuButton.querySelector('.hamburger').classList.toggle('open');
+            mobileMenu.classList.toggle('active'); // Toggle active class for animation
+            mobileMenuButton.querySelector('.hamburger').classList.toggle('open'); // Toggle hamburger animation
         });
 
-        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                mobileMenuButton.querySelector('.hamburger').classList.remove('open');
+        // Mobile Menu Toggle (Modal Headers)
+        document.querySelectorAll('.mobile-menu-button-modal').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const modalMenu = button.closest('header').querySelector('.mobile-menu-modal');
+                modalMenu.classList.toggle('hidden');
+                modalMenu.classList.toggle('active');
+                button.querySelector('.hamburger').classList.toggle('open'); // Toggle hamburger animation
             });
         });
 
+        // Close mobile menu when a link inside it is clicked
+        const allMobileMenuLinks = document.querySelectorAll('#mobile-menu a, .mobile-menu-modal a');
+        allMobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('active');
+                mobileMenuButton.querySelector('.hamburger').classList.remove('open'); // Reset hamburger
+
+                // Close modal menus if open
+                document.querySelectorAll('.mobile-menu-modal').forEach(modalMenu => {
+                    modalMenu.classList.add('hidden');
+                    modalMenu.classList.remove('active');
+                    modalMenu.closest('header').querySelector('.hamburger').classList.remove('open'); // Reset hamburger
+                });
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.body.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('active');
+                mobileMenuButton.querySelector('.hamburger').classList.remove('open'); // Reset hamburger
+            }
+            // Also handle modal mobile menus
+            document.querySelectorAll('.mobile-menu-modal').forEach(modalMenu => {
+                const modalMenuButton = modalMenu.closest('header').querySelector('.mobile-menu-button-modal');
+                if (!modalMenu.contains(event.target) && !modalMenuButton.contains(event.target) && !modalMenu.classList.contains('hidden')) {
+                    modalMenu.classList.add('hidden');
+                    modalMenu.classList.remove('active');
+                    modalMenuButton.querySelector('.hamburger').classList.remove('open'); // Reset hamburger
+                }
+            });
+        });
+
+        // Project Modal functionality
         const modalLinks = document.querySelectorAll('.open-modal');
         const modals = document.querySelectorAll('.modal-project');
         const closeModalButtons = document.querySelectorAll('.close-modal');
+
+        // Function to close all modals
+        function closeAllModals() {
+            modals.forEach(modal => modal.classList.remove('active'));
+            termsModal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore body scrolling
+            AOS.refresh(); // Refresh AOS after closing modals
+        }
 
         modalLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -1194,9 +1513,10 @@
                 const targetModalId = link.getAttribute('href').substring(1);
                 const targetModal = document.getElementById(targetModalId);
                 if (targetModal) {
-                    modals.forEach(modal => modal.classList.remove('active'));
+                    closeAllModals(); // Close any currently open modals
                     targetModal.classList.add('active');
                     document.body.style.overflow = 'hidden';
+                    window.history.pushState(null, '', '#' + targetModalId); // Update URL hash
                     window.scrollTo(0, 0);
                 }
             });
@@ -1205,9 +1525,9 @@
         closeModalButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                modals.forEach(modal => modal.classList.remove('active'));
-                document.body.style.overflow = '';
+                closeAllModals(); // Close the current modal
                 const targetSection = button.getAttribute('href').substring(1);
+                window.history.pushState(null, '', '#' + targetSection); // Go back to the section hash
                 const section = document.getElementById(targetSection);
                 if (section) {
                     section.scrollIntoView({ behavior: 'smooth' });
@@ -1215,6 +1535,7 @@
             });
         });
 
+        // Terms and Conditions Modal functionality
         const termsLinks = document.querySelectorAll('.open-terms');
         const termsModal = document.getElementById('terms');
         const closeTermsButtons = document.querySelectorAll('.close-terms');
@@ -1222,8 +1543,10 @@
         termsLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                closeAllModals();
                 termsModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                window.history.pushState(null, '', '#terms');
                 window.scrollTo(0, 0);
             });
         });
@@ -1231,9 +1554,9 @@
         closeTermsButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                termsModal.classList.remove('active');
-                document.body.style.overflow = '';
+                closeAllModals();
                 const targetSection = button.getAttribute('href').substring(1);
+                window.history.pushState(null, '', '#' + targetSection);
                 const section = document.getElementById(targetSection);
                 if (section) {
                     section.scrollIntoView({ behavior: 'smooth' });
@@ -1241,40 +1564,94 @@
             });
         });
 
+        // Handle browser's back/forward buttons
+        window.addEventListener('popstate', () => {
+            const currentHash = window.location.hash;
+
+            // Assume all modals should be closed first, then open the one matching the hash
+            closeAllModals();
+
+            let modalOpenedByPopstate = false;
+            modals.forEach(modal => {
+                if ('#' + modal.id === currentHash) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    modalOpenedByPopstate = true;
+                }
+            });
+
+            if ('#' + termsModal.id === currentHash) {
+                termsModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                modalOpenedByPopstate = true;
+            }
+
+            // If no modal hash is active, ensure body scrolling is restored (already done by closeAllModals)
+        });
+
+        // FAQ Toggle functionality (answers expand independently)
         const faqQuestions = document.querySelectorAll('.faq-question');
         faqQuestions.forEach(question => {
             question.addEventListener('click', () => {
                 const answer = question.nextElementSibling;
                 const isActive = answer.classList.contains('active');
-                document.querySelectorAll('.faq-answer').forEach(ans => {
-                    ans.classList.remove('active');
-                    ans.style.maxHeight = '0';
-                    ans.style.opacity = '0';
-                    ans.style.padding = '0 1rem';
+
+                // Close all other active FAQ answers
+                document.querySelectorAll('.faq-answer.active').forEach(activeAnswer => {
+                    if (activeAnswer !== answer) {
+                        activeAnswer.classList.remove('active');
+                    }
                 });
-                if (!isActive) {
-                    answer.classList.add('active');
-                    answer.style.maxHeight = answer.scrollHeight + 'px';
-                    answer.style.opacity = '1';
-                    answer.style.padding = '1rem';
-                }
+
+                // Toggle the clicked answer's active state
+                answer.classList.toggle('active');
             });
         });
 
+        // Smooth scroll for internal anchor links (excluding modal links)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                // Only apply smooth scroll if it's not a modal open/close link
                 if (!this.classList.contains('open-modal') && !this.classList.contains('open-terms') && !this.classList.contains('close-modal') && !this.classList.contains('close-terms')) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
                     const targetElement = document.getElementById(targetId);
                     if (targetElement) {
-                        targetElement.scrollIntoView({
+                        window.scrollTo({
+                            top: targetElement.offsetTop, // Use offsetTop with scroll-padding-top
                             behavior: 'smooth'
                         });
                     }
                 }
             });
         });
+
+        // Scroll indicator logic
+        const scrollIndicator = document.getElementById('scroll-indicator');
+        const proyectosSection = document.getElementById('proyectos');
+        const heroSection = document.getElementById('inicio');
+
+        function checkScrollIndicatorVisibility() {
+            if (window.innerWidth < 768 && scrollIndicator && heroSection && proyectosSection) {
+                const heroRect = heroSection.getBoundingClientRect();
+                const proyectosRect = proyectosSection.getBoundingClientRect();
+
+                // Show indicator if the hero section is still visible (its bottom is below the top of the viewport)
+                // AND the top of the projects section is still below the bottom of the viewport
+                // (meaning the projects section has not yet entered the viewport fully)
+                if (heroRect.bottom > 0 && proyectosRect.top >= window.innerHeight) {
+                    scrollIndicator.style.display = 'block';
+                } else {
+                    scrollIndicator.style.display = 'none';
+                }
+            } else if (scrollIndicator) {
+                scrollIndicator.style.display = 'none'; // Always hide on desktop
+            }
+        }
+
+        window.addEventListener('scroll', checkScrollIndicatorVisibility);
+        window.addEventListener('resize', checkScrollIndicatorVisibility);
+        document.addEventListener('DOMContentLoaded', checkScrollIndicatorVisibility);
     </script>
 </body>
 </html>
