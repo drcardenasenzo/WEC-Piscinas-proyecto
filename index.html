@@ -106,59 +106,120 @@
 
         /* Swiper Project styles (modal carousels) */
         .swiper-container-project {
-            width: 100%;
-            max-width: 480px; /* Adjusted for better mobile display */
+            width: 100%; /* Occupy full width of its container */
+            max-width: 900px; /* Increased max-width for larger images on mobile */
             margin: 0 auto;
             overflow: hidden;
-            height: 300px; /* Fixed height for project swipers */
+            height: 500px; /* Fixed height for project swipers to enforce rectangular shape */
+            border-radius: 12px; /* Slightly rounded corners for the carousel container */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Deeper shadow */
+            position: relative; /* For positioning custom navigation */
+            background-color: #f0f0f0; /* Add a background color for empty space */
+        }
+        /* Ensure swiper-slide within project carousel fills its container */
+        .swiper-container-project .swiper-slide {
+            width: 100%;
+            height: 100%;
+            display: flex; /* Ensure flex properties apply */
+            justify-content: center;
+            align-items: center;
         }
         .swiper-container-project img {
             width: 100%;
             height: 100%; /* Ensure image fills container height */
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            object-fit: cover; /* Changed to cover to fill the entire space */
+            transition: transform 0.5s ease-in-out; /* Smooth transition for image changes */
         }
-        .swiper-container-project .swiper-button-next,
-        .swiper-container-project .swiper-button-prev {
-            color: #1E90FF !important;
-            background-color: rgba(255,255,255,0.9);
-            padding: 10px;
-            border-radius: 4px;
-            transform: scale(1.2);
+
+        /* Custom Navigation Buttons for Project Carousel */
+        .custom-swiper-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            cursor: pointer;
+            width: 28px; /* Smaller button size */
+            height: 28px; /* Smaller button size */
+            background-color: rgba(255, 255, 255, 0.08); /* More transparent white */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0px 1px rgba(0,0,0,0.03); /* More subtle shadow */
+            transition: all 0.3s ease-in-out;
         }
-        .swiper-button-next:after, .swiper-button-prev:after {
-            font-size: 16px !important;
+        .custom-swiper-button:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* Slightly less transparent on hover */
+            transform: translateY(-50%) scale(1.05); /* Subtle scale on hover */
         }
+        .custom-swiper-button svg {
+            width: 16px; /* Smaller icon */
+            height: 16px; /* Smaller icon */
+            color: #1E90FF; /* Blue color for icons */
+        }
+        .custom-swiper-button-prev {
+            left: 10px; /* Position from left edge */
+        }
+        .custom-swiper-button-next {
+            right: 10px; /* Position from right edge */
+        }
+
+        /* Custom Pagination Dots for Project Carousel */
+        .custom-swiper-pagination {
+            position: absolute;
+            bottom: 15px; /* Position from bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 8px; /* Space between dots */
+        }
+        .custom-swiper-pagination-bullet {
+            width: 10px; /* Size of the dot */
+            height: 10px; /* Size of the dot */
+            background-color: #87CEEB; /* Light blue for inactive dots */
+            border-radius: 50%;
+            opacity: 0.7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .custom-swiper-pagination-bullet-active {
+            background-color: #1E90FF !important; /* Darker blue for active dot */
+            width: 12px; /* Slightly larger active dot */
+            height: 12px; /* Slightly larger active dot */
+            opacity: 1;
+            box-shadow: 0 0 5px rgba(30, 144, 255, 0.5); /* Subtle shadow for active dot */
+        }
+
 
         /* Hamburger menu icon animation */
         .hamburger {
-            width: 24px;
-            height: 13px; /* Adjusted height for closer lines */
+            width: 28px; /* Slightly larger width for better appearance */
+            height: 20px; /* Total height for the hamburger icon */
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
-            z-index: 60; /* Ensure it's above other elements */
+            z-index: 60;
         }
         .hamburger span {
-            display: block; /* Important for width/height */
+            display: block;
             width: 100%;
-            height: 3px;
-            background-color: #4A4A4A;
+            height: 3px; /* Thickness of each line */
+            background-color: #000000; /* Changed to black for maximum visibility */
             border-radius: 2px;
             transition: all 0.3s ease-in-out;
-            transform-origin: center; /* For rotation */
+            transform-origin: center;
         }
         .hamburger.open span:nth-child(1) {
-            transform: translateY(5px) rotate(45deg); /* Adjusted translateY */
+            transform: translateY(8.5px) rotate(45deg); /* Adjusted translateY based on new height */
         }
         .hamburger.open span:nth-child(2) {
             opacity: 0;
         }
         .hamburger.open span:nth-child(3) {
-            transform: translateY(-5px) rotate(-45deg); /* Adjusted translateY */
+            transform: translateY(-8.5px) rotate(-45deg); /* Adjusted translateY based on new height */
         }
 
         /* Mobile menu specific styles */
@@ -234,12 +295,11 @@
         }
         .announcement-text-wrapper {
             display: flex; /* Arrange content side-by-side */
-            width: max-content; /* Allow content to dictate width */
-            animation: marquee 10s linear infinite; /* Adjusted animation speed to 10s */
+            white-space: nowrap; /* Keep all phrases on one line */
+            animation: marquee 45s linear infinite; /* Adjusted duration for slightly faster speed */
         }
-        .announcement-text {
-            white-space: nowrap; /* Keep text on one line */
-            padding-right: 100rem; /* Increased space between duplicated content blocks */
+        .marquee-phrase {
+            margin-right: 12rem; /* Adjusted separation between phrases */
         }
         @keyframes marquee {
             0% { transform: translateX(0%); } /* Start from the beginning */
@@ -307,14 +367,12 @@
         @media (max-width: 767px) {
             #header .flex {
                 align-items: center; /* Center align items in header for mobile */
-                padding: 0.5rem 0; /* Consistent padding */
+                padding: 1rem 0; /* Adjusted padding-top to slightly raise content */
             }
             #header .flex-shrink-0 {
-                padding-top: 0.75rem; /* Slightly lower WEC Piscinas */
-                margin-left: 1.5rem;
+                margin-left: 0.75rem; /* Slightly more to the left */
             }
             #header .hamburger {
-                padding-top: 0.75rem; /* Slightly lower hamburger */
                 margin-right: 1.5rem;
             }
             #header {
@@ -370,17 +428,11 @@
             overflow: visible; /* Crucial for discount badge to show outside */
         }
         .project-card img {
-            height: 224px;
+            height: 224px; /* Keep this fixed height for consistency in grid */
             object-fit: cover;
             /* No hover effect for images */
             transition: none;
             transform: none;
-        }
-        .project-card .content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
 
         /* FAQ styles */
@@ -413,10 +465,10 @@
             color: #4A4A4A;
             background-color: #F0F0F0; /* Grey background for answers */
             overflow: hidden; /* Crucial for hiding content beyond max-height */
-            transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease; /* Smoother transition */
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out; /* Smoother and faster transition */
         }
         .faq-answer.active {
-            max-height: 9999px; /* A very large value to ensure full expansion */
+            max-height: 500px; /* A more reasonable max-height for smoother transition */
             opacity: 1;
             padding: 1rem; /* Full padding when active */
         }
@@ -436,13 +488,13 @@
         }
         .project-images img {
             width: 100%;
-            max-width: 400px;
-            aspect-ratio: 1/1;
-            object-fit: cover;
+            height: 250px; /* Consistent height for desktop grid images */
+            object-fit: cover; /* Ensures images fill the space, cropping if aspect ratio differs */
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             margin: 0 auto;
         }
+        /* Media queries for project images and swiper in modals */
         @media (max-width: 1024px) {
             .project-images {
                 display: none; /* Hide grid images on smaller screens */
@@ -452,8 +504,13 @@
             }
         }
         @media (min-width: 1025px) {
+            .project-images {
+                display: grid; /* Show grid images on desktop */
+                grid-template-columns: repeat(3, 1fr); /* Force 3 columns on desktop */
+                gap: 1rem; /* Ensure gap is applied */
+            }
             .swiper-container-project {
-                display: block; /* Ensure swiper is visible on desktop too */
+                display: none !important; /* Hide swiper on desktop, force it with !important */
             }
         }
         @media (max-width: 768px) {
@@ -486,7 +543,8 @@
                 font-size: 0.875rem;
             }
             .swiper-container-project {
-                max-width: 360px;
+                max-width: 100%; /* Allow full width on very small screens */
+                height: 300px; /* Slightly smaller height for very small screens */
             }
         }
         @media (max-width: 640px) {
@@ -515,9 +573,10 @@
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
             }
-            .swiper-container-project {
+            /* Removed max-width for swiper-container-project on small screens */
+            /* .swiper-container-project {
                 max-width: 280px;
-            }
+            } */
         }
         .back-button-box .btn-primary {
             transition: all 0.3s ease-in-out;
@@ -545,9 +604,6 @@
         }
         #como-trabajamos .faq-container {
             margin-top: 2rem;
-        }
-        .swiper-container-project img {
-            max-width: 400px;
         }
 
         /* Scroll indicator for mobile */
@@ -630,7 +686,7 @@
             -webkit-text-fill-color: transparent;
             animation: shimmer 10s infinite linear;
             margin-top: 2.5rem; /* Increased margin-top for slight downward shift */
-            margin-bottom: 4rem; /* Added margin-bottom for spacing below it */
+            margin-bottom: 2rem; /* Adjusted margin-bottom to bring it closer to cards */
         }
 
         @keyframes shimmer {
@@ -675,16 +731,18 @@
 
     <div class="announcement-bar">
         <div class="announcement-text-wrapper">
-            <div class="announcement-text">
-                METRO CUADRADO DESDE USD$ 200
-                ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-            </div>
-            <div class="announcement-text">
-                METRO CUADRADO DESDE USD$ 200
-                ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-            </div>
+            <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+            <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+            <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+            <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+            <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+            <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+            <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+            <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+            <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+            <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
         </div>
     </div>
 
@@ -739,7 +797,7 @@
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
                 <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">Calidad y Diseño</h1>
-                    <p class="text-xl sm:text-2xl text-shadow-custom">Innovación en cada proyecto que realizamos.</p>
+                    <p class="text-xl sm:text-2xl mb-8 text-shadow-custom">Innovación en cada proyecto que realizamos.</p>
                     <a href="#proyectos" class="btn-primary text-lg">Ver Proyectos</a>
                 </div>
             </div>
@@ -829,16 +887,18 @@
     <section id="project-1" class="modal-project">
         <div class="announcement-bar">
             <div class="announcement-text-wrapper">
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
             </div>
         </div>
 
@@ -890,8 +950,17 @@
                     <div class="swiper-slide"><img src="proyecto1-2.jpg" alt="Piscina 8x4m Imagen 2"></div>
                     <div class="swiper-slide"><img src="proyecto1-3.jpg" alt="Piscina 8x4m Imagen 3"></div>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <div class="custom-swiper-button custom-swiper-button-prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </div>
+                <div class="custom-swiper-button custom-swiper-button-next">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <div class="custom-swiper-pagination"></div>
             </div>
             <div class="project-images">
                 <img src="proyecto1-1.jpg" alt="Piscina 8x4m Imagen 1">
@@ -900,7 +969,7 @@
             </div>
             <div class="prose max-w-none">
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
-                <p class="text-gray-600 mb-4">Esta piscina rectangular de 8x4 metros es un diseño clásico que combina funcionalidad y estética. Incluye un solárium húmedo integrado, ideal para relajarse, y un sistema de iluminación LED que crea un ambiente espectacular durante la noche. Perfecta para familias que buscan un espacio para disfrutar y compartir momentos inolvidables.</p>
+                <p class="text-gray-600 mb-4 text-justify">Esta piscina rectangular de 8x4 metros es un diseño clásico que combina funcionalidad y estética. Incluye un solárium húmedo integrado, ideal para relajarse, y un sistema de iluminación LED que crea un ambiente espectacular durante la noche. Perfecta para familias que buscan un espacio para disfrutar y compartir momentos inolvidables.</p>
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
                 <ul class="list-disc pl-5 text-gray-600 mb-4">
                     <li>Hormigón armado de alta resistencia</li>
@@ -935,16 +1004,18 @@
     <section id="project-2" class="modal-project">
         <div class="announcement-bar">
             <div class="announcement-text-wrapper">
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
             </div>
         </div>
 
@@ -996,8 +1067,17 @@
                     <div class="swiper-slide"><img src="proyecto2-2.jpg" alt="Piscina Diseño Libre Imagen 2"></div>
                     <div class="swiper-slide"><img src="proyecto2-3.jpg" alt="Piscina Diseño Libre Imagen 3"></div>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <div class="custom-swiper-button custom-swiper-button-prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </div>
+                <div class="custom-swiper-button custom-swiper-button-next">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <div class="custom-swiper-pagination"></div>
             </div>
             <div class="project-images">
                 <img src="proyecto2-1.jpg" alt="Piscina Diseño Libre Imagen 1">
@@ -1006,7 +1086,7 @@
             </div>
             <div class="prose max-w-none">
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
-                <p class="text-gray-600 mb-4">Este diseño libre con borde infinito ofrece una experiencia visual única, integrándose perfectamente con el entorno. La climatización permite disfrutar de la piscina durante todo el año, mientras que el sistema de desborde crea un efecto de espejo que eleva la estética del espacio. Un proyecto de lujo para quienes buscan exclusividad.</p>
+                <p class="text-gray-600 mb-4 text-justify">Este diseño libre con borde infinito ofrece una experiencia visual única, integrándose perfectamente con el entorno. La climatización permite disfrutar de la piscina durante todo el año, mientras que el sistema de desborde crea un efecto de espejo que eleva la estética del espacio. Un proyecto de lujo para quienes buscan exclusividad.</p>
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
                 <ul class="list-disc pl-5 text-gray-600 mb-4">
                     <li>Hormigón armado con tratamiento impermeabilizante</li>
@@ -1041,16 +1121,18 @@
     <section id="project-3" class="modal-project">
         <div class="announcement-bar">
             <div class="announcement-text-wrapper">
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
             </div>
         </div>
 
@@ -1102,8 +1184,17 @@
                     <div class="swiper-slide"><img src="proyecto3-2.jpg" alt="Piscina Minimalista Imagen 2"></div>
                     <div class="swiper-slide"><img src="proyecto3-3.jpg" alt="Piscina Minimalista Imagen 3"></div>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <div class="custom-swiper-button custom-swiper-button-prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </div>
+                <div class="custom-swiper-button custom-swiper-button-next">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <div class="custom-swiper-pagination"></div>
             </div>
             <div class="project-images">
                 <img src="proyecto3-1.jpg" alt="Piscina Minimalista Imagen 1">
@@ -1112,7 +1203,7 @@
             </div>
             <div class="prose max-w-none">
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Descripción Detallada</h3>
-                <p class="text-gray-600 mb-4">Esta piscina minimalista de 10x3 metros destaca por sus líneas puras y su diseño elegante, ideal para espacios modernos. Su formato alargado es perfecto para nadar y entrenar, mientras que el revestimiento claro aporta luminosidad y sofisticación. Un diseño funcional y estilizado.</p>
+                <p class="text-gray-600 mb-4 text-justify">Esta piscina minimalista de 10x3 metros destaca por sus líneas puras y su diseño elegante, ideal para espacios modernos. Su formato alargado es perfecto para nadar y entrenar, mientras que el revestimiento claro aporta luminosidad y sofisticación. Un diseño funcional y estilizado.</p>
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">Materiales Utilizados</h3>
                 <ul class="list-disc pl-5 text-gray-600 mb-4">
                     <li>Hormigón pulido de alta durabilidad</li>
@@ -1278,16 +1369,18 @@
     <section id="terms" class="modal-terms">
         <div class="announcement-bar">
             <div class="announcement-text-wrapper">
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
-                <div class="announcement-text">
-                    METRO CUADRADO DESDE USD$ 200
-                    ESCRIBINOS AL WHATSAPP SIN COMPROMISO
-                    MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS
-                </div>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
+                <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span>
+                <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span>
+                <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
             </div>
         </div>
         <header id="header" class="fixed w-full z-50 bg-white shadow-md">
@@ -1350,7 +1443,7 @@
                 <p class="mb-4">WEC Piscinas ofrece una garantía de 10 años sobre la estructura de la piscina y 2 años sobre los sistemas de filtrado e iluminación, siempre que se cumplan las condiciones de mantenimiento recomendadas. Esta garantía cubre defectos de fabricación y construcción, pero no incluye daños causados por mal uso, falta de mantenimiento, desastres naturales o modificaciones no autorizadas por WEC Piscinas.</p>
                 <p class="mb-4">El cliente será responsable de obtener los permisos municipales necesarios para la construcción de la piscina, así como de garantizar el acceso al terreno para nuestro equipo y maquinaria. WEC Piscinas no se hace responsable por daños a terceros o al terreno causados por condiciones preexistentes no informadas por el cliente.</p>
 
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">5. Propiedad Intelectual</h3>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">5. Propiedad Intelectual</h3>
                 <p class="mb-4">Todos los diseños, planos y materiales promocionales creados por WEC Piscinas son propiedad intelectual de la empresa y no pueden ser reproducidos, distribuidos o utilizados sin nuestro consentimiento expreso. Las imágenes de nuestros proyectos publicadas en este sitio web tienen fines ilustrativos y no pueden ser utilizadas para otros fines sin autorización.</p>
 
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">6. Privacidad</h3>
@@ -1425,17 +1518,49 @@
             },
         });
 
-        // Initialize Swiper for Project modals
-        const projectSwipers = document.querySelectorAll('.swiper-container-project');
-        projectSwipers.forEach(swiper => {
-            new Swiper(swiper, {
-                loop: true,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            });
-        });
+        // Initialize Swiper for Project modals conditionally
+        // Only initialize Swiper if the screen width is less than or equal to 1024px (mobile/tablet)
+        function initializeProjectSwipers() {
+            if (window.innerWidth <= 1024) {
+                const projectSwipers = document.querySelectorAll('.swiper-container-project');
+                projectSwipers.forEach(swiper => {
+                    // Check if Swiper is already initialized to prevent re-initialization
+                    if (!swiper.swiper) {
+                        new Swiper(swiper, {
+                            loop: true,
+                            autoplay: {
+                                delay: 3000, // Auto-play every 3 seconds
+                                disableOnInteraction: false, // Keep auto-play even after user interaction
+                            },
+                            pagination: {
+                                el: swiper.querySelector('.custom-swiper-pagination'), // Use custom pagination element
+                                clickable: true,
+                                bulletClass: 'custom-swiper-pagination-bullet', // Custom class for bullets
+                                bulletActiveClass: 'custom-swiper-pagination-bullet-active', // Custom class for active bullet
+                            },
+                            navigation: {
+                                nextEl: swiper.querySelector('.custom-swiper-button-next'), // Use custom next button
+                                prevEl: swiper.querySelector('.custom-swiper-button-prev'), // Use custom prev button
+                            },
+                            effect: 'slide', // Default slide effect
+                        });
+                    }
+                });
+            } else {
+                // If on desktop, destroy any existing Swiper instances if they were accidentally initialized
+                const projectSwipers = document.querySelectorAll('.swiper-container-project');
+                projectSwipers.forEach(swiper => {
+                    if (swiper.swiper) {
+                        swiper.swiper.destroy(true, true);
+                    }
+                });
+            }
+        }
+
+        // Call on load and resize
+        window.addEventListener('load', initializeProjectSwipers);
+        window.addEventListener('resize', initializeProjectSwipers);
+
 
         // Mobile Menu Toggle (Main Header)
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -1611,7 +1736,7 @@
         // Smooth scroll for internal anchor links (excluding modal links)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                // Only apply smooth scroll if it's not a modal open/close link
+                // Only apply smooth scroll if it.s not a modal open/close link
                 if (!this.classList.contains('open-modal') && !this.classList.contains('open-terms') && !this.classList.contains('close-modal') && !this.classList.contains('close-terms')) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
