@@ -72,7 +72,7 @@
         /* Swiper Hero styles (main carousel) - Desktop Default */
         .swiper-container-hero {
             width: 100%;
-            height: 100vh; /* Default for desktop */
+            height: 100vh; /* CAMBIO SOLICITADO: Ajustado a 100vh para desktop */
             overflow: hidden;
         }
         .swiper-container-hero .swiper-slide {
@@ -85,7 +85,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 100vh; /* Default for desktop */
+            min-height: 100%; /* Changed to 100% to fill parent height */
         }
         .swiper-pagination-bullet-active {
             background-color: #00BFFF !important;
@@ -374,24 +374,27 @@
         .modal-project footer .container, .modal-terms footer .container { padding-top: 1rem; padding-bottom: 1rem; }
         #como-trabajamos .faq-container { margin-top: 2rem; }
 
-        @keyframes bounce-down { 0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); } 40% { transform: translateY(10px) translateX(-50%); } 60% { transform: translateY(4px) translateX(-50%); } }
+        @keyframes bounce-down { 0% { transform: translateY(0) translateX(-50%); } 50% { transform: translateY(10px) translateX(-50%); } 100% { transform: translateY(0) translateX(-50%); } }
         .scroll-indicator {
-            display: none;
+            display: none; /* Por defecto, oculto */
             position: fixed; bottom: 20px; left: 50%;
             transform: translateX(-50%); /* This centers the div itself */
-            color: #1E90FF; font-size: 3rem; animation: bounce-down 1.8s infinite;
+            color: #1E90FF;
+            animation: bounce-down 1.8s infinite;
             text-align: center; line-height: 1; z-index: 30;
         }
-        /* CAMBIO SOLICITADO: Achicar la flecha de desplazamiento en pantallas muy pequeñas */
-        @media (max-width: 480px) {
-            .scroll-indicator svg {
-                width: 3rem; /* Reduce el ancho del SVG */
-                height: 3rem; /* Reduce la altura del SVG */
-            }
-        }
-        .scroll-indicator svg { /* Ensure SVG is centered if it has intrinsic margins */
+        .scroll-indicator svg { /* Tamaño para pantallas móviles más grandes (481px a 767px) */
+            width: 3rem;
+            height: 3rem;
             margin-left: auto;
             margin-right: auto;
+        }
+        /* Tamaño para pantallas muy pequeñas (<= 480px) */
+        @media (max-width: 480px) {
+            .scroll-indicator svg {
+                width: 5rem;
+                height: 5rem;
+            }
         }
 
 
@@ -411,7 +414,13 @@
             background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: shimmer 10s infinite linear; margin-top: 2.5rem; margin-bottom: 2rem;
         }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        /* CAMBIO: Reducir margin-top para shimmer-text en móvil */
+        @media (max-width: 767px) {
+            .shimmer-text {
+                margin-top: 1rem; /* Ajuste para acercar el texto en móvil */
+                margin-bottom: 1rem; /* También reducir el margen inferior si es necesario */
+            }
+        }
 
         section:not(#inicio):not(.modal-project):not(.modal-terms) {
             padding-top: 96px;
@@ -444,8 +453,8 @@
             section#inicio.swiper-container-hero {
                 /* The hero section itself starts after the fixed header */
                 margin-top: calc(var(--announcement-bar-h-mobile) + var(--header-h-mobile));
-                /* CAMBIO SOLICITADO: Ajuste de altura del carrusel para que el texto de Proyectos y la flecha sean visibles */
-                height: calc(65vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Ajustado a 65vh para dejar espacio */
+                /* AJUSTE: Altura del carrusel para que las frases sean visibles en móvil */
+                height: calc(55vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile));
                 min-height: 200px; /* Ensure a minimum height */
             }
             section#inicio.swiper-container-hero .swiper-slide {
@@ -469,7 +478,7 @@
         /* CAMBIO ADICIONAL: Ajuste para pantallas aún más pequeñas (ej. 320px - 480px) */
         @media (max-width: 480px) {
             section#inicio.swiper-container-hero {
-                height: calc(65vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Mantener el cálculo para que se ajuste */
+                height: calc(55vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Mantener el cálculo para que se ajuste */
             }
         }
         /* === END OF MOBILE INITIAL VIEW STYLES === */
@@ -536,7 +545,7 @@
         <div class="swiper-wrapper">
             <div class="swiper-slide" style="background-image:url('foto1.jpg')">
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full" data-aos="fade-up">
+                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-end md:pb-24" data-aos="fade-up">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">WEC Piscinas</h1>
                     <p class="text-xl sm:text-2xl md:text-3xl mb-8 text-shadow-custom">Construimos la piscina de tus sueños</p>
                     <a href="#contacto" class="btn-primary text-lg">Cotizá tu piscina ahora</a>
@@ -544,7 +553,7 @@
             </div>
             <div class="swiper-slide" style="background-image:url('foto2.jpg')">
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full">
+                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-end md:pb-24">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">Calidad y Diseño</h1>
                     <p class="text-xl sm:text-2xl mb-8 text-shadow-custom">Innovación en cada proyecto que realizamos.</p>
                     <a href="#proyectos" class="btn-primary text-lg">Ver Proyectos</a>
@@ -552,7 +561,7 @@
             </div>
             <div class="swiper-slide" style="background-image:url('foto3.jpg')">
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full">
+                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-end md:pb-24">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">Tu Oasis Personal</h1>
                     <p class="text-xl sm:text-2xl md:text-3xl mb-8 text-shadow-custom">Transformamos tu espacio exterior.</p>
                     <a href="#contacto" class="btn-primary text-lg">Contactanos</a>
@@ -737,7 +746,7 @@
 
     <section id="project-3" class="modal-project">
         <div class="announcement-bar"><div class="announcement-text-wrapper"><span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span> <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span></div></div>
-        <header class="fixed w-full z-50 bg-white shadow-md"> <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-full"> <div class="flex-shrink-0"> <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a></div> <div class="hidden md:block"> <nav class="ml-10 flex items-center space-x-4"> <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a> <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a> <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a> <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a> </nav> </div> <div class="md:hidden flex items-center"> <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal"> <div class="hamburger"><span></span><span></span><span></span></div> </button> </div> </div> </div> <div class="md:hidden hidden mobile-menu-modal"> <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a> <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a> <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a> <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a> </div> </div> </header>
+        <header class="fixed w-full z-50 bg-white shadow-md"> <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-full"> <div class="flex-shrink-0"> <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a></div> <div class="hidden md:block"> <nav class="ml-10 flex items-center space-x-4"> <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a> <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a> <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a> <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a> </div> <div class="md:hidden flex items-center"> <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal"> <div class="hamburger"><span></span><span></span><span></span></div> </button> </div> </div> </div> <div class="md:hidden hidden mobile-menu-modal"> <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a> <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a> <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a> <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a> </div> </div> </header>
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Minimalista 10x3m</h2>
             <div class="back-button-box mb-8"><a href="#proyectos" class="btn-primary close-modal" data-target-section="proyectos">Volver</a></div>
