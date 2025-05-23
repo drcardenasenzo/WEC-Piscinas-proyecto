@@ -1,0 +1,561 @@
+/* Base styles for body and headings */
+        html {
+            scroll-padding-top: var(--header-h-mobile, 70px); /* Default for mobile */
+            font-size: 14px; /* Base font size for mobile */
+        }
+        @media (min-width: 768px) {
+            html {
+                scroll-padding-top: var(--header-h-desktop, 80px); /* Desktop header height */
+                font-size: 16px; /* Base font size for desktop */
+            }
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #4A4A4A;
+            overflow-x: hidden;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.3;
+        }
+        h1 { font-size: 2.25rem; /* Adjusted for mobile */ }
+        h2 { font-size: 1.875rem; /* Adjusted for mobile */ }
+        h3 { font-size: 1.5rem; /* Adjusted for mobile */ }
+        p { margin-bottom: 1rem; }
+
+        @media (min-width: 768px) {
+            h1 { font-size: 3rem; } /* Tailwind text-5xl */
+            h2 { font-size: 2.25rem; } /* Tailwind text-4xl */
+            h3 { font-size: 1.875rem; } /* Tailwind text-3xl */
+        }
+        @media (min-width: 1024px) {
+            h1 { font-size: 3.75rem; } /* Tailwind text-6xl */
+        }
+
+        .text-shadow-custom {
+            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Custom brand colors */
+        .bg-wec-celeste-principal { background-color: #00BFFF; }
+        .text-wec-celeste-principal { color: #00BFFF; }
+        .border-wec-celeste-principal { border-color: #00BFFF; }
+        .bg-wec-celeste-secundario { background-color: #87CEEB; }
+        .bg-wec-azul-profundo { background-color: #1E90FF; }
+        .text-wec-azul-profundo { color: #1E90FF; }
+
+        /* Button styles */
+        .btn-primary {
+            @apply bg-[#00BFFF] text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out;
+        }
+        .btn-secondary {
+            @apply bg-[#1E90FF] text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out text-sm;
+        }
+
+        /* Section titles and subtitles */
+        /* Base mobile styles for titles - Tailwind JIT will handle @apply */
+        .section-title {
+             /* text-3xl md:text-4xl font-bold text-center mb-4 text-[#1E90FF] */
+            font-size: 1.875rem; /* text-3xl for mobile */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        .section-subtitle {
+            /* text-lg text-center text-gray-600 mb-12 */
+            font-size: 1.125rem; /* text-lg for mobile */
+            margin-bottom: 3rem; /* mb-12 */
+        }
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 2.25rem; /* text-4xl for md */
+            }
+        }
+
+
+        /* Card hover effect */
+        .card-hover-effect {
+            @apply transition-all duration-300 ease-in-out relative z-10;
+        }
+        .card-hover-effect:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 191, 255, 0.5) !important;
+            transform: translateY(-0.25rem) !important;
+        }
+
+        /* Swiper Hero styles (main carousel) - Desktop Default */
+        .swiper-container-hero {
+            width: 100%;
+            /* height is handled by mobile-first media queries below */
+            overflow: hidden;
+        }
+        .swiper-container-hero .swiper-slide {
+            text-align: center;
+            font-size: 1rem; /* Adjusted base for mobile */
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100%; 
+        }
+        /* Hero text sizing */
+        .swiper-container-hero .swiper-slide h1 {
+            font-size: 2rem; /* Base for mobile */
+            margin-bottom: 1rem;
+        }
+        .swiper-container-hero .swiper-slide p {
+            font-size: 1.125rem; /* Base for mobile */
+            margin-bottom: 1.5rem;
+        }
+         .swiper-container-hero .swiper-slide .btn-primary {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) { /* sm breakpoint */
+            .swiper-container-hero .swiper-slide h1 {
+                font-size: 2.5rem; /* text-4xl */
+            }
+             .swiper-container-hero .swiper-slide p {
+                font-size: 1.25rem; /* text-xl */
+            }
+            .swiper-container-hero .swiper-slide .btn-primary {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .swiper-container-hero .swiper-slide h1 {
+                font-size: 3rem; /* text-5xl */
+            }
+            .swiper-container-hero .swiper-slide p {
+                font-size: 1.5rem; /* text-2xl */
+            }
+        }
+         @media (min-width: 1024px) { /* lg breakpoint */
+            .swiper-container-hero .swiper-slide h1 {
+                font-size: 3.75rem; /* text-6xl */
+            }
+             .swiper-container-hero .swiper-slide p {
+                font-size: 1.875rem; /* text-3xl */
+            }
+        }
+
+
+        .swiper-pagination-bullet-active {
+            background-color: #00BFFF !important;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: #FFFFFF !important;
+            background-color: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 50%;
+        }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 24px !important;
+        }
+        .swiper-container-hero .swiper-pagination {
+            display: none !important;
+        }
+
+        /* Swiper Project styles (modal carousels) */
+        .swiper-container-project {
+            width: 100%;
+            height: auto; /* Changed to auto to adapt to content */
+            max-height: 500px; /* Max height for desktop */
+            aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            position: relative;
+            background-color: #f0f0f0;
+        }
+        .swiper-container-project .swiper-slide {
+            width: 100%; height: 100%; display: flex;
+            justify-content: center; align-items: center;
+        }
+        .swiper-container-project img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .custom-swiper-button {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; cursor: pointer;
+            width: 28px; height: 28px; background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0px 1px rgba(0,0,0,0.03); transition: all 0.3s ease-in-out;
+        }
+        .custom-swiper-button:hover { background-color: rgba(255, 255, 255, 0.3); transform: translateY(-50%) scale(1.05); }
+        .custom-swiper-button svg { width: 16px; height: 16px; color: #1E90FF; }
+        .custom-swiper-button-prev { left: 10px; }
+        .custom-swiper-button-next { right: 10px; }
+        .custom-swiper-pagination {
+            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+            z-index: 10; display: flex; gap: 8px;
+        }
+        .custom-swiper-pagination-bullet {
+            width: 10px; height: 10px; background-color: #87CEEB; border-radius: 50%;
+            opacity: 0.7; cursor: pointer; transition: all 0.3s ease;
+        }
+        .custom-swiper-pagination-bullet-active {
+            background-color: #1E90FF !important; width: 12px; height: 12px;
+            opacity: 1; box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+        }
+
+        .hamburger {
+            width: 28px; height: 20px; position: relative; display: flex;
+            flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 60;
+        }
+        .hamburger span {
+            display: block; width: 100%; height: 3px; background-color: #000000;
+            border-radius: 2px; transition: all 0.3s ease-in-out; transform-origin: center center; /* Asegura el origen de la transformación */
+            margin: 0; /* Asegura que no haya márgenes inesperados */
+            padding: 0; /* Asegura que no haya padding inesperado */
+        }
+        .hamburger span:nth-child(2) {
+            transform: none; /* Asegura que no haya traslación para la línea del medio */
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: translateY(0); } /* Reset transform when open */
+        .hamburger.open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+        #mobile-menu {
+            background-color: white; position: absolute; top: 100%; left: 0; width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; max-height: 0;
+            opacity: 0; transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out; z-index: 55;
+        }
+        #mobile-menu.active { max-height: 300px; opacity: 1; }
+        #mobile-menu a {
+            text-align: center; color: #00BFFF; padding: 0.75rem; display: block;
+            border-radius: 0.5rem; margin-bottom: 0.25rem; font-size: 1.1rem;
+        }
+        #mobile-menu a:hover { background-color: #E0F7FA; }
+
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0); } }
+        .whatsapp-float { animation: float 3s ease-in-out infinite; }
+
+        .announcement-bar {
+            background-color: #1E90FF; color: white; font-size: 0.75rem; font-weight: 600;
+            text-align: center; padding: 0.25rem 0; line-height: 1; overflow: hidden;
+            z-index: 60; position: fixed; top: 0; width: 100%; display: flex;
+            align-items: center; justify-content: center;
+            height: var(--announcement-bar-height, 20px); /* CSS Variable for height */
+        }
+        @media (min-width: 640px) { .announcement-bar { font-size: 0.875rem; --announcement-bar-height: 24px; } }
+        @media (max-width: 639px) { .announcement-bar { font-size: 0.6rem; --announcement-bar-height: 18px; } }
+        .announcement-text-wrapper { display: flex; white-space: nowrap; animation: marquee 45s linear infinite; }
+        .marquee-phrase { margin-right: 12rem; }
+        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+
+        .modal-project, .modal-terms {
+            display: none; position: fixed; inset: 0; background-color: white;
+            z-index: 100; overflow-y: auto;
+        }
+        .modal-project.active, .modal-terms.active { display: block; }
+
+        #header {
+            background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 50;
+            position: fixed; width: 100%;
+            height: var(--header-height-desktop, 80px); /* Desktop height */
+            min-height: var(--header-height-desktop, 80px);
+            top: var(--announcement-bar-height, 24px); /* Position below announcement bar */
+        }
+        @media (max-width: 767px) { /* Mobile header sizing and positioning */
+            #header {
+                --header-height-mobile: 70px; /* Nueva altura reducida para móvil */
+                height: var(--header-height-mobile);
+                min-height: var(--header-height-mobile);
+                top: var(--announcement-bar-height, 18px); /* Position below announcement bar */
+            }
+            #header .flex { /* Adjust padding for new height */
+                padding: 0.25rem 0; /* Reducir padding vertical */
+                align-items: center;
+            }
+            #header .flex-shrink-0 { /* Logo */
+                 margin-left: 0.75rem;
+            }
+            #header .flex-shrink-0 a { /* Logo text size */
+                font-size: 1.5rem; /* Ajustar si es necesario para que quepa */
+            }
+            #header .hamburger { /* Hamburger icon */
+                margin-right: 0.75rem; /* Ajustar margen */
+            }
+            #contacto .flex-col-reverse-mobile { flex-direction: column-reverse; }
+        }
+        
+        #header .container { padding-top: 0; padding-bottom: 0; height:100%;} /* Ensure container takes full header height */
+        #header .flex { align-items: center; justify-content: space-between; height: 100%; gap: 0; }
+
+        /* Modal Headers - ensure they use the correct heights */
+        /* The header inside modal-project and modal-terms */
+        .modal-project header, .modal-terms header {
+            height: var(--header-height-desktop, 80px); /* Default for desktop in modals */
+            min-height: var(--header-height-desktop, 80px);
+            top: var(--announcement-bar-height, 24px);
+        }
+        /* Ensure content within modal header is vertically centered for PC */
+        .modal-project header .container,
+        .modal-terms header .container {
+            height: 100%; /* Ensure container takes full header height */
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically align items */
+            justify-content: space-between; /* Distribute items */
+            padding-top: 0; /* Remove any top padding that might push content down */
+            padding-bottom: 0; /* Remove any bottom padding */
+        }
+
+        /* Ensure logo and hamburger/nav in modals match main header's appearance */
+        /* For desktop, text-3xl is 1.875rem. No explicit font-size needed here if text-3xl is in HTML. */
+        /* Removed the font-size: 2.5rem; override for desktop modals that was causing inconsistency */
+
+        /* Apply mobile specific styles from main header to modal headers */
+        @media (max-width: 767px) {
+            .modal-project header .flex,
+            .modal-terms header .flex {
+                padding: 0.25rem 0; /* Match main header's mobile padding */
+            }
+            .modal-project header .flex-shrink-0 {
+                margin-left: 0.75rem; /* Match main header's mobile margin */
+            }
+            .modal-project header .hamburger,
+            .modal-terms header .hamburger {
+                margin-right: 0.75rem; /* Match main header's mobile margin */
+            }
+            .modal-project header .flex-shrink-0 a,
+            .modal-terms header .flex-shrink-0 a {
+                font-size: 1.5rem; /* Match main header's mobile logo size */
+            }
+        }
+
+        /* Desktop specific resets for modal headers, matching main header */
+        @media (min-width: 768px) {
+            .modal-project header .flex-shrink-0,
+            .modal-terms header .flex-shrink-0 {
+                margin-left: 0; /* Reset for desktop to match main header */
+            }
+            .modal-project header .hamburger,
+            .modal-terms header .hamburger {
+                margin-right: 0; /* Reset for desktop */
+            }
+            /* Ensure desktop nav links also match main header's nav links */
+            .modal-project header nav a,
+            .modal-terms header nav a {
+                /* These are already defined in main header nav, no need to redefine unless there's an issue */
+                /* text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium */
+            }
+        }
+
+        /* Adjust padding for modal content based on new header height */
+        .modal-project .container, .modal-terms .container {
+            padding-top: calc(var(--announcement-bar-height, 18px) + var(--header-height-mobile, 70px) + 20px); /* Updated padding for mobile */
+        }
+        @media (min-width: 768px) {
+            .modal-project .container, .modal-terms .container {
+                padding-top: calc(var(--announcement-bar-height, 24px) + var(--header-height-desktop, 80px) + 20px); /* Updated padding for desktop */
+            }
+        }
+
+        .noise-texture::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 4px 4px; opacity: 0.05; pointer-events: none; z-index: 0;
+        }
+        #proyectos, #contacto { position: relative; }
+        #proyectos { background-color: #F0F0F0; }
+        #contacto { background: white; }
+
+        .float-1 { animation: float 5s ease-in-out infinite; }
+        .float-2 { animation: float 5.5s ease-in-out infinite; }
+        .float-3 { animation: float 6s ease-in-out infinite; }
+        .float-4 { animation: float 6.5s ease-in-out infinite; }
+
+        .project-card {
+            display: flex; flex-direction: column; min-height: 380px;
+            position: relative; overflow: visible;
+        }
+        .project-card img { height: 224px; object-fit: cover; transition: none; transform: none; }
+
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { margin-bottom: 0.5rem; }
+        .faq-question {
+            display: block; padding: 0.75rem; font-size: 1.25rem; font-weight: 500;
+            color: #00BFFF; cursor: pointer; transition: all 0.3s ease; text-align: center;
+        }
+        .faq-question:hover { color: #1E90FF; transform: scale(1.02); }
+        .faq-answer {
+            max-height: 0; opacity: 0; padding: 0 1rem; color: #4A4A4A;
+            background-color: #F0F0F0; overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+        }
+        .faq-answer.active { max-height: 500px; opacity: 1; padding: 1rem; }
+
+        .back-button-box { border: 2px solid #1E90FF; padding: 0.25rem; border-radius: 0.5rem; display: inline-block; }
+        .project-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .project-images img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto; }
+        
+        @media (max-width: 1024px) {
+            .project-images { display: none; }
+            .swiper-container-project { display: block; }
+        }
+        @media (min-width: 1025px) {
+            .project-images { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+            .swiper-container-project { display: none !important; }
+        }
+
+        @media (max-width: 767px) {
+            .project-card { min-height: auto; }
+            .project-card img { height: 150px; }
+            .faq-item { margin-bottom: 0.125rem; }
+            .faq-question { font-size: 1rem; padding: 0.5rem; }
+            .faq-answer { font-size: 0.875rem; }
+            .btn-secondary { padding: 0.75rem 2rem; font-size: 0.875rem; }
+            /* CAMBIO SOLICITADO: Ajuste de altura para el carrusel de proyectos en móvil */
+            .swiper-container-project { max-width: 100%; height: auto; aspect-ratio: 4/3; max-height: 300px; }
+        }
+        @media (max-width: 639px) {
+            html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+            .container { max-width: 100%; padding-left: 1rem; padding-right: 1rem; box-sizing: border-box; }
+            .section-title { font-size: 2rem; }
+            .section-subtitle { font-size: 1rem; }
+            .modal-project .container { padding-left: 0.5rem; padding-right: 0.5rem; }
+        }
+
+        .back-button-box .btn-primary:hover { box-shadow: 0 10px 15px -3px rgba(0, 191, 255, 0.5); transform: translateY(-5px); }
+        /* Padding for modal content handled by specific media queries above */
+        .modal-project h2 { margin-top: 1.5rem; }
+        .modal-project .swiper-container-project { margin-top: 4rem; }
+        .modal-project footer, .modal-terms footer { width: 100%; position: relative; }
+        .modal-project footer .container, .modal-terms footer .container { padding-top: 1rem; padding-bottom: 1rem; }
+        #como-trabajamos .faq-container { margin-top: 2rem; }
+
+        @keyframes bounce-down { 0% { transform: translateY(0) translateX(-50%); } 50% { transform: translateY(10px) translateX(-50%); } 100% { transform: translateY(0) translateX(-50%); } }
+        .scroll-indicator {
+            display: none; /* Por defecto, oculto */
+            position: fixed; bottom: 20px; left: 50%;
+            transform: translateX(-50%); /* This centers the div itself */
+            color: #1E90FF;
+            animation: bounce-down 1.8s infinite;
+            text-align: center; line-height: 1; z-index: 30;
+        }
+        .scroll-indicator svg { /* Tamaño para pantallas móviles más grandes (481px a 767px) */
+            width: 3rem;
+            height: 3rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Tamaño para pantallas muy pequeñas (<= 480px) */
+        @media (max-width: 480px) {
+            .scroll-indicator svg {
+                width: 5rem;
+                height: 5rem;
+            }
+        }
+
+
+        @keyframes pulse { 0% { transform: scale(1) rotate(45deg); } 50% { transform: scale(1.05) rotate(45deg); } 100% { transform: scale(1) rotate(45deg); } }
+        .discount-badge {
+            position: absolute; top: 45px; right: -10px; background-color: #FF6347; color: white;
+            font-weight: bold; padding: 0.3rem 1rem; transform: rotate(45deg);
+            transform-origin: 100% 0%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 20; font-size: 0.75rem; animation: pulse 2s infinite;
+        }
+        .discount-badge::before { content: ''; position: absolute; top: 0; left: -10px; border-top: 10px solid transparent; border-right: 10px solid #C0392B; }
+        .discount-badge::after { content: ''; position: absolute; bottom: -10px; right: 0; border-top: 10px solid #C0392B; border-right: 10px solid transparent; }
+
+        .shimmer-text {
+            position: relative; display: inline-block; overflow: hidden;
+            background: linear-gradient(to right, #FF6347 0%, #FFD700 20%, #FF6347 40%, #FF6347 100%);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shimmer 10s infinite linear; margin-top: 2.5rem; margin-bottom: 2rem;
+        }
+        /* CAMBIO: Reducir margin-top para shimmer-text en móvil */
+        /* This is already mobile-first as it's inside max-width. Keep as is or integrate if needed elsewhere */
+        @media (max-width: 767px) {
+            .shimmer-text {
+                margin-top: 1rem; 
+                margin-bottom: 1rem; 
+            }
+        }
+
+        section:not(#inicio):not(.modal-project):not(.modal-terms) {
+            padding-top: 48px; /* Base padding for mobile */
+            padding-bottom: 48px; /* Base padding for mobile */
+        }
+        @media (min-width: 768px) {
+            section:not(#inicio):not(.modal-project):not(.modal-terms) {
+                padding-top: 96px; /* Desktop padding */
+                padding-bottom: 96px; /* Desktop padding */
+            }
+        }
+        #inicio {
+             padding-top: 0; 
+        }
+        /* #como-trabajamos specific bottom padding already handled by the general section rule now */
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid #1E90FF; border-radius: 50%;
+            width: 30px; height: 30px; animation: spin 1s linear infinite;
+            display: inline-block; margin-left: 10px; vertical-align: middle;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* === MOBILE INITIAL VIEW STYLES (max-width: 767px) === */
+        @media (max-width: 767px) {
+            :root {
+                --announcement-bar-h-mobile: 18px; /* From .announcement-bar @media (max-width: 639px) */
+                --header-h-mobile: 70px;       /* New header height for mobile */
+            }
+
+            /* Total height of fixed elements at the top */
+            .mobile-fixed-top-offset {
+                height: calc(var(--announcement-bar-h-mobile) + var(--header-h-mobile));
+            }
+            
+            section#inicio.swiper-container-hero {
+                /* The hero section itself starts after the fixed header */
+                margin-top: calc(var(--announcement-bar-h-mobile) + var(--header-h-mobile));
+                height: calc(60vh - (var(--announcement-bar-h-mobile) + var(--header-h-mobile))); /* Slightly increased from 55vh */
+                min-height: 250px; /* Increased min-height */
+            }
+            section#inicio.swiper-container-hero .swiper-slide {
+                min-height: 100%;
+                padding-bottom: 4rem; /* Add some padding at the bottom for text */
+                box-sizing: border-box;
+            }
+             section#inicio.swiper-container-hero .swiper-slide > div[data-aos="fade-up"] { /* Target the content div */
+                justify-content: center; /* Better vertical centering for mobile */
+            }
+
+
+            section#proyectos {
+                 padding-top: 2rem; /* Adjusted from 0rem to give some space */
+            }
+            section#proyectos > .container > .text-center:first-child {
+                margin-bottom: 1rem; /* Adjusted */
+            }
+            section#proyectos > .container > .text-center:first-child > h2[data-aos="fade-up"] {
+                margin-bottom: 0.5rem; /* Adjusted */
+                font-size: 1.75rem; /* Slightly larger for project title */
+            }
+            section#proyectos > .container > .text-center:first-child > p[data-aos="fade-up"] {
+                font-size: 1rem; /* Slightly larger */
+            }
+        }
+        /* Desktop Hero Height */
+        @media (min-width: 768px) { /* Apply to md and up */
+             section#inicio.swiper-container-hero {
+                margin-top: 0; /* Reset mobile margin-top */
+                height: 100vh; /* Full viewport height for desktop hero */
+            }
+            section#inicio.swiper-container-hero .swiper-slide > div[data-aos="fade-up"] { /* Target the content div */
+                justify-content: flex-end; /* Revert to original desktop alignment */
+                padding-bottom: 6rem; /* md:pb-24 */
+            }
+        }
+        /* === END OF MOBILE INITIAL VIEW STYLES === */
+
+    </style>
