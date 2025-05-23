@@ -105,9 +105,16 @@
 
         /* Swiper Project styles (modal carousels) */
         .swiper-container-project {
-            width: 100%; max-width: 900px; margin: 0 auto; overflow: hidden;
-            height: 500px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            position: relative; background-color: #f0f0f0;
+            width: 100%;
+            height: auto; /* Changed to auto to adapt to content */
+            max-height: 500px; /* Max height for desktop */
+            aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            position: relative;
+            background-color: #f0f0f0;
         }
         .swiper-container-project .swiper-slide {
             width: 100%; height: 100%; display: flex;
@@ -147,11 +154,12 @@
         }
         .hamburger span {
             display: block; width: 100%; height: 3px; background-color: #000000;
-            border-radius: 2px; transition: all 0.3s ease-in-out; transform-origin: center;
+            border-radius: 2px; transition: all 0.3s ease-in-out; transform-origin: center center; /* Asegura el origen de la transformación */
+            margin: 0; /* Asegura que no haya márgenes inesperados */
+            padding: 0; /* Asegura que no haya padding inesperado */
         }
-        /* Adjust the middle line of the hamburger slightly upwards */
         .hamburger span:nth-child(2) {
-            transform: translateY(-0.5px); /* Mueve ligeramente hacia arriba */
+            transform: none; /* Asegura que no haya traslación para la línea del medio */
         }
         .hamburger.open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
         .hamburger.open span:nth-child(2) { opacity: 0; transform: translateY(0); } /* Reset transform when open */
@@ -347,7 +355,8 @@
             .faq-question { font-size: 1rem; padding: 0.5rem; }
             .faq-answer { font-size: 0.875rem; }
             .btn-secondary { padding: 0.75rem 2rem; font-size: 0.875rem; }
-            .swiper-container-project { max-width: 100%; height: 300px; }
+            /* CAMBIO SOLICITADO: Ajuste de altura para el carrusel de proyectos en móvil */
+            .swiper-container-project { max-width: 100%; height: auto; aspect-ratio: 4/3; max-height: 300px; }
         }
         @media (max-width: 639px) {
             html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
@@ -372,6 +381,13 @@
             transform: translateX(-50%); /* This centers the div itself */
             color: #1E90FF; font-size: 3rem; animation: bounce-down 1.8s infinite;
             text-align: center; line-height: 1; z-index: 30;
+        }
+        /* CAMBIO SOLICITADO: Achicar la flecha de desplazamiento en pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .scroll-indicator svg {
+                width: 3rem; /* Reduce el ancho del SVG */
+                height: 3rem; /* Reduce la altura del SVG */
+            }
         }
         .scroll-indicator svg { /* Ensure SVG is centered if it has intrinsic margins */
             margin-left: auto;
@@ -428,8 +444,8 @@
             section#inicio.swiper-container-hero {
                 /* The hero section itself starts after the fixed header */
                 margin-top: calc(var(--announcement-bar-h-mobile) + var(--header-h-mobile));
-                /* Reduced carousel height to make space for "Proyectos que inspiran" and arrow */
-                height: 55vh; /* Adjusted to 55vh for more space */
+                /* CAMBIO SOLICITADO: Ajuste de altura del carrusel para que el texto de Proyectos y la flecha sean visibles */
+                height: calc(65vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Ajustado a 65vh para dejar espacio */
                 min-height: 200px; /* Ensure a minimum height */
             }
             section#inicio.swiper-container-hero .swiper-slide {
@@ -448,6 +464,12 @@
             }
             section#proyectos > .container > .text-center:first-child > p[data-aos="fade-up"] {
                 font-size: 0.9rem; /* Adjust font size if needed */
+            }
+        }
+        /* CAMBIO ADICIONAL: Ajuste para pantallas aún más pequeñas (ej. 320px - 480px) */
+        @media (max-width: 480px) {
+            section#inicio.swiper-container-hero {
+                height: calc(65vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Mantener el cálculo para que se ajuste */
             }
         }
         /* === END OF MOBILE INITIAL VIEW STYLES === */
@@ -489,7 +511,7 @@
                     </nav>
                 </div>
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none focus:ring-0 focus:border-transparent">
                         <div class="hamburger">
                             <span></span>
                             <span></span>
@@ -552,7 +574,7 @@
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-4" data-aos="fade-up">Proyectos Que Inspiran</h2>
                 <p class="text-lg text-gray-600" data-aos="fade-up" data-aos-delay="100">Descubrí la calidad y el diseño en cada piscina que construimos.</p>
-                <h3 class="text-2xl md:text-3xl font-bold text-[#FF6347] shimmer-text" data-aos="fade-up" data-aos-delay="200">Oferta especial de otoño/invierno ¡30% OFF!</h3>
+                <h3 class="text-2xl md:text-3xl font-bold text-[#FF6347] shimmer-text" data-aos="fade-up" data-aos-offset="300">Oferta especial de otoño/invierno ¡30% OFF!</h3>
             </div>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <a href="#project-1" class="block w-full h-full open-modal" data-previous-section="proyectos">
