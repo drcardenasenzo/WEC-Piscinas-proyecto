@@ -72,7 +72,7 @@
         /* Swiper Hero styles (main carousel) - Desktop Default */
         .swiper-container-hero {
             width: 100%;
-            height: 110vh; /* CAMBIO SOLICITADO: Ajustado a 110vh para desktop */
+            height: 100vh; /* CAMBIO SOLICITADO: Ajustado a 100vh para desktop */
             overflow: hidden;
         }
         .swiper-container-hero .swiper-slide {
@@ -199,7 +199,7 @@
         }
         .modal-project.active, .modal-terms.active { display: block; }
 
-        #main-page-header { /* ID CHANGED from #header */
+        #header {
             background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 50;
             position: fixed; width: 100%;
             height: var(--header-height-desktop, 80px); /* Desktop height */
@@ -207,30 +207,30 @@
             top: var(--announcement-bar-height, 24px); /* Position below announcement bar */
         }
         @media (max-width: 767px) { /* Mobile header sizing and positioning */
-            #main-page-header { /* ID CHANGED from #header */
+            #header {
                 --header-height-mobile: 70px; /* Nueva altura reducida para móvil */
                 height: var(--header-height-mobile);
                 min-height: var(--header-height-mobile);
                 top: var(--announcement-bar-height, 18px); /* Position below announcement bar */
             }
-            #main-page-header .flex { /* SELECTOR CHANGED */
+            #header .flex { /* Adjust padding for new height */
                 padding: 0.25rem 0; /* Reducir padding vertical */
                 align-items: center;
             }
-            #main-page-header .flex-shrink-0 { /* SELECTOR CHANGED */
+            #header .flex-shrink-0 { /* Logo */
                  margin-left: 0.75rem;
             }
-            #main-page-header .flex-shrink-0 a { /* SELECTOR CHANGED */
+            #header .flex-shrink-0 a { /* Logo text size */
                 font-size: 1.5rem; /* Ajustar si es necesario para que quepa */
             }
-            #main-page-header .hamburger { /* SELECTOR CHANGED */
+            #header .hamburger { /* Hamburger icon */
                 margin-right: 0.75rem; /* Ajustar margen */
             }
             #contacto .flex-col-reverse-mobile { flex-direction: column-reverse; }
         }
         
-        #main-page-header .container { padding-top: 0; padding-bottom: 0; height:100%;} /* SELECTOR CHANGED */
-        #main-page-header .flex { align-items: center; justify-content: space-between; height: 100%; gap: 0; } /* SELECTOR CHANGED */
+        #header .container { padding-top: 0; padding-bottom: 0; height:100%;} /* Ensure container takes full header height */
+        #header .flex { align-items: center; justify-content: space-between; height: 100%; gap: 0; }
 
         /* Modal Headers - ensure they use the correct heights */
         /* The header inside modal-project and modal-terms */
@@ -384,16 +384,16 @@
             text-align: center; line-height: 1; z-index: 30;
         }
         .scroll-indicator svg { /* Tamaño para pantallas móviles más grandes (481px a 767px) */
-            width: 2rem; /* CHANGED */
-            height: 2rem; /* CHANGED */
+            width: 3rem;
+            height: 3rem;
             margin-left: auto;
             margin-right: auto;
         }
         /* Tamaño para pantallas muy pequeñas (<= 480px) */
         @media (max-width: 480px) {
             .scroll-indicator svg {
-                width: 2.5rem; /* CHANGED */
-                height: 2.5rem; /* CHANGED */
+                width: 5rem;
+                height: 5rem;
             }
         }
 
@@ -412,12 +412,12 @@
             position: relative; display: inline-block; overflow: hidden;
             background: linear-gradient(to right, #FF6347 0%, #FFD700 20%, #FF6347 40%, #FF6347 100%);
             background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shimmer 10s infinite linear; margin-top: 1rem; margin-bottom: 2rem; /* CHANGED */
+            animation: shimmer 10s infinite linear; margin-top: 2.5rem; margin-bottom: 2rem;
         }
         /* CAMBIO: Reducir margin-top para shimmer-text en móvil */
         @media (max-width: 767px) {
             .shimmer-text {
-                margin-top: 0.5rem; /* Ajuste para acercar el texto en móvil */ /* CHANGED */
+                margin-top: 1rem; /* Ajuste para acercar el texto en móvil */
                 margin-bottom: 1rem; /* También reducir el margen inferior si es necesario */
             }
         }
@@ -454,7 +454,7 @@
                 /* The hero section itself starts after the fixed header */
                 margin-top: calc(var(--announcement-bar-h-mobile) + var(--header-h-mobile));
                 /* AJUSTE: Altura del carrusel para que las frases sean visibles en móvil */
-                height: calc(65vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* CHANGED */
+                height: calc(55vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile));
                 min-height: 200px; /* Ensure a minimum height */
             }
             section#inicio.swiper-container-hero .swiper-slide {
@@ -478,14 +478,11 @@
         /* CAMBIO ADICIONAL: Ajuste para pantallas aún más pequeñas (ej. 320px - 480px) */
         @media (max-width: 480px) {
             section#inicio.swiper-container-hero {
-                height: calc(65vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Mantener el cálculo para que se ajuste */ /* CHANGED */
+                height: calc(55vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Mantener el cálculo para que se ajuste */
             }
         }
         /* === END OF MOBILE INITIAL VIEW STYLES === */
 
-        #terms .prose p {
-            text-align: justify;
-        }
     </style>
 </head>
 <body class="bg-white overflow-x-hidden">
@@ -507,7 +504,7 @@
         </div>
     </div>
 
-    <header id="main-page-header"> <!-- ID CHANGED -->
+    <header id="header">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -583,7 +580,7 @@
 
     <section id="proyectos" class="py-16 md:py-24 noise-texture">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-6"> {/* CHANGED mb-12 to mb-6 */}
+            <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-4" data-aos="fade-up">Proyectos Que Inspiran</h2>
                 <p class="text-lg text-gray-600" data-aos="fade-up" data-aos-delay="100">Descubrí la calidad y el diseño en cada piscina que construimos.</p>
                 <h3 class="text-2xl md:text-3xl font-bold text-[#FF6347] shimmer-text" data-aos="fade-up" data-aos-offset="300">Oferta especial de otoño/invierno ¡30% OFF!</h3>
@@ -968,10 +965,9 @@
             window.addEventListener('resize', initializeProjectSwipers);
 
             // --- Mobile Menu ---
-            const mainPageHeaderEl = document.getElementById('main-page-header'); // JS VAR CHANGED
-            const mobileMenuButton = mainPageHeaderEl ? mainPageHeaderEl.querySelector('#mobile-menu-button') : null; // JS VAR CHANGED + Query from mainPageHeaderEl
-            const mobileMenu = mainPageHeaderEl ? mainPageHeaderEl.querySelector('#mobile-menu') : null; // JS VAR CHANGED + Query from mainPageHeaderEl
-            const allMobileMenuLinks = document.querySelectorAll('#main-page-header #mobile-menu a, .mobile-menu-modal a'); // JS SELECTOR CHANGED FOR MAIN HEADER
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const allMobileMenuLinks = document.querySelectorAll('#mobile-menu a, .mobile-menu-modal a');
 
             if (mobileMenuButton && mobileMenu) {
                 mobileMenuButton.addEventListener('click', (event) => {
@@ -993,9 +989,9 @@
                 });
             });
              function closeActiveMobileMenus() {
-                if (mobileMenu && mobileMenu.classList.contains('active')) { // mobileMenu here refers to the main page's mobile menu
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
                     mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('active');
-                    if (mobileMenuButton) mobileMenuButton.querySelector('.hamburger').classList.remove('open'); // mobileMenuButton is main page's button
+                    if (mobileMenuButton) mobileMenuButton.querySelector('.hamburger').classList.remove('open');
                 }
                 document.querySelectorAll('.mobile-menu-modal.active').forEach(modalM => {
                     modalM.classList.add('hidden'); modalM.classList.remove('active');
@@ -1010,12 +1006,9 @@
                 }
             });
             document.body.addEventListener('click', (event) => {
-                // Check for main mobile menu
-                if (mobileMenuButton && mobileMenu && mobileMenu.classList.contains('active') && 
-                    !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) { // JS CONDITION IMPROVED FOR MAIN MENU
+                if (mobileMenuButton && mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
                     closeActiveMobileMenus();
                 }
-                // Check for modal mobile menus (existing logic)
                 let clickedInsideModalMenu = false;
                 document.querySelectorAll('.mobile-menu-modal.active').forEach(modalM => {
                     const btn = modalM.closest('header').querySelector('.mobile-menu-button-modal');
@@ -1131,7 +1124,7 @@
             });
 
             // Smooth scroll for main page navigation links in header
-            document.querySelectorAll('#main-page-header nav a[href^="#"], #main-page-header .flex-shrink-0 a[href^="#"]').forEach(anchor => { // JS SELECTOR CHANGED
+            document.querySelectorAll('#header nav a[href^="#"], #header .flex-shrink-0 a[href^="#"]').forEach(anchor => {
                  anchor.addEventListener('click', function (e) {
                     // Check if the link is NOT for opening/closing a modal
                     if (!this.classList.contains('open-modal') && !this.classList.contains('open-terms') &&
