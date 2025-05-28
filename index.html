@@ -233,7 +233,9 @@
 
         .modal-project, .modal-terms {
             display: none; position: fixed; inset: 0; background-color: white;
-            z-index: 100; overflow-y: auto;
+            z-index: 100;
+            /* CAMBIO: Scrollbar siempre visible */
+            overflow-y: scroll;
             /* Modales comienzan justo debajo de la barra principal */
             top: calc(var(--announcement-bar-height, 24px) + var(--header-height-desktop, 80px));
             height: calc(100% - (var(--announcement-bar-height, 24px) + var(--header-height-desktop, 80px)));
@@ -369,6 +371,24 @@
             .btn-secondary { padding: 0.75rem 2rem; font-size: 0.875rem; }
             /* Ajuste de altura para el carrusel de proyectos en móvil */
             .swiper-container-project { max-width: 100%; height: auto; aspect-ratio: 4/3; max-height: 300px; }
+
+            /* Hide scrollbar on mobile devices for the body */
+            body {
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+            }
+            body::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera*/
+            }
+            /* Hide scrollbar for modals on mobile */
+            .modal-project, .modal-terms {
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+            }
+            .modal-project::-webkit-scrollbar,
+            .modal-terms::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera*/
+            }
         }
         @media (max-width: 639px) {
             html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
@@ -729,7 +749,7 @@
 
         <div class="modal-sticky-divider"></div>
 
-        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
+        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Rectangular 8x4m</h2>
             <div class="back-button-box mb-8"><a href="#proyectos" class="btn-primary close-modal" data-target-section="proyectos">Volver</a></div>
             <div class="swiper-container-project mb-8">
@@ -795,7 +815,7 @@
 
         <div class="modal-sticky-divider"></div>
 
-        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
+        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Diseño Libre con Desborde</h2>
             <div class="back-button-box mb-8"><a href="#proyectos" class="btn-primary close-modal" data-target-section="proyectos">Volver</a></div>
             <div class="swiper-container-project mb-8">
@@ -860,7 +880,7 @@
 
         <div class="modal-sticky-divider"></div>
 
-        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
+        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Minimalista 10x3m</h2>
             <div class="back-button-box mb-8"><a href="#proyectos" class="btn-primary close-modal" data-target-section="proyectos">Volver</a></div>
             <div class="swiper-container-project mb-8">
@@ -1015,7 +1035,7 @@
 
         <div class="modal-sticky-divider"></div>
 
-        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
+        <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8 text-center">Términos y Condiciones</h2>
             <div class="back-button-box mb-8"><a href="#" class="btn-primary close-terms" data-target-section="">Volver</a></div>
             <div class="prose max-w-none text-gray-600">
