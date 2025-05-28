@@ -503,13 +503,14 @@
                 margin-top: 0; /* Subir el título al inicio de la sección */
                 margin-bottom: 1rem; /* Give a bit more space below the title/subtitle block */
             }
+            /* Reintroducing specific font-size overrides for h2 and p to ensure consistency on mobile */
             section#proyectos > .container > .text-center:first-child > h2[data-aos="fade-up"] {
-                margin-bottom: 0.5rem; /* Slightly more space below h2 */
-                font-size: 1.75rem; /* Slightly larger font size for h2 */
+                margin-bottom: 0.5rem;
+                font-size: 1.75rem; /* Explicitly set font size for h2 on mobile */
             }
             section#proyectos > .container > .text-center:first-child > p[data-aos="fade-up"] {
-                font-size: 1rem; /* Standard font size for p */
-                margin-bottom: 0.5rem; /* Ensure some space below p */
+                font-size: 1rem; /* Explicitly set font size for p on mobile */
+                margin-bottom: 0.5rem;
             }
         }
         /* CAMBIO ADICIONAL: Ajuste para pantallas aún más pequeñas (ej. 320px - 480px) */
@@ -640,9 +641,9 @@
     <section id="proyectos" class="py-16 md:py-24 noise-texture">
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-4" data-aos="fade-up">Proyectos Que Inspiran</h2>
-                <p class="text-lg text-gray-600" data-aos="fade-up" data-aos-delay="100">Descubrí la calidad y el diseño en cada piscina que construimos.</p>
-                <h3 class="text-2xl md:text-3xl font-bold text-[#FF6347] shimmer-text" data-aos="fade-up" data-aos-offset="300">Oferta especial de otoño/invierno ¡30% OFF!</h3>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-4" data-aos="fade-up" data-aos-offset="50">Proyectos Que Inspiran</h2>
+                <p class="text-lg text-gray-600" data-aos="fade-up" data-aos-delay="100" data-aos-offset="50">Descubrí la calidad y el diseño en cada piscina que construimos.</p>
+                <h3 class="text-2xl md:text-3xl font-bold text-[#FF6347] shimmer-text" data-aos="fade-up" data-aos-offset="150">Oferta especial de otoño/invierno ¡30% OFF!</h3>
             </div>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <a href="#project-1" class="block w-full h-full open-modal" data-previous-section="proyectos">
