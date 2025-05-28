@@ -466,19 +466,20 @@
 
             section#proyectos {
                 /* Eliminar el espacio extra y subir los títulos */
-                padding-top: 1rem; /* Pequeño padding para separación visual del carrusel */
+                padding-top: 2rem; /* Increased padding to give more space from the carousel */
                 margin-top: 0; /* Asegura que la sección de proyectos fluya directamente después de la sección de inicio */
             }
             section#proyectos > .container > .text-center:first-child {
                 margin-top: 0; /* Subir el título al inicio de la sección */
-                margin-bottom: 0.5rem; /* Mantener un pequeño margen debajo del título */
+                margin-bottom: 1rem; /* Give a bit more space below the title/subtitle block */
             }
             section#proyectos > .container > .text-center:first-child > h2[data-aos="fade-up"] {
-                margin-bottom: 0.25rem; /* Reduce margin below h2 */
-                font-size: 1.5rem; /* Adjust font size if needed */
+                margin-bottom: 0.5rem; /* Slightly more space below h2 */
+                font-size: 1.75rem; /* Slightly larger font size for h2 */
             }
             section#proyectos > .container > .text-center:first-child > p[data-aos="fade-up"] {
-                font-size: 0.9rem; /* Adjust font size if needed */
+                font-size: 1rem; /* Standard font size for p */
+                margin-bottom: 0.5rem; /* Ensure some space below p */
             }
         }
         /* CAMBIO ADICIONAL: Ajuste para pantallas aún más pequeñas (ej. 320px - 480px) */
@@ -488,7 +489,28 @@
                 min-height: 200px; /* Aumentado a 200px */
             }
         }
-        /* === END OF MOBILE INITIAL VIEW STYLES === */
+
+        /* === AJUSTES ESPECÍFICOS PARA MÓVILES DE 667PX DE ALTO O MENOS === */
+        @media (max-height: 667px) and (max-width: 767px) {
+            section#inicio.swiper-container-hero {
+                height: calc(55vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Reducido a 55vh */
+                min-height: 200px; /* Reducido a 200px */
+            }
+            section#proyectos {
+                padding-top: 0.5rem; /* Reducir el padding superior de la sección de proyectos */
+            }
+            section#proyectos > .container > .text-center:first-child {
+                margin-bottom: 0.5rem; /* Reducir el margen inferior del bloque de texto */
+            }
+            section#proyectos > .container > .text-center:first-child > p[data-aos="fade-up"] {
+                margin-bottom: 0.25rem; /* Reducir aún más el margen inferior del párrafo "Descubrí..." */
+            }
+            .shimmer-text {
+                margin-top: 0.5rem; /* Reducir el margen superior del texto con efecto shimmer */
+                margin-bottom: 0.5rem; /* Reducir el margen inferior del texto con efecto shimmer */
+            }
+        }
+        /* === FIN DE AJUSTES ESPECÍFICOS === */
 
     </style>
 </head>
@@ -1001,10 +1023,10 @@
                     if (mobileMenuButton) mobileMenuButton.querySelector('.hamburger').classList.remove('open');
                 }
                 document.querySelectorAll('.mobile-menu-modal.active').forEach(modalM => {
-                    modalM.classList.add('hidden'); modalM.classList.remove('active');
-                    const ham = modalM.closest('header').querySelector('.hamburger');
-                    if (ham) ham.classList.remove('open');
+                    const btn = modalM.closest('header').querySelector('.mobile-menu-button-modal');
+                    if (modalM.contains(event.target) || (btn && btn.contains(event.target))) clickedInsideModalMenu = true;
                 });
+                if (!clickedInsideModalMenu && document.querySelector('.mobile-menu-modal.active')) closeActiveMobileMenus();
             }
             allMobileMenuLinks.forEach(link => {
                 // Add class 'close-menu-link' to links that should close the menu
