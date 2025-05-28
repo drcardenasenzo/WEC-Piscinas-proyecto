@@ -1106,7 +1106,10 @@
                     const sectionElement = document.getElementById(hashToRestore.substring(1));
                     if (sectionElement) {
                          const scrollPaddingTop = parseFloat(window.getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-                         window.scrollTo({ top: sectionElement.offsetTop - scrollPaddingTop, behavior: 'smooth' });
+                         window.scrollTo({
+                                top: targetElement.offsetTop - scrollPaddingTop,
+                                behavior: 'smooth'
+                            });
                     }
                 }
                 AOS.refresh();
