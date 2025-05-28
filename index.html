@@ -180,6 +180,36 @@
         @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0); } }
         .whatsapp-float { animation: float 3s ease-in-out infinite; }
 
+        /* Estilos específicos para el botón de WhatsApp flotante */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: transparent; /* Fondo transparente */
+            padding: 0; /* Eliminar padding */
+            border-radius: 50%; /* Mantener la forma circular si la imagen es cuadrada */
+            box-shadow: none; /* Eliminar sombra predeterminada */
+            transition: transform 0.3s ease-in-out;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px; /* Tamaño del botón aumentado */
+            height: 70px; /* Tamaño del botón aumentado */
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1); /* Efecto de escala al pasar el ratón */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra al pasar el ratón */
+        }
+
+        .whatsapp-float img {
+            width: 100%; /* La imagen ocupa todo el ancho del contenedor */
+            height: 100%; /* La imagen ocupa toda la altura del contenedor */
+            object-fit: contain; /* Ajustar la imagen sin recortar, manteniendo su relación de aspecto */
+            border-radius: 50%; /* Asegurar que la imagen sea circular si es necesario */
+        }
+
         .announcement-bar {
             background-color: #1E90FF; color: white; font-size: 0.75rem; font-weight: 600;
             text-align: center; padding: 0.25rem 0; line-height: 1; overflow: hidden;
@@ -737,7 +767,9 @@
         </div>
         <footer class="bg-[#1E90FF] text-white"> <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center"><p class="mb-2">© <span id="currentYearFooter1"></span> WEC Piscinas. Todos los derechos reservados.</p><p class="text-sm text-blue-200"><a href="#terms" class="hover:text-white transition-colors open-terms" data-previous-section="project-1">Términos y Condiciones</a></p></div>
         </footer>
-        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"><span>WhatsApp</span></a>
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="whatsapp-float">
+            <img src="whatsapp.jpg" alt="WhatsApp Icon" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
+        </a>
     </section>
 
     <section id="project-2" class="modal-project">
@@ -770,7 +802,9 @@
             <div class="text-center my-12"><a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">Escribinos que cotizamos la piscina de tus sueños</a></div>
         </div>
         <footer class="bg-[#1E90FF] text-white"><div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center"><p class="mb-2">© <span id="currentYearFooter2"></span> WEC Piscinas. Todos los derechos reservados.</p><p class="text-sm text-blue-200"><a href="#terms" class="hover:text-white transition-colors open-terms" data-previous-section="project-2">Términos y Condiciones</a></p></div></footer>
-        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"><span>WhatsApp</span></a>
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="whatsapp-float">
+            <img src="whatsapp.jpg" alt="WhatsApp Icon" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
+        </a>
     </section>
 
     <section id="project-3" class="modal-project">
@@ -803,7 +837,9 @@
             <div class="text-center my-12"><a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="text-[#1E90FF] hover:text-[#00BFFF] text-lg font-semibold transition-colors">Escribinos que cotizamos la piscina de tus sueños</a></div>
         </div>
         <footer class="bg-[#1E90FF] text-white"><div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center"><p class="mb-2">© <span id="currentYearFooter3"></span> WEC Piscinas. Todos los derechos reservados.</p><p class="text-sm text-blue-200"><a href="#terms" class="hover:text-white transition-colors open-terms" data-previous-section="project-3">Términos y Condiciones</a></p></div></footer>
-        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"><span>WhatsApp</span></a>
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="whatsapp-float">
+            <img src="whatsapp.jpg" alt="WhatsApp Icon" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
+        </a>
     </section>
 
     <section id="como-trabajamos" class="py-16 md:py-24 bg-white">
@@ -880,7 +916,10 @@
                     <h3 class="text-2xl font-semibold text-[#1E90FF] mb-6 text-center">Datos de Contacto</h3>
                     <p class="text-gray-600 mb-6 text-center text-lg"><a href="tel:+541112345678" class="hover:text-[#00BFFF] transition-colors">Teléfono: (011) 1234-5678</a></p>
                     <p class="text-gray-600 mb-6 text-center text-lg"><a href="mailto:info@wecpiscinas.com" class="hover:text-[#00BFFF] transition-colors">Email: info@wecpiscinas.com</a></p>
-                    <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="inline-flex items-center justify-center bg-green-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 hover:scale-105 transition-all duration-300 ease-in-out mx-auto whatsapp-float">Chateá por WhatsApp</a>
+                    <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" class="inline-flex items-center justify-center bg-green-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 hover:scale-105 transition-all duration-300 ease-in-out mx-auto">
+                        <img src="whatsapp.jpg" alt="WhatsApp Icon" class="w-6 h-6 mr-2" onerror="this.src='https://placehold.co/24x24/25D366/FFFFFF?text=WA'">
+                        Chateá por WhatsApp
+                    </a>
                 </div>
             </div>
         </div>
@@ -944,13 +983,15 @@
             </div>
         </div>
         <footer class="bg-[#1E90FF] text-white"><div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 text-center"><p class="mb-2">© <span id="currentYearTerms"></span> WEC Piscinas. Todos los derechos reservados.</p><p class="text-sm text-blue-200"><a href="#terms" class="hover:text-white transition-colors open-terms" data-previous-section="terms">Términos y Condiciones</a></p></div></footer>
-        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"><span>WhatsApp</span></a>
+        <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%A1a%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="whatsapp-float">
+            <img src="whatsapp.jpg" alt="WhatsApp Icon" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
+        </a>
     </section>
 
     <a href="https://wa.me/NUMERODETUTELEFONO?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n." target="_blank"
-       class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-xl hover:bg-green-600 hover:scale-110 transition-all duration-300 ease-in-out z-40 flex items-center whatsapp-float"
+       class="whatsapp-float"
        data-aos="fade-left" data-aos-offset="0" data-aos-delay="1000">
-        <span>WhatsApp</span>
+        <img src="whatsapp.jpg" alt="WhatsApp Icon" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
     </a>
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
