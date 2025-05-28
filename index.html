@@ -501,7 +501,7 @@
             }
             section#proyectos > .container > .text-center:first-child {
                 margin-top: 0; /* Subir el título al inicio de la sección */
-                margin-bottom: 1rem; /* Give a bit more space below the title/subtitle block */
+                margin-bottom: 0.5rem !important; /* Reduced space below the title/subtitle block */
             }
             /* Reintroducing specific font-size overrides for h2 and p to ensure consistency on mobile */
             section#proyectos > .container > .text-center:first-child > h2[data-aos="fade-up"] {
@@ -518,6 +518,14 @@
             section#inicio.swiper-container-hero {
                 height: calc(65vh - var(--announcement-bar-h-mobile) - var(--header-h-mobile)); /* Aumentado a 65vh */
                 min-height: 200px; /* Aumentado a 200px */
+            }
+            /* Ajuste específico para que "Proyectos Que Inspiran" entre en una sola línea */
+            section#proyectos > .container > .text-center:first-child > h2[data-aos="fade-up"] {
+                font-size: 1.5rem; /* Further reduce font size for very small screens */
+                line-height: 1.2; /* Adjust line height if needed */
+            }
+            section#proyectos > .container > .text-center:first-child > p[data-aos="fade-up"] {
+                font-size: 0.9rem; /* Further reduce font size for very small screens */
             }
         }
 
