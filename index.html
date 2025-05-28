@@ -20,8 +20,16 @@
     <style>
         /* Base styles for body and headings */
         html {
-            scroll-padding-top: 70px; /* Ajustado para nueva altura de header móvil */
+            scroll-behavior: smooth;
+            /* Dynamic scroll-padding-top based on header and announcement bar heights */
+            scroll-padding-top: calc(var(--announcement-bar-height, 24px) + var(--header-height-desktop, 80px) + 10px); /* +10px for a little extra space */
         }
+        @media (max-width: 767px) {
+            html {
+                scroll-padding-top: calc(var(--announcement-bar-height, 18px) + var(--header-height-mobile, 70px) + 10px);
+            }
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             color: #4A4A4A;
@@ -226,9 +234,19 @@
         .modal-project, .modal-terms {
             display: none; position: fixed; inset: 0; background-color: white;
             z-index: 100; overflow-y: auto;
+            /* Modales comienzan justo debajo de la barra principal */
+            top: calc(var(--announcement-bar-height, 24px) + var(--header-height-desktop, 80px));
+            height: calc(100% - (var(--announcement-bar-height, 24px) + var(--header-height-desktop, 80px)));
+        }
+        @media (max-width: 767px) {
+            .modal-project, .modal-terms {
+                top: calc(var(--announcement-bar-height, 18px) + var(--header-height-mobile, 70px));
+                height: calc(100% - (var(--announcement-bar-height, 18px) + var(--header-height-mobile, 70px)));
+            }
         }
         .modal-project.active, .modal-terms.active { display: block; }
 
+        /* Default Header Styles (Desktop) */
         #header {
             background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 50;
             position: fixed; width: 100%;
@@ -236,7 +254,11 @@
             min-height: var(--header-height-desktop, 80px);
             top: var(--announcement-bar-height, 24px); /* Position below announcement bar */
         }
-        @media (max-width: 767px) { /* Mobile header sizing and positioning */
+        #header .container { padding-top: 0; padding-bottom: 0; height:100%;} /* Ensure container takes full header height */
+        #header .flex { align-items: center; justify-content: space-between; height: 100%; gap: 0; }
+
+        /* Mobile header sizing and positioning for main header */
+        @media (max-width: 767px) {
             #header {
                 --header-height-mobile: 70px; /* Nueva altura reducida para móvil */
                 height: var(--header-height-mobile);
@@ -258,76 +280,36 @@
             }
             #contacto .flex-col-reverse-mobile { flex-direction: column-reverse; }
         }
-        
-        #header .container { padding-top: 0; padding-bottom: 0; height:100%;} /* Ensure container takes full header height */
-        #header .flex { align-items: center; justify-content: space-between; height: 100%; gap: 0; }
 
-        /* Modal Headers - ensure they use the correct heights */
-        /* The header inside modal-project and modal-terms */
+        /* Modal Headers - default desktop styles */
+        /* Eliminadas las barras de anuncios y de menú dentro de los modales */
         .modal-project header, .modal-terms header {
-            height: var(--header-height-desktop, 80px); /* Default for desktop in modals */
-            min-height: var(--header-height-desktop, 80px);
-            top: var(--announcement-bar-height, 24px);
+            display: none; /* Oculta el header dentro de los modales */
         }
-        /* Ensure content within modal header is vertically centered for PC */
-        .modal-project header .container,
-        .modal-terms header .container {
-            height: 100%; /* Ensure container takes full header height */
-            display: flex; /* Make it a flex container */
-            align-items: center; /* Vertically align items */
-            justify-content: space-between; /* Distribute items */
-            padding-top: 0; /* Remove any top padding that might push content down */
-            padding-bottom: 0; /* Remove any bottom padding */
+        /* Elimina la barra de anuncios dentro de los modales */
+        .modal-project .announcement-bar, .modal-terms .announcement-bar {
+            display: none;
         }
 
-        /* Ensure logo and hamburger/nav in modals match main header's appearance */
-        /* For desktop, text-3xl is 1.875rem. No explicit font-size needed here if text-3xl is in HTML. */
-        /* Removed the font-size: 2.5rem; override for desktop modals that was causing inconsistency */
-
-        /* Apply mobile specific styles from main header to modal headers */
-        @media (max-width: 767px) {
-            .modal-project header .flex,
-            .modal-terms header .flex {
-                padding: 0.25rem 0; /* Match main header's mobile padding */
-            }
-            .modal-project header .flex-shrink-0 {
-                margin-left: 0.75rem; /* Match main header's mobile margin */
-            }
-            .modal-project header .hamburger,
-            .modal-terms header .hamburger {
-                margin-right: 0.75rem; /* Match main header's mobile margin */
-            }
-            .modal-project header .flex-shrink-0 a,
-            .modal-terms header .flex-shrink-0 a {
-                font-size: 1.5rem; /* Match main header's mobile logo size */
-            }
+        /* Nueva línea divisoria sticky para los modales */
+        .modal-sticky-divider {
+            width: 100%;
+            height: 1px; /* Altura de la línea */
+            background-color: #e0e0e0; /* Color de la línea */
+            position: sticky; /* Hace que se pegue a la parte superior al hacer scroll */
+            top: 0; /* Se pega al top del contenedor scrollable */
+            z-index: 10; /* Asegura que esté por encima del contenido del modal */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Sombra sutil para definición */
         }
 
-        /* Desktop specific resets for modal headers, matching main header */
-        @media (min-width: 768px) {
-            .modal-project header .flex-shrink-0,
-            .modal-terms header .flex-shrink-0 {
-                margin-left: 0; /* Reset for desktop to match main header */
-            }
-            .modal-project header .hamburger,
-            .modal-terms header .hamburger {
-                margin-right: 0; /* Reset for desktop */
-            }
-            /* Ensure desktop nav links also match main header's nav links */
-            .modal-project header nav a,
-            .modal-terms header nav a {
-                /* These are already defined in main header nav, no need to redefine unless there's an issue */
-                /* text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium */
-            }
-        }
-
-        /* Adjust padding for modal content based on new header height */
+        /* Ajustar padding para el contenido del modal después de la nueva línea divisoria */
         .modal-project .container, .modal-terms .container {
-            padding-top: calc(var(--announcement-bar-height, 18px) + var(--header-height-mobile, 70px) + 20px); /* Updated padding for mobile */
+            padding-top: 20px; /* Espaciado después de la línea sticky */
+            /* Eliminado el border-top de aquí, ahora lo maneja .modal-sticky-divider */
         }
         @media (min-width: 768px) {
             .modal-project .container, .modal-terms .container {
-                padding-top: calc(var(--announcement-bar-height, 24px) + var(--header-height-desktop, 80px) + 20px); /* Updated padding for desktop */
+                padding-top: 20px; /* Espaciado consistente para escritorio */
             }
         }
 
@@ -613,7 +595,7 @@
         <div class="swiper-wrapper">
             <div class="swiper-slide" style="background-image:url('foto1.jpg')">
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-end md:pb-24" data-aos="fade-up">
+                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-center md:pt-24" data-aos="fade-up">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">WEC Piscinas</h1>
                     <p class="text-xl sm:text-2xl md:text-3xl mb-8 text-shadow-custom">Construimos la piscina de tus sueños</p>
                     <a href="#contacto" class="btn-primary text-lg">Cotizá tu piscina ahora</a>
@@ -621,7 +603,7 @@
             </div>
             <div class="swiper-slide" style="background-image:url('foto2.jpg')">
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-end md:pb-24">
+                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-center md:pt-24">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">Calidad y Diseño</h1>
                     <p class="text-xl sm:text-2xl mb-8 text-shadow-custom">Innovación en cada proyecto que realizamos.</p>
                     <a href="#proyectos" class="btn-primary text-lg">Ver Proyectos</a>
@@ -629,7 +611,7 @@
             </div>
             <div class="swiper-slide" style="background-image:url('foto3.jpg')">
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-end md:pb-24">
+                <div class="relative z-10 text-center text-white p-4 flex flex-col justify-center items-center h-full md:justify-center md:pt-24">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-shadow-custom">Tu Oasis Personal</h1>
                     <p class="text-xl sm:text-2xl md:text-3xl mb-8 text-shadow-custom">Transformamos tu espacio exterior.</p>
                     <a href="#contacto" class="btn-primary text-lg">Contactanos</a>
@@ -710,44 +692,43 @@
     </section>
 
     <section id="project-1" class="modal-project">
-        <div class="announcement-bar">
+        <div class="announcement-bar" style="display:none;">
              <div class="announcement-text-wrapper">
                 <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
                 <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span>
             </div>
         </div>
-        <header class="fixed w-full z-50 bg-white shadow-md">
-            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-full">
-                    <div class="flex-shrink-0">
-                        <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a>
-                    </div>
-                    <div class="hidden md:block">
-                        <nav class="ml-10 flex items-center space-x-4">
-                            <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a>
-                            <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a>
-                            <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a>
-                            <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a>
-                            <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a>
-                        </nav>
-                    </div>
-                    <div class="md:hidden flex items-center">
-                        <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
-                            <div class="hamburger"><span></span><span></span><span></span></div>
-                        </button>
-                    </div>
-                </div>
+        <header class="fixed w-full z-50 bg-white shadow-md flex items-center justify-between px-4 sm:px-6 lg:px-8" style="display:none;">
+            <div class="flex-shrink-0">
+                <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a>
             </div>
-            <div class="md:hidden hidden mobile-menu-modal">
-                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a>
-                    <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a>
-                    <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a>
-                    <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a>
-                    <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a>
-                </div>
+            <div class="hidden md:block">
+                <nav class="ml-10 flex items-center space-x-4">
+                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a>
+                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a>
+                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a>
+                </nav>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
+                    <div class="hamburger"><span></span><span></span><span></span></div>
+                </button>
             </div>
         </header>
+        <div class="md:hidden hidden mobile-menu-modal" style="display:none;">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a>
+                <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a>
+                <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a>
+                <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a>
+                <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a>
+            </div>
+        </div>
+
+        <div class="modal-sticky-divider"></div>
+
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Rectangular 8x4m</h2>
             <div class="back-button-box mb-8"><a href="#proyectos" class="btn-primary close-modal" data-target-section="proyectos">Volver</a></div>
@@ -782,8 +763,38 @@
     </section>
 
     <section id="project-2" class="modal-project">
-        <div class="announcement-bar"><div class="announcement-text-wrapper"><span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span> <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span></div></div>
-        <header class="fixed w-full z-50 bg-white shadow-md"> <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-full"> <div class="flex-shrink-0"> <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a></div> <div class="hidden md:block"> <nav class="ml-10 flex items-center space-x-4"> <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a> <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a> <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a> <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a> </div> <div class="md:hidden flex items-center"> <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal"> <div class="hamburger"><span></span><span></span><span></span></div> </button> </div> </div> </div> <div class="md:hidden hidden mobile-menu-modal"> <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a> <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a> <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a> <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a> </div> </div> </header>
+        <div class="announcement-bar" style="display:none;"><div class="announcement-text-wrapper"><span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span> <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span></div></div>
+        <header class="fixed w-full z-50 bg-white shadow-md flex items-center justify-between px-4 sm:px-6 lg:px-8" style="display:none;">
+            <div class="flex-shrink-0">
+                <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a>
+            </div>
+            <div class="hidden md:block">
+                <nav class="ml-10 flex items-center space-x-4">
+                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a>
+                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a>
+                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a>
+                </nav>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
+                    <div class="hamburger"><span></span><span></span><span></span></div>
+                </button>
+            </div>
+        </header>
+        <div class="md:hidden hidden mobile-menu-modal" style="display:none;">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a>
+                <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a>
+                <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a>
+                <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a>
+                <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a>
+            </div>
+        </div>
+
+        <div class="modal-sticky-divider"></div>
+
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Diseño Libre con Desborde</h2>
             <div class="back-button-box mb-8"><a href="#proyectos" class="btn-primary close-modal" data-target-section="proyectos">Volver</a></div>
@@ -817,8 +828,38 @@
     </section>
 
     <section id="project-3" class="modal-project">
-        <div class="announcement-bar"><div class="announcement-text-wrapper"><span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span> <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span></div></div>
-        <header class="fixed w-full z-50 bg-white shadow-md"> <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-full"> <div class="flex-shrink-0"> <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a></div> <div class="hidden md:block"> <nav class="ml-10 flex items-center space-x-4"> <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a> <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a> <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a> <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a> </div> <div class="md:hidden flex items-center"> <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal"> <div class="hamburger"><span></span><span></span><span></span></div> </button> </div> </div> </div> <div class="md:hidden hidden mobile-menu-modal"> <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a> <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a> <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a> <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a> <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a> </div> </div> </header>
+        <div class="announcement-bar" style="display:none;"><div class="announcement-text-wrapper"><span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span> <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span></div></div>
+        <header class="fixed w-full z-50 bg-white shadow-md flex items-center justify-between px-4 sm:px-6 lg:px-8" style="display:none;">
+            <div class="flex-shrink-0">
+                <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a>
+            </div>
+            <div class="hidden md:block">
+                <nav class="ml-10 flex items-center space-x-4">
+                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a>
+                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a>
+                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a>
+                </nav>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
+                    <div class="hamburger"><span></span><span></span><span></span></div>
+                </button>
+            </div>
+        </header>
+        <div class="md:hidden hidden mobile-menu-modal" style="display:none;">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a>
+                <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a>
+                <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a>
+                <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a>
+                <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a>
+            </div>
+        </div>
+
+        <div class="modal-sticky-divider"></div>
+
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8">Piscina Minimalista 10x3m</h2>
             <div class="back-button-box mb-8"><a href="#proyectos" class="btn-primary close-modal" data-target-section="proyectos">Volver</a></div>
@@ -886,7 +927,7 @@
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="200"><div class="faq-question">¿Qué tipo de piscinas construyen?</div><div class="faq-answer">Nos especializamos en piscinas de hormigón armado, lo que nos permite ofrecer diseños personalizados y la máxima durabilidad. También trabajamos con revestimientos de venecitas, cerámicos y otros materiales a elección del cliente.</div></div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="300"><div class="faq-question">¿Cómo es el proceso de diseño y cotización?</div><div class="faq-answer">Comenzamos con una visita a tu propiedad para evaluar el espacio y entender tus ideas. Luego, te presentamos un diseño 3D y un presupuesto detallado sin compromiso, ajustado a tus necesidades y preferencias.</div></div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="400"><div class="faq-question">¿Ofrecen servicios de mantenimiento o post-venta?</div><div class="faq-answer">Sí, ofrecemos servicios de mantenimiento y asesoramiento post-venta para asegurar que tu piscina se mantenga en óptimas condiciones. También brindamos garantía sobre la estructura y los equipos instalados.</div></div>
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="500"><div class="faq-question">¿Qué duración tiene la construcción de una piscina?</div><div class="faq-answer">El tiempo de construcción varía según el tamaño y la complejidad del diseño, pero en promedio, una piscina residencial estándar puede estar lista en 4 a 8 semanas desde el inicio de la obra.</div></div>
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="500"><div class="faq-answer">El tiempo de construcción varía según el tamaño y la complejidad del diseño, pero en promedio, una piscina residencial estándar puede estar lista en 4 a 8 semanas desde el inicio de la obra.</div></div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="600"><div class="faq-question">¿Puedo añadir accesorios o características especiales a mi piscina?</div><div class="faq-answer">¡Claro que sí! Podemos integrar una variedad de accesorios como sistemas de climatización, iluminación LED, cascadas, hidromasajes, soláriums húmedos y sistemas de nado contracorriente para hacer tu piscina aún más única.</div></div>
             </div>
         </div>
@@ -942,52 +983,51 @@
     </footer>
 
     <section id="terms" class="modal-terms">
-        <div class="announcement-bar"><div class="announcement-text-wrapper"><span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span> <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span></div></div>
-        <header class="fixed w-full z-50 bg-white shadow-md">
-            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-full">
-                    <div class="flex-shrink-0">
-                        <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a>
-                    </div>
-                    <div class="hidden md:block">
-                        <nav class="ml-10 flex items-center space-x-4">
-                            <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a>
-                            <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a>
-                            <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a>
-                            <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a>
-                            <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a>
-                        </nav>
-                    </div>
-                    <div class="md:hidden flex items-center">
-                        <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
-                            <div class="hamburger"><span></span><span></span><span></span></div>
-                        </button>
-                    </div>
-                </div>
+        <div class="announcement-bar" style="display:none;"><div class="announcement-text-wrapper"><span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span> <span class="marquee-phrase">METRO CUADRADO DESDE USD$ 200</span> <span class="marquee-phrase">ESCRIBINOS AL WHATSAPP SIN COMPROMISO</span> <span class="marquee-phrase">MÁS DE 10 AÑOS DE EXPERIENCIA HACIENDO PISCINAS</span></div></div>
+        <header class="fixed w-full z-50 bg-white shadow-md flex items-center justify-between px-4 sm:px-6 lg:px-8" style="display:none;">
+            <div class="flex-shrink-0">
+                <a href="#inicio" class="text-3xl font-bold text-[#1E90FF] close-modal-to-main">WEC Piscinas</a>
             </div>
-            <div class="md:hidden hidden mobile-menu-modal">
-                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a>
-                    <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a>
-                    <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a>
-                    <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a>
-                    <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a>
-                </div>
+            <div class="hidden md:block">
+                <nav class="ml-10 flex items-center space-x-4">
+                    <a href="#inicio" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Inicio</a>
+                    <a href="#proyectos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Proyectos</a>
+                    <a href="#como-trabajamos" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Cómo Trabajamos</a>
+                    <a href="#sobre-nosotros" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Sobre Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-[#00BFFF] px-3 py-2 rounded-md text-md font-medium close-modal-to-main">Contacto</a>
+                </nav>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#00BFFF] focus:outline-none mobile-menu-button-modal">
+                    <div class="hamburger"><span></span><span></span><span></span></div>
+                </button>
             </div>
         </header>
+        <div class="md:hidden hidden mobile-menu-modal" style="display:none;">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Inicio</a>
+                <a href="#proyectos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Proyectos</a>
+                <a href="#como-trabajamos" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Cómo Trabajamos</a>
+                <a href="#sobre-nosotros" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Sobre Nosotros</a>
+                <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium close-modal-to-main close-menu-link">Contacto</a>
+            </div>
+        </div>
+
+        <div class="modal-sticky-divider"></div>
+
         <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-[#1E90FF] mb-8 text-center">Términos y Condiciones</h2>
             <div class="back-button-box mb-8"><a href="#" class="btn-primary close-terms" data-target-section="">Volver</a></div>
             <div class="prose max-w-none text-gray-600">
                 <p class="mb-4">Bienvenido(a) a WEC Piscinas. Al utilizar nuestros servicios o navegar por nuestro sitio web, usted acepta los siguientes términos y condiciones que rigen la relación entre WEC Piscinas y sus clientes. Le recomendamos leer detenidamente este documento antes de proceder con cualquier solicitud, cotización o contratación de nuestros servicios.</p>
                 <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">1. Generalidades</h3> <p class="mb-4">WEC Piscinas es una empresa dedicada a la construcción y diseño de piscinas de alta calidad, operando principalmente en la Ciudad Autónoma de Buenos Aires (CABA) y Gran Buenos Aires. Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento, notificando a nuestros usuarios a través de nuestro sitio web. El uso continuado de nuestros servicios tras dichas modificaciones implica la aceptación de los nuevos términos.</p>
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">2. Servicios y Contratación</h3> <p class="mb-4">Los servicios de WEC Piscinas incluyen, pero no se limitan a, el diseño, excavación, construcción, instalación de sistemas de filtrado e iluminación, y entrega final de piscinas de material. Cada proyecto requiere una cotización personalizada, la cual será válida por un período de 30 días calendario a partir de su emisión. Para iniciar cualquier proyecto, se requiere la aceptación escrita del presupuesto y el pago de un anticipo del 40% del monto total acordado.</p> <p class="mb-4">Nos comprometemos a ejecutar los trabajos conforme a los estándares de calidad y seguridad establecidos por la normativa vigente. Sin embargo, los plazos de entrega pueden variar debido a factores externos como condiciones climáticas, disponibilidad de materiales o permisos municipales, los cuales serán comunicados al cliente de manera oportuna.</p>
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">3. Pagos y Cancelaciones</h3> <p class="mb-4">Los pagos deberán realizarse según el cronograma establecido en el contrato, el cual incluirá un anticipo inicial, pagos parciales durante la ejecución del proyecto y un saldo final al momento de la entrega. Aceptamos pagos mediante transferencia bancaria, efectivo o tarjetas de crédito, según disponibilidad y previo acuerdo. En caso de retrasos en los pagos, WEC Piscinas se reserva el derecho de suspender los trabajos hasta regularizar la situación.</p> <p class="mb-4">Si el cliente decide cancelar el proyecto una vez iniciado, el anticipo no será reembolsable, y se facturarán los costos incurridos hasta la fecha de cancelación, incluyendo materiales adquiridos y horas de trabajo realizadas. Las cancelaciones deben notificarse por escrito con un mínimo de 15 días de aviso.</p>
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">4. Garantías y Responsabilidad</h3> <p class="mb-4">WEC Piscinas ofrece una garantía de 10 años sobre la estructura de la piscina y 2 años sobre los sistemas de filtrado e iluminación, siempre que se cumplan las condiciones de mantenimiento recomendadas. Esta garantía cubre defectos de fabricación y construcción, pero no incluye daños causados por mal uso, falta de mantenimiento, desastres naturales o modificaciones no autorizadas por WEC Piscinas.</p> <p class="mb-4">El cliente será responsable de obtener los permisos municipales necesarios para la construcción de la piscina, así como de garantizar el acceso al terreno para nuestro equipo y maquinaria. WEC Piscinas no se hace responsable por daños a terceros o al terreno causados por condiciones preexistentes no informadas por el cliente.</p>
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">5. Propiedad Intelectual</h3> <p class="mb-4">Todos los diseños, planos y materiales promocionales creados por WEC Piscinas son propiedad intelectual de la empresa y no pueden ser reproducidos, distribuidos o utilizados sin nuestro consentimiento expreso. Las imágenes de nuestros proyectos publicadas en este sitio web tienen fines ilustrativos y no pueden ser utilizadas para otros fines sin autorización.</p>
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">6. Privacidad</h3> <p class="mb-4">En WEC Piscinas, nos comprometemos a proteger su privacidad. La información personal que nos proporcione, como su nombre, dirección, número de teléfono y correo electrónico, será utilizada únicamente para procesar su solicitud, cotización o proyecto, y no será compartida con terceros sin su consentimiento, salvo que sea requerido por la ley. Para más información sobre cómo manejamos sus datos, puede contactarnos directamente.</p>
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">7. Ley Aplicable y Jurisdicción</h3> <p class="mb-4">Estos términos y condiciones se rigen por las leyes de la República Argentina. Cualquier disputa que surja en relación con nuestros servicios será sometida a la jurisdicción de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires, renunciando expresamente a cualquier otro fuero o jurisdicción que pudiera corresponder.</p>
-                <h3 class="text-2xl font-semibold text-[#1E90FF] mb-4">8. Contacto</h3> <p class="mb-4">Si tienes alguna pregunta sobre estos términos y condiciones, no dudes en contactarnos a través de nuestro correo electrónico <a href="mailto:info@wecpiscinas.com" class="text-[#1E90FF] hover:text-[#00BFFF] transition-colors">info@wecpiscinas.com</a> o por teléfono al <a href="tel:+541112345678" class="text-[#1E90FF] hover:text-[#00BFFF] transition-colors">(011) 1234-5678</a>. También puedes escribirnos directamente por WhatsApp haciendo clic en el botón de contacto.</p>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">2. Servicios y Contratación</h3> <p class="mb-4">Los servicios de WEC Piscinas incluyen, pero no se limitan a, el diseño, excavación, construcción, instalación de sistemas de filtrado e iluminación, y entrega final de piscinas de material. Cada proyecto requiere una cotización personalizada, la cual será válida por un período de 30 días calendario a partir de su emisión. Para iniciar cualquier proyecto, se requiere la aceptación escrita del presupuesto y el pago de un anticipo del 40% del monto total acordado.</p> <p class="mb-4">Nos comprometemos a ejecutar los trabajos conforme a los estándares de calidad y seguridad establecidos por la normativa vigente. Sin embargo, los plazos de entrega pueden variar debido a factores externos como condiciones climáticas, disponibilidad de materiales o permisos municipales, los cuales serán comunicados al cliente de manera oportuna.</p>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">3. Pagos y Cancelaciones</h3> <p class="mb-4">Los pagos deberán realizarse según el cronograma establecido en el contrato, el cual incluirá un anticipo inicial, pagos parciales durante la ejecución del proyecto y un saldo final al momento de la entrega. Aceptamos pagos mediante transferencia bancaria, efectivo o tarjetas de crédito, según disponibilidad y previo acuerdo. En caso de retrasos en los pagos, WEC Piscinas se reserva el derecho de suspender los trabajos hasta regularizar la situación.</p> <p class="mb-4">Si el cliente decide cancelar el proyecto una vez iniciado, el anticipo no será reembolsable, y se facturarán los costos incurridos hasta la fecha de cancelación, incluyendo materiales adquiridos y horas de trabajo realizadas. Las cancelaciones deben notificarse por escrito con un mínimo de 15 días de aviso.</p>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">4. Garantías y Responsabilidad</h3> <p class="mb-4">WEC Piscinas ofrece una garantía de 10 años sobre la estructura de la piscina y 2 años sobre los sistemas de filtrado e iluminación, siempre que se cumplan las condiciones de mantenimiento recomendadas. Esta garantía cubre defectos de fabricación y construcción, pero no incluye daños causados por mal uso, falta de mantenimiento, desastres naturales o modificaciones no autorizadas por WEC Piscinas.</p> <p class="mb-4">El cliente será responsable de obtener los permisos municipales necesarios para la construcción de la piscina, así como de garantizar el acceso al terreno para nuestro equipo y maquinaria. WEC Piscinas no se hace responsable por daños a terceros o al terreno causados por condiciones preexistentes no informadas por el cliente.</p>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">5. Propiedad Intelectual</h3> <p class="mb-4">Todos los diseños, planos y materiales promocionales creados por WEC Piscinas son propiedad intelectual de la empresa y no pueden ser reproducidos, distribuidos o utilizados sin nuestro consentimiento expreso. Las imágenes de nuestros proyectos publicadas en este sitio web tienen fines ilustrativos y no pueden ser utilizadas para otros fines sin autorización.</p>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">6. Privacidad</h3> <p class="mb-4">En WEC Piscinas, nos comprometemos a proteger su privacidad. La información personal que nos proporcione, como su nombre, dirección, número de teléfono y correo electrónico, será utilizada únicamente para procesar su solicitud, cotización o proyecto, y no será compartida con terceros sin su consentimiento, salvo que sea requerido por la ley. Para más información sobre cómo manejamos sus datos, puede contactarnos directamente.</p>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">7. Ley Aplicable y Jurisdicción</h3> <p class="mb-4">Estos términos y condiciones se rigen por las leyes de la República Argentina. Cualquier disputa que surja en relación con nuestros servicios será sometida a la jurisdicción de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires, renunciando expresamente a cualquier otro fuero o jurisdicción que pudiera corresponder.</p>
+                <h3 class="2xl font-semibold text-[#1E90FF] mb-4">8. Contacto</h3> <p class="mb-4">Si tienes alguna pregunta sobre estos términos y condiciones, no dudes en contactarnos a través de nuestro correo electrónico <a href="mailto:info@wecpiscinas.com" class="text-[#1E90FF] hover:text-[#00BFFF] transition-colors">info@wecpiscinas.com</a> o por teléfono al <a href="tel:+541112345678" class="text-[#1E90FF] hover:text-[#00BFFF] transition-colors">(011) 1234-5678</a>. También puedes escribirnos directamente por WhatsApp haciendo clic en el botón de contacto.</p>
                 <p class="mt-8 text-center">Última actualización: 14 de mayo de 2025</p>
             </div>
         </div>
@@ -1056,27 +1096,29 @@
                     mobileMenuButton.querySelector('.hamburger').classList.toggle('open');
                 });
             }
-            document.querySelectorAll('.mobile-menu-button-modal').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    const modalMenu = button.closest('header').querySelector('.mobile-menu-modal');
-                    if (modalMenu) {
-                        modalMenu.classList.toggle('hidden');
-                        modalMenu.classList.toggle('active');
-                        button.querySelector('.hamburger').classList.toggle('open');
-                    }
-                });
-            });
+            // Removed mobile menu button and logic for modal headers
+            // document.querySelectorAll('.mobile-menu-button-modal').forEach(button => {
+            //     button.addEventListener('click', (event) => {
+            //         event.stopPropagation();
+            //         const modalMenu = button.closest('header').querySelector('.mobile-menu-modal');
+            //         if (modalMenu) {
+            //             modalMenu.classList.toggle('hidden');
+            //             modalMenu.classList.toggle('active');
+            //             button.querySelector('.hamburger').classList.toggle('open');
+            //         }
+            //     });
+            // });
              function closeActiveMobileMenus() {
                 if (mobileMenu && mobileMenu.classList.contains('active')) {
                     mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('active');
                     if (mobileMenuButton) mobileMenuButton.querySelector('.hamburger').classList.remove('open');
                 }
-                document.querySelectorAll('.mobile-menu-modal.active').forEach(modalM => {
-                    const btn = modalM.closest('header').querySelector('.mobile-menu-button-modal');
-                    if (modalM.contains(event.target) || (btn && btn.contains(event.target))) clickedInsideModalMenu = true;
-                });
-                if (!clickedInsideModalMenu && document.querySelector('.mobile-menu-modal.active')) closeActiveMobileMenus();
+                // Removed logic for closing modal mobile menus
+                // document.querySelectorAll('.mobile-menu-modal.active').forEach(modalM => {
+                //     const btn = modalM.closest('header').querySelector('.mobile-menu-button-modal');
+                //     if (modalM.contains(event.target) || (btn && btn.contains(event.target))) clickedInsideModalMenu = true;
+                // });
+                // if (!clickedInsideModalMenu && document.querySelector('.mobile-menu-modal.active')) closeActiveMobileMenus();
             }
             allMobileMenuLinks.forEach(link => {
                 // Add class 'close-menu-link' to links that should close the menu
@@ -1088,12 +1130,13 @@
                 if (mobileMenuButton && mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
                     closeActiveMobileMenus();
                 }
-                let clickedInsideModalMenu = false;
-                document.querySelectorAll('.mobile-menu-modal.active').forEach(modalM => {
-                    const btn = modalM.closest('header').querySelector('.mobile-menu-button-modal');
-                    if (modalM.contains(event.target) || (btn && btn.contains(event.target))) clickedInsideModalMenu = true;
-                });
-                if (!clickedInsideModalMenu && document.querySelector('.mobile-menu-modal.active')) closeActiveMobileMenus();
+                // Removed logic for closing modal mobile menus
+                // let clickedInsideModalMenu = false;
+                // document.querySelectorAll('.mobile-menu-modal.active').forEach(modalM => {
+                //     const btn = modalM.closest('header').querySelector('.mobile-menu-button-modal');
+                //     if (modalM.contains(event.target) || (btn && btn.contains(event.target))) clickedInsideModalMenu = true;
+                // });
+                // if (!clickedInsideModalMenu && document.querySelector('.mobile-menu-modal.active')) closeActiveMobileMenus();
             });
 
 
@@ -1157,7 +1200,7 @@
                     if (sectionElement) {
                          const scrollPaddingTop = parseFloat(window.getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
                          window.scrollTo({
-                                top: targetElement.offsetTop - scrollPaddingTop,
+                                top: sectionElement.offsetTop - scrollPaddingTop,
                                 behavior: 'smooth'
                             });
                     }
