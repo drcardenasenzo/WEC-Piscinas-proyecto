@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEC Piscinas: Revestimientos para tu Piscina</title>
+    <meta name="description" content="Descubre los revestimientos de alta calidad para personalizar tu piscina con WEC Piscinas. Precios por metro cuadrado que incluyen materiales, mano de obra e impuestos.">
+    <meta name="keywords" content="revestimientos para piscinas, venecitas, piedra bali, piscinas de hormigón, personalizar piscina, precios revestimientos, WEC Piscinas, diseño de piscinas">
+
+    <link rel="canonical" href="https://www.wecpiscinas.com.ar/revestimientos">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.wecpiscinas.com.ar/revestimientos">
+    <meta property="og:title" content="WEC Piscinas: Revestimientos para tu Piscina">
+    <meta property="og:description" content="Descubre los revestimientos de alta calidad para personalizar tu piscina con WEC Piscinas. Precios por metro cuadrado que incluyen materiales, mano de obra e impuestos.">
+    <meta property="og:image" content="https://www.wecpiscinas.com.ar/logo.jpg">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- Google Fonts: Montserrat and Poppins from original index.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global box-sizing for consistent layout */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Estilos base del cuerpo y encabezados, copiados del index.html para consistencia */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #4A4A4A;
+            overflow-x: hidden;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            background-color: #F0F0F0; /* Fondo coherente con la sección de proyectos del index.html */
+        }
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Colores personalizados de la marca, copiados del index.html */
+        .bg-wec-celeste-principal { background-color: #00BFFF; }
+        .text-wec-celeste-principal { color: #00BFFF; }
+        .border-wec-celeste-principal { border-color: #00BFFF; }
+        .bg-wec-celeste-secundario { background-color: #87CEEB; }
+        .bg-wec-azul-profundo { background-color: #1E90FF; }
+        .text-wec-azul-profundo { color: #1E90FF; }
+
+        /* Estilos para el carrusel de tarjetas */
+        .swiper-container-revestimientos {
+            width: 100%;
+            min-height: 400px; /* Ensure visibility */
+            padding-top: 40px; /* Adjusted padding-top to move carousel closer to title */
+            padding-bottom: 50px;
+            position: relative; /* Needed for absolute positioning of nav arrows */
+            overflow: hidden; /* Ensure anything overflowing inside the swiper is clipped */
+        }
+        /* Added to ensure swiper-wrapper takes full height of container */
+        .swiper-wrapper {
+            height: 100%;
+        }
+        .swiper-slide-revestimiento {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Align content to the top within the slide */
+            height: 450px; /* Fixed height for consistent card display and visibility */
+            text-align: center;
+            padding: 1.5rem;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 1px solid #e0e0e0; /* Borde sutil */
+        }
+
+        .swiper-slide-revestimiento:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,191,255,0.3); /* Sombra con color de marca */
+        }
+
+        /* Make card images more square and larger */
+        .swiper-slide-revestimiento img {
+            width: 100%; /* Make image take full width of card */
+            height: 300px; /* Increased height to take advantage of space */
+            object-fit: cover; /* Ensures image fills the space without distortion */
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* Navigation arrows aesthetics and position closer to edges on PC */
+        .swiper-button-next-revestimientos, .swiper-button-prev-revestimientos {
+            color: #1E90FF !important; /* Color de flechas */
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            width: 48px; /* Slightly larger for better touch target */
+            height: 48px; /* Slightly larger for better touch target */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Add shadow */
+            top: 50% !important; /* Center vertically */
+            transform: translateY(-50%) !important; /* Ensure vertical centering */
+        }
+        .swiper-button-next-revestimientos:hover, .swiper-button-prev-revestimientos:hover {
+            background-color: rgba(0,191,255,0.2); /* Fondo de flechas al pasar el ratón */
+            transform: translateY(-50%) scale(1.1) !important; /* Ensure vertical centering during hover */
+        }
+        .swiper-button-next-revestimientos:after, .swiper-button-prev-revestimientos:after {
+            font-size: 1.8rem !important; /* Larger arrows */
+        }
+        /* Arrows closer to edges on PC */
+        @media (min-width: 1024px) { /* Apply for desktop screens */
+            .swiper-button-prev-revestimientos {
+                left: 10px !important; /* Move left arrow closer to edge */
+            }
+            .swiper-button-next-revestimientos {
+                right: 10px !important; /* Move right arrow closer to edge */
+            }
+        }
+
+
+        /* FIX 1: Styles for the "X de Y" counter - moved outside swiper-container and centered */
+        .swiper-pagination-counter {
+            color: #4A4A4A;
+            font-size: 0.9rem;
+            margin-top: 15px; /* Adjust spacing below carousel */
+            margin-bottom: 20px; /* Space above footer or next section */
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 4px 8px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: block; /* Ensure it takes full width for margin auto to work */
+            width: fit-content; /* Shrink to content width */
+            margin-left: auto; /* Center horizontally */
+            margin-right: auto; /* Center horizontally */
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .swiper-container-revestimientos {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .swiper-slide-revestimiento {
+                max-width: 320px; /* Default for desktop, adjust based on 3 per screen */
+            }
+        }
+
+        /* Footer styling (copied from index.html) */
+        footer {
+            background-color: #1E90FF;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer a {
+            color: #87CEEB; /* Lighter blue for links */
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: #FFFFFF; /* White on hover */
+        }
+
+        /* Floating WhatsApp button */
+        .whatsapp-float-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px; /* Position to bottom-right */
+            z-index: 1000; /* Ensure it's above other content */
+            background-color: transparent; /* No background */
+            border-radius: 50%;
+            padding: 0;
+            box-shadow: none; /* No shadow around the button container */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add box-shadow to transition */
+            width: 60px; /* Adjust size as needed */
+            height: 60px; /* Adjust size as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Add animation for floating effect */
+            animation: float-animation 3s ease-in-out infinite;
+        }
+        /* FIX 1: Enlargen and add shadow on hover */
+        .whatsapp-float-button:hover {
+            transform: scale(1.1) translateY(-10px); /* Combine with float animation */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); /* More noticeable shadow on hover */
+        }
+        /* FIX 1: WhatsApp image itself should scale */
+        .whatsapp-float-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensure image fits well, if it's square it will be circular */
+            border-radius: 50%; /* Ensure the image itself is circular if it's square */
+            transition: transform 0.3s ease; /* Add transition for image scaling */
+        }
+        .whatsapp-float-button:hover img {
+            transform: scale(1.1); /* Scale the image itself */
+        }
+
+
+        /* Keyframes for WhatsApp button floating animation */
+        @keyframes float-animation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col justify-between">
+        <!-- Header -->
+        <header class="bg-white shadow-md py-4">
+            <div class="container mx-auto max-w-screen-xl px-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="logo.jpg" alt="Logo de WEC Piscinas" class="h-12 w-auto mr-3 object-contain" onerror="this.src='https://placehold.co/100x50/1E90FF/FFFFFF?text=LOGO'">
+                    <span class="text-3xl font-bold text-wec-azul-profundo">WEC Piscinas</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="flex-grow py-12 md:py-16">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8"> <!-- Added mb-8 for more space below the main heading -->
+                    <h1 class="text-3xl md:text-4xl font-bold text-wec-azul-profundo mb-4">Revestimientos para personalizar tu piscina</h1> <!-- Added mb-4 to the h1 for space below it -->
+                    <p class="text-lg text-gray-600">De excelentísima calidad y durabilidad</p>
+                </div>
+
+                <!-- Card carousel -->
+                <div class="swiper-container-revestimientos">
+                    <div class="swiper-wrapper" id="revestimientos-carousel">
+                        <!-- Cards will be inserted here dynamically with JavaScript -->
+                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-prev swiper-button-prev-revestimientos"></div>
+                    <div class="swiper-button-next swiper-button-next-revestimientos"></div>
+                </div>
+                <!-- Counter for "X of Y" moved outside swiper-container -->
+                <div class="swiper-pagination-counter mx-auto" id="swiper-pagination-counter"></div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-wec-azul-profundo text-white py-8">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-base">
+                    <a href="https://www.wecpiscinas.com.ar" target="_blank" class="hover:underline text-white">www.wecpiscinas.com.ar</a>
+                </p>
+                <p class="text-base">info@wecpiscinas.com.ar</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Floating WhatsApp button -->
+    <a href="https://wa.me/5491151063817?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20consultar%20sobre%20revestimientos%20de%20piscinas." target="_blank" class="whatsapp-float-button">
+        <img src="whatsapp.jpg" alt="WhatsApp de WEC Piscinas" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
+    </a>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revestimiento data
+            // You can easily add or modify data here
+            const revestimientos = [
+                {
+                    img: 'tarjeta1.jpg',
+                    nombre: 'V. Premium (Sut Beyaz) Bco. Caja'
+                },
+                {
+                    img: 'tarjeta2.jpg',
+                    nombre: 'V. Premium (FH 25015) CELESTE TURQUIA'
+                },
+                {
+                    img: 'tarjeta3.jpg',
+                    nombre: 'Venecita Premium D311 Agua Marina'
+                },
+                {
+                    img: 'tarjeta4.jpg',
+                    nombre: 'Venecitas Premium 516 Verde Oscuro'
+                },
+                {
+                    img: 'tarjeta5.jpg',
+                    nombre: 'Venecita Premium D317 Bco. Tornasol'
+                },
+                {
+                    img: 'tarjeta6.jpg',
+                    nombre: 'V. Premium D327 Verde Tornasol'
+                },
+                {
+                    img: 'tarjeta7.jpg',
+                    nombre: 'V. Premium (LF57341) Negro Pleno Tornasl'
+                },
+                {
+                    img: 'tarjeta8.jpg',
+                    nombre: 'Venecitas Premium 501 Celeste claro'
+                },
+                {
+                    img: 'tarjeta9.jpg',
+                    nombre: 'V. Premium 503 Agua Marina Verde'
+                },
+                {
+                    img: 'tarjeta10.jpg',
+                    nombre: 'Venecitas Premium 504 Arena'
+                },
+                {
+                    img: 'tarjeta11.jpg',
+                    nombre: 'Venecitas Premium 508 Niebla Azul'
+                },
+                {
+                    img: 'tarjeta12.jpg',
+                    nombre: 'Venecitas Premium 515 Gris'
+                },
+                {
+                    img: 'tarjeta13.jpg',
+                    nombre: 'V. Premium (D516) Mix Bco/Cel/Azul'
+                }
+            ];
+
+            const carouselContainer = document.getElementById('revestimientos-carousel');
+            const paginationCounter = document.getElementById('swiper-pagination-counter');
+
+            // Dynamically generate cards
+            revestimientos.forEach((revestimiento, index) => {
+                const cardHtml = `
+                    <div class="swiper-slide swiper-slide-revestimiento">
+                        <img src="${revestimiento.img}" alt="${revestimiento.nombre}" 
+                             onerror="this.src='https://placehold.co/250x250/e0e0e0/555555?text=Imagen+no+disponible'">
+                        <h3 class="text-lg font-semibold text-wec-azul-profundo mb-2">${revestimiento.nombre}</h3>
+                    </div>
+                `;
+                carouselContainer.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            // Initialize Swiper
+            const swiperRevestimientos = new Swiper('.swiper-container-revestimientos', {
+                slidesPerView: 1, // Default to 1 card per view for mobile
+                spaceBetween: 30, // Space between cards
+                loop: true, // Infinite carousel
+                
+                navigation: {
+                    nextEl: '.swiper-button-next-revestimientos',
+                    prevEl: '.swiper-button-prev-revestimientos',
+                },
+                // Responsive breakpoints
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1, /* Explicitly ensure 1 card per view for small mobiles */
+                        spaceBetween: 30,
+                    },
+                    768: {
+                        slidesPerView: 3, /* 3 cards per view on larger screens */
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 3, /* Still 3 cards per view on even larger screens */
+                        spaceBetween: 50,
+                    },
+                },
+                on: {
+                    init: function () {
+                        // Initial update for the counter
+                        if (paginationCounter) {
+                            paginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        // Update counter on slide change
+                        if (paginationCounter) {
+                            paginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
+                        }
+                    },
+                }
+            });
+        });
+    </script>
+</body>
+</html>
