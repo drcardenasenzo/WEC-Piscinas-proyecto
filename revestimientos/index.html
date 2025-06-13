@@ -62,7 +62,7 @@
         .text-wec-azul-profundo { color: #1E90FF; }
 
         /* Estilos para el carrusel de tarjetas */
-        .swiper-container-revestimientos {
+        .swiper-container-revestimientos, .swiper-container-bordes {
             width: 100%;
             min-height: 400px; /* Ensure visibility */
             padding-top: 40px; /* Adjusted padding-top to move carousel closer to title */
@@ -74,7 +74,7 @@
         .swiper-wrapper {
             height: 100%;
         }
-        .swiper-slide-revestimiento {
+        .swiper-slide-revestimiento, .swiper-slide-borde {
             background: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -89,13 +89,13 @@
             border: 1px solid #e0e0e0; /* Borde sutil */
         }
 
-        .swiper-slide-revestimiento:hover {
+        .swiper-slide-revestimiento:hover, .swiper-slide-borde:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 20px rgba(0,191,255,0.3); /* Sombra con color de marca */
         }
 
         /* Make card images more square and larger */
-        .swiper-slide-revestimiento img {
+        .swiper-slide-revestimiento img, .swiper-slide-borde img {
             width: 100%; /* Make image take full width of card */
             height: 300px; /* Increased height to take advantage of space */
             object-fit: cover; /* Ensures image fills the space without distortion */
@@ -105,7 +105,8 @@
         }
 
         /* Navigation arrows aesthetics and position closer to edges on PC */
-        .swiper-button-next-revestimientos, .swiper-button-prev-revestimientos {
+        .swiper-button-next-revestimientos, .swiper-button-prev-revestimientos,
+        .swiper-button-next-bordes, .swiper-button-prev-bordes {
             color: #1E90FF !important; /* Color de flechas */
             background-color: rgba(255,255,255,0.8);
             border-radius: 50%;
@@ -119,19 +120,21 @@
             top: 50% !important; /* Center vertically */
             transform: translateY(-50%) !important; /* Ensure vertical centering */
         }
-        .swiper-button-next-revestimientos:hover, .swiper-button-prev-revestimientos:hover {
+        .swiper-button-next-revestimientos:hover, .swiper-button-prev-revestimientos:hover,
+        .swiper-button-next-bordes:hover, .swiper-button-prev-bordes:hover {
             background-color: rgba(0,191,255,0.2); /* Fondo de flechas al pasar el ratón */
             transform: translateY(-50%) scale(1.1) !important; /* Ensure vertical centering during hover */
         }
-        .swiper-button-next-revestimientos:after, .swiper-button-prev-revestimientos:after {
+        .swiper-button-next-revestimientos:after, .swiper-button-prev-revestimientos:after,
+        .swiper-button-next-bordes:after, .swiper-button-prev-bordes:after {
             font-size: 1.8rem !important; /* Larger arrows */
         }
         /* Arrows closer to edges on PC */
         @media (min-width: 1024px) { /* Apply for desktop screens */
-            .swiper-button-prev-revestimientos {
+            .swiper-button-prev-revestimientos, .swiper-button-prev-bordes {
                 left: 10px !important; /* Move left arrow closer to edge */
             }
-            .swiper-button-next-revestimientos {
+            .swiper-button-next-revestimientos, .swiper-button-next-bordes {
                 right: 10px !important; /* Move right arrow closer to edge */
             }
         }
@@ -155,11 +158,11 @@
 
         /* Responsive adjustments */
         @media (min-width: 768px) {
-            .swiper-container-revestimientos {
+            .swiper-container-revestimientos, .swiper-container-bordes {
                 padding-left: 0;
                 padding-right: 0;
             }
-            .swiper-slide-revestimiento {
+            .swiper-slide-revestimiento, .swiper-slide-borde {
                 max-width: 320px; /* Default for desktop, adjust based on 3 per screen */
             }
         }
@@ -244,7 +247,7 @@
                     <p class="text-lg text-gray-600">De excelentísima calidad y durabilidad</p>
                 </div>
 
-                <!-- Card carousel -->
+                <!-- Card carousel for Revestimientos -->
                 <div class="swiper-container-revestimientos">
                     <div class="swiper-wrapper" id="revestimientos-carousel">
                         <!-- Cards will be inserted here dynamically with JavaScript -->
@@ -254,7 +257,26 @@
                     <div class="swiper-button-next swiper-button-next-revestimientos"></div>
                 </div>
                 <!-- Counter for "X of Y" moved outside swiper-container -->
-                <div class="swiper-pagination-counter mx-auto" id="swiper-pagination-counter"></div>
+                <div class="swiper-pagination-counter mx-auto" id="swiper-pagination-counter-revestimientos"></div>
+
+                <!-- New section for Bordes atérmicos antideslizantes -->
+                <div class="text-center mt-16 mb-8"> <!-- Increased top margin to separate from previous carousel -->
+                    <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-profundo mb-4">Bordes atérmicos antideslizantes</h2>
+                    <p class="text-lg text-gray-600">A diferencia del revestimiento, están incluidos en la oferta especial</p>
+                </div>
+
+                <!-- Card carousel for Bordes atérmicos antideslizantes -->
+                <div class="swiper-container-bordes">
+                    <div class="swiper-wrapper" id="bordes-carousel">
+                        <!-- Cards will be inserted here dynamically with JavaScript -->
+                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-prev swiper-button-prev-bordes"></div>
+                    <div class="swiper-button-next swiper-button-next-bordes"></div>
+                </div>
+                <!-- Counter for "X of Y" moved outside swiper-container -->
+                <div class="swiper-pagination-counter mx-auto" id="swiper-pagination-counter-bordes"></div>
+
             </div>
         </main>
 
@@ -283,27 +305,27 @@
             const revestimientos = [
                 {
                     img: 'tarjeta1.jpg',
-                    nombre: 'Venecita Nature Bali'
+                    nombre: 'Venecitas Nature Bali'
                 },
                 {
                     img: 'tarjeta2.jpg',
-                    nombre: 'Venecita Verde Agua'
+                    nombre: 'Venecitas Verde Agua'
                 },
                 {
                     img: 'tarjeta3.jpg',
-                    nombre: 'Venecita Blanco'
+                    nombre: 'Venecitas Blanco'
                 },
                 {
-                    img: 'tarjeta4.jpg',
-                    nombre: 'Venecita color Arena'
+                    img: 'tarjeta4.jpg', // Corrected extension
+                    nombre: 'Venecitas color Arena'
                 },
                 {
                     img: 'tarjeta5.jpg',
-                    nombre: 'Venecita Gris'
+                    nombre: 'Venecitas Gris'
                 },
                 {
                     img: 'tarjeta6.jpg',
-                    nombre: 'Venecita Verde Tornasol'
+                    nombre: 'Venecitas Verde Tornasol'
                 },
                 {
                     img: 'tarjeta7.jpg',
@@ -315,19 +337,19 @@
                 },
                 {
                     img: 'tarjeta9.jpg',
-                    nombre: 'Venecita Colores Mix. Bco/Cel/Azul'
+                    nombre: 'Venecitas Colores Mix. Bco/Cel/Azul'
                 },
                 {
                     img: 'tarjeta10.jpg',
-                    nombre: 'Venecita Mix. Celes/azul'
+                    nombre: 'Venecitas Mix. Celes/azul'
                 },
                 {
                     img: 'tarjeta11.jpg',
-                    nombre: 'Venecita Agua Marina Verde'
+                    nombre: 'Venecitas Agua Marina Verde'
                 },
                 {
                     img: 'tarjeta12.jpg',
-                    nombre: 'Venecita Niebla Azul'
+                    nombre: 'Venecitas Niebla Azul'
                 },
                 {
                     img: 'tarjeta13.jpg',
@@ -335,10 +357,36 @@
                 }
             ];
 
-            const carouselContainer = document.getElementById('revestimientos-carousel');
-            const paginationCounter = document.getElementById('swiper-pagination-counter');
+            // Bordes data (new carousel)
+            const bordes = [
+                {
+                    img: 'Borde1.jpg',
+                    nombre: 'Blanco'
+                },
+                {
+                    img: 'Borde2.jpg',
+                    nombre: 'Marfil'
+                },
+                {
+                    img: 'Borde3.jpg',
+                    nombre: 'Paris'
+                },
+                {
+                    img: 'Borde4.jpg',
+                    nombre: 'Gris'
+                },
+                {
+                    img: 'Borde5.jpg',
+                    nombre: 'Perla'
+                }
+            ];
 
-            // Dynamically generate cards
+            const revestimientosCarouselContainer = document.getElementById('revestimientos-carousel');
+            const revestimientosPaginationCounter = document.getElementById('swiper-pagination-counter-revestimientos');
+            const bordesCarouselContainer = document.getElementById('bordes-carousel');
+            const bordesPaginationCounter = document.getElementById('swiper-pagination-counter-bordes');
+
+            // Dynamically generate cards for revestimientos
             revestimientos.forEach((revestimiento, index) => {
                 const cardHtml = `
                     <div class="swiper-slide swiper-slide-revestimiento">
@@ -347,10 +395,22 @@
                         <h3 class="text-lg font-semibold text-wec-azul-profundo mb-2">${revestimiento.nombre}</h3>
                     </div>
                 `;
-                carouselContainer.insertAdjacentHTML('beforeend', cardHtml);
+                revestimientosCarouselContainer.insertAdjacentHTML('beforeend', cardHtml);
             });
 
-            // Initialize Swiper
+            // Dynamically generate cards for bordes
+            bordes.forEach((borde, index) => {
+                const cardHtml = `
+                    <div class="swiper-slide swiper-slide-borde">
+                        <img src="${borde.img}" alt="${borde.nombre}" 
+                             onerror="this.src='https://placehold.co/250x250/e0e0e0/555555?text=Imagen+no+disponible'">
+                        <h3 class="text-lg font-semibold text-wec-azul-profundo mb-2">${borde.nombre}</h3>
+                    </div>
+                `;
+                bordesCarouselContainer.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            // Initialize Swiper for revestimientos
             const swiperRevestimientos = new Swiper('.swiper-container-revestimientos', {
                 slidesPerView: 1, // Default to 1 card per view for mobile
                 spaceBetween: 30, // Space between cards
@@ -365,27 +425,80 @@
                     640: {
                         slidesPerView: 1, /* Explicitly ensure 1 card per view for small mobiles */
                         spaceBetween: 30,
+                        slidesPerGroup: 1, // Slide one by one
+                        loopedSlides: 1, // Ensure enough cloned slides for seamless loop
                     },
                     768: {
                         slidesPerView: 3, /* 3 cards per view on larger screens */
                         spaceBetween: 40,
+                        slidesPerGroup: 1, // Keep slidesPerGroup: 1 for one-by-one movement
+                        loopedSlides: 3, // Ensure enough cloned slides for seamless loop
                     },
                     1024: {
                         slidesPerView: 3, /* Still 3 cards per view on even larger screens */
                         spaceBetween: 50,
+                        slidesPerGroup: 1, // Keep slidesPerGroup: 1 for one-by-one movement
+                        loopedSlides: 3, // Ensure enough cloned slides for seamless loop
                     },
                 },
                 on: {
                     init: function () {
                         // Initial update for the counter
-                        if (paginationCounter) {
-                            paginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
+                        if (revestimientosPaginationCounter) {
+                            revestimientosPaginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
                         }
                     },
                     slideChange: function () {
                         // Update counter on slide change
-                        if (paginationCounter) {
-                            paginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
+                        if (revestimientosPaginationCounter) {
+                            revestimientosPaginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
+                        }
+                    },
+                }
+            });
+
+            // Initialize Swiper for bordes
+            const swiperBordes = new Swiper('.swiper-container-bordes', {
+                slidesPerView: 1, // Default to 1 card per view for mobile
+                spaceBetween: 30, // Space between cards
+                loop: true, // Infinite carousel
+                
+                navigation: {
+                    nextEl: '.swiper-button-next-bordes',
+                    prevEl: '.swiper-button-prev-bordes',
+                },
+                // Responsive breakpoints
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1, /* Explicitly ensure 1 card per view for small mobiles */
+                        spaceBetween: 30,
+                        slidesPerGroup: 1, // Slide one by one
+                        loopedSlides: 1, // Ensure enough cloned slides for seamless loop
+                    },
+                    768: {
+                        slidesPerView: 3, /* 3 cards per view on larger screens */
+                        spaceBetween: 40,
+                        slidesPerGroup: 1, // Keep slidesPerGroup: 1 for one-by-one movement
+                        loopedSlides: 3, // Ensure enough cloned slides for seamless loop
+                    },
+                    1024: {
+                        slidesPerView: 3, /* Still 3 cards per view on even larger screens */
+                        spaceBetween: 50,
+                        slidesPerGroup: 1, // Keep slidesPerGroup: 1 for one-by-one movement
+                        loopedSlides: 3, // Ensure enough cloned slides for seamless loop
+                    },
+                },
+                on: {
+                    init: function () {
+                        // Initial update for the counter
+                        if (bordesPaginationCounter) {
+                            bordesPaginationCounter.textContent = `${this.realIndex + 1} de ${bordes.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        // Update counter on slide change
+                        if (bordesPaginationCounter) {
+                            bordesPaginationCounter.textContent = `${this.realIndex + 1} de ${bordes.length}`;
                         }
                     },
                 }
