@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folleto online interactivo</title>
+    <meta name="description" content="Descubre piscinas de hormigón a medida, calidad premium y ofertas exclusivas de WEC Piscinas.">
+    <meta name="keywords" content="piscinas de hormigón, construcción de piscinas, diseño de piscinas, WEC Piscinas, oferta otoño invierno, revestimientos de piscinas, piscinas a medida">
+
+    <link rel="canonical" href="https://www.wecpiscinas.com.ar/folleto-digital">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.wecpiscinas.com.ar/folleto-digital">
+    <meta property="og:title" content="WEC Piscinas: Tu Sueño de Hormigón">
+    <meta property="og:description" content="Descubre piscinas de hormigón a medida, calidad premium y ofertas exclusivas de WEC Piscinas.">
+    <meta property="og:image" content="https://www.wecpiscinas.com.ar/PUBLICIDAD%201.jpg">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- Google Fonts: Montserrat, Poppins and Lato -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global box-sizing for consistent layout */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Base styles for body and headings */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #4A4A4A; /* Main text color */
+            overflow-x: hidden;
+            background-color: #F8F8F8; /* Lighter general background */
+            scroll-behavior: smooth; /* Smooth scrolling for anchors */
+        }
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Style for step text */
+        .step-text {
+            font-family: 'Lato', sans-serif;
+        }
+
+        /* Custom brand colors based on www.wecpiscinas.com.ar */
+        /* Main Blue (WEC Deep Blue) */
+        .bg-wec-azul-principal { background-color: #1A73E8; } /* Adjusted to a more common and vibrant blue */
+        .text-wec-azul-principal { color: #1A73E8; }
+        .border-wec-azul-principal { border-color: #1A73E8; }
+        /* Soft Light Blue (WEC Main Light Blue - used for subtle accents) */
+        .bg-wec-celeste-suave { background-color: #66B2FF; } /* Adjusted to be softer */
+        .text-wec-celeste-suave { color: #66B2FF; }
+        .border-wec-celeste-suave { border-color: #66B2FF; }
+
+        /* General section styles */
+        .section-padding {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        @media (min-width: 768px) {
+            .section-padding {
+                padding-top: 6rem;
+                padding-bottom: 6rem;
+            }
+        }
+
+        /* Styles to reduce space between specific sections */
+        .section-reduced-spacing {
+            padding-top: 2rem; /* Reduced padding */
+            padding-bottom: 2rem; /* Reduced padding */
+        }
+        @media (min-width: 768px) {
+            .section-reduced-spacing {
+                padding-top: 3rem; /* Reduced padding for desktop */
+                padding-bottom: 3rem; /* Reduced padding for desktop */
+            }
+        }
+
+        /* Scroll arrow animation */
+        .scroll-down-arrow {
+            position: absolute;
+            bottom: 30px; /* Adjust arrow position */
+            left: 50%;
+            transform: translateX(-50%); /* Center arrow horizontally */
+            z-index: 10;
+            opacity: 0.8;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%); /* Ensures centering when bouncing */
+            }
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+
+        /* Carousel styles (generic) */
+        .swiper-container-custom {
+            width: 100%;
+            min-height: 400px;
+            padding-top: 40px;
+            padding-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        .swiper-wrapper {
+            height: 100%;
+        }
+        .swiper-slide-custom {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Softer shadow */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 450px; /* Consistent card height */
+            text-align: center;
+            padding: 1.5rem;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 1px solid #f0f0f0; /* Subtler border */
+        }
+
+        .swiper-slide-custom:hover {
+            transform: translateY(-5px); /* Less displacement on hover */
+            box-shadow: 0 4px 12px rgba(0,175,255,0.2); /* Subtler and bluish hover shadow */
+        }
+
+        .swiper-slide-custom img {
+            width: 100%;
+            height: 300px; /* Consistent image height within the card */
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #f8f8f8; /* Subtler image border */
+        }
+
+        /* Carousel navigation arrows */
+        .swiper-button-next-custom, .swiper-button-prev-custom {
+            color: #1A73E8 !important; /* Main color */
+            background-color: rgba(255,255,255,0.9); /* Almost white background for arrows */
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.1); /* Subtler shadow */
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+        }
+        .swiper-button-next-custom:hover, .swiper-button-prev-custom:hover {
+            background-color: rgba(26,115,232,0.1); /* Lighter background on hover */
+            transform: translateY(-50%) scale(1.05) !important; /* Subtler scale */
+        }
+        .swiper-button-next-custom:after, .swiper-button-prev-custom:after {
+            font-size: 1.6rem !important; /* Slightly reduced font size */
+        }
+        @media (max-width: 767px) { /* Adjust arrow size for mobile */
+            .swiper-button-next-custom, .swiper-button-prev-custom {
+                width: 8px; /* Even smaller width */
+                height: 8px; /* Even smaller height */
+            }
+            .swiper-button-next-custom:after, .swiper-button-prev-custom:after {
+                font-size: 0.25rem !important; /* Even smaller font size */
+            }
+        }
+        @media (min-width: 1024px) {
+            .swiper-button-prev-custom {
+                left: 20px !important; /* Slightly more towards the center on desktop */
+            }
+            .swiper-button-next-custom {
+                right: 20px !important; /* Slightly more towards the center on desktop */
+            }
+        }
+
+        .swiper-pagination-counter-custom {
+            color: #4A4A4A;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 4px 10px; /* Adjusted padding */
+            border-radius: 12px; /* More rounded */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Subtler shadow */
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Specific styles for photo gallery slides (no text below image) */
+        .swiper-slide-gallery {
+            height: 350px; /* Reduced height as there is no text block */
+            justify-content: center; /* Center image vertically */
+            padding: 0; /* No padding inside the card, allows image to fill it */
+        }
+        .swiper-slide-gallery img, .swiper-slide-gallery video {
+            width: 100%;
+            height: 100%; /* Image fills the entire card */
+            object-fit: cover;
+            border-radius: 12px; /* Card border radius */
+            margin-bottom: 0; /* No margin as there is no text */
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000; /* Black background for videos */
+            border-radius: 12px;
+        }
+        .video-container .play-icon {
+            position: absolute;
+            color: white;
+            font-size: 4rem;
+            opacity: 0.8;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        .video-container .play-icon:hover {
+            opacity: 1;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #1A73E8; /* Main blue */
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer a {
+            color: #FFFFFF; /* White text for links in the footer */
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: #66B2FF; /* Soft light blue on hover */
+        }
+
+        /* Floating WhatsApp button */
+        .whatsapp-float-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: transparent;
+            border-radius: 50%;
+            padding: 0;
+            box-shadow: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float-animation 3s ease-in-out infinite;
+        }
+        .whatsapp-float-button:hover {
+            transform: scale(1.1) translateY(-10px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+        .whatsapp-float-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-float-button:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Keyframes for WhatsApp button floating animation */
+        @keyframes float-animation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Wave effect (removed for minimalism) */
+        /* .wave-top and .wave-bottom classes will remain in HTML, but their styles here will be flat */
+        .wave-top, .wave-bottom {
+            position: relative;
+            /* These styles ensure a solid background and remove wave shapes */
+            padding-bottom: 4rem; /* Restores normal padding */
+            padding-top: 4rem; /* Restores normal padding */
+        }
+        .wave-top::before, .wave-bottom::after {
+            content: none; /* Removes wave shapes */
+        }
+
+        /* Entry animation for elements */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out; /* Increased duration to 1s */
+        }
+        .animate-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Offer card style */
+        .offer-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; /* Ensures carousel cards have consistent height */
+            display: flex;
+            flex-direction: column;
+        }
+        .offer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(26, 115, 232, 0.2); /* Subtler and bluish hover shadow */
+        }
+        .offer-card img {
+            width: 100%;
+            height: 200px; /* Fixed height for uniformity */
+            object-fit: cover;
+        }
+        .offer-card .p-6 {
+            flex-grow: 1; /* Allows content to take up space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distributes content vertically */
+        }
+        .offer-card .p-6 p {
+            min-height: 48px; /* Ensures minimum height for text content to normalize card heights */
+            line-height: 1.5; /* Ensures consistent line spacing */
+        }
+        /* Customization icons styling */
+        .customization-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; /* Ensures consistent height in grid */
+        }
+        .customization-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+        }
+        .customization-item svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+            color: #1A73E8; /* Main blue color for icons */
+        }
+        .customization-item p {
+            font-size: 1.125rem; /* text-xl */
+            font-weight: 600; /* semi-bold */
+            color: #1A73E8; /* Main blue color for text */
+            text-align: center;
+        }
+
+        /* Adjustments for offers section on mobile */
+        @media (max-width: 767px) {
+            .swiper-pagination-counter-offers {
+                margin-top: -10px; /* Adjusted to pull it up slightly more */
+                margin-bottom: 0px; /* Keep margin bottom at 0 */
+            }
+            #oferta .text-sm {
+                margin-top: 10px; /* Increased margin-top for more separation from counter */
+            }
+        }
+
+        /* Hide offer carousel card number on desktop */
+        @media (min-width: 768px) {
+            .swiper-pagination-counter-offers {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col justify-between">
+        <!-- Header (fixed to top for brochure feel) -->
+        <header class="bg-wec-azul-principal shadow-md py-4 fixed top-0 w-full z-50">
+            <div class="container mx-auto max-w-screen-xl px-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="logo.jpg" alt="Logo de WEC Piscinas" class="h-10 w-auto mr-3 object-contain rounded-full" onerror="this.src='https://placehold.co/100x50/1A73E8/FFFFFF?text=LOGO'">
+                    <span class="text-2xl md:text-3xl font-bold text-white">WEC Piscinas</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="hero" class="relative bg-wec-azul-principal text-white flex flex-col items-center justify-center h-screen pt-16 md:pt-24 overflow-hidden">
+            <!-- Background wavy shapes (adjusted to be more subtle) -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute -top-1/4 -left-1/4 w-3/4 h-3/4 bg-wec-celeste-suave opacity-10 rounded-full mix-blend-multiply animate-pulse-slow"></div>
+                <div class="absolute -bottom-1/4 -right-1/4 w-3/4 h-3/4 bg-wec-azul-principal opacity-10 rounded-full mix-blend-multiply animate-pulse-slow delay-1000"></div>
+                <div class="absolute top-1/2 left-1/4 w-1/2 h-1/2 bg-wec-celeste-suave opacity-10 rounded-full mix-blend-multiply animate-pulse-slow delay-500"></div>
+            </div>
+
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-in">
+                    NUESTRO FOLLETO ONLINE INTERACTIVO
+                </h1>
+                <p class="text-lg md:text-xl mb-8 animate-in delay-200">
+                    Para que descubras cómo trabajamos, nuestras ofertas y las amplias opciones para personalizar tu piscina.
+                </p>
+                <!-- Buttons and text removed from here -->
+            </div>
+            <!-- Scroll down arrow -->
+            <a href="#como-trabajamos" class="scroll-down-arrow z-20">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </a>
+        </section>
+
+        <!-- Section: How We Work (Redesigned) -->
+        <section id="como-trabajamos" class="section-padding bg-gray-100 text-wec-azul-principal relative">
+            <div class="absolute inset-0 z-0 opacity-0">
+                <!-- Background waves removed for cleaner design -->
+            </div>
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h2 class="text-3xl md:text-5xl font-extrabold mb-12 animate-in">
+                    Pasos Claros hacia Tu Piscina Ideal
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <div class="bg-white text-wec-azul-principal p-6 rounded-xl shadow-md flex flex-col items-center animate-in">
+                        <div class="w-16 h-16 bg-wec-azul-principal rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">1</div>
+                        <h3 class="text-xl font-bold mb-2 text-center">Diseño y Asesoramiento</h3>
+                        <p class="text-gray-700 text-center step-text">Trabajamos juntos para personalizar tu piscina y superar tus expectativas. Lo presupuestamos por WhatsApp sin compromiso y podemos realizar una visita gratuita para medir el terreno y escuchar todas tus ideas.</p>
+                    </div>
+                    <div class="bg-white text-wec-azul-principal p-6 rounded-xl shadow-md flex flex-col items-center animate-in">
+                        <div class="w-16 h-16 bg-wec-azul-principal rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">2</div>
+                        <h3 class="text-xl font-bold mb-2 text-center">Construcción Eficiente</h3>
+                        <p class="text-gray-700 text-center step-text">Los precios tanto de las ofertas como de los que se indican en los presupuestos son finales, incluyen todo para que tu piscina esté lista para usar. Tardamos entre 10 y 15 días según las características y diseño que elijas. Todo lo incluimos en el contrato de obra.</p>
+                    </div>
+                    <div class="bg-white text-wec-azul-principal p-6 rounded-xl shadow-md flex flex-col items-center animate-in">
+                        <div class="w-16 h-16 bg-wec-azul-principal rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">3</div>
+                        <h3 class="text-xl font-bold mb-2 text-center">Entrega y Disfrute</h3>
+                        <p class="text-gray-700 text-center step-text">El pago se realiza en tres etapas, siendo en la entrega la última de ellas. Ese mismo día te extendemos el CERTIFICADO DE GARANTÍA, el que garantiza hasta 10 años para defectos estructurales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Special Autumn-Winter Offer -->
+        <section id="oferta" class="section-padding bg-wec-azul-principal text-white relative wave-top">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-12 animate-in">
+                    ¡Oferta Especial Otoño-Invierno!
+                </h2>
+                <p class="text-lg md:text-xl mb-12 animate-in delay-200">
+                    Aprovechá el momento ideal para construir tu piscina de hormigón con estas promociones exclusivas, ¡Empezá hoy mismo a planificar tu verano!
+                </p>
+                <!-- Swiper container for offers -->
+                <div class="swiper-container-offers swiper-container-custom">
+                    <div class="swiper-wrapper">
+                        <!-- Offer 1 -->
+                        <div class="swiper-slide offer-card animate-in">
+                            <img src="proyecto1.jpg" alt="Piscina de 6x3 metros" onerror="this.src='https://placehold.co/400x200/1A73E8/FFFFFF?text=Piscina+6x3'">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold text-wec-azul-principal mb-2">Piscina de 6x3 metros</h3>
+                                <p class="text-gray-700 mb-4">Perfecta para espacios reducidos, ideal para relajarse y disfrutar.</p>
+                                <div class="text-4xl font-extrabold text-wec-celeste-suave mb-4">$11.000.000</div>
+                            </div>
+                        </div>
+                        <!-- Offer 2 -->
+                        <div class="swiper-slide offer-card animate-in">
+                            <img src="proyecto2.jpg" alt="Piscina de 7.5x3.5 metros" onerror="this.src='https://placehold.co/400x200/66B2FF/FFFFFF?text=Piscina+7.5x3.5'">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold text-wec-azul-principal mb-2">Piscina de 7.5x3.5 metros</h3>
+                                <p class="text-gray-700 mb-4">Un tamaño versátil para toda la familia, ideal para juegos y natación.</p>
+                                <div class="text-4xl font-extrabold text-wec-celeste-suave mb-4">$16.000.000</div>
+                            </div>
+                        </div>
+                        <!-- Offer 3 -->
+                        <div class="swiper-slide offer-card animate-in">
+                            <img src="proyecto3.jpg" alt="Piscina de 10x4.5 metros" onerror="this.src='https://placehold.co/400x200/1A73E8/FFFFFF?text=Piscina+10x4.5'">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold text-wec-azul-principal mb-2">Piscina de 10x4.5 metros</h3>
+                                <p class="text-gray-700 mb-4">La opción definitiva para los amantes de la natación y grandes reuniones.</p>
+                                <div class="text-4xl font-extrabold text-wec-celeste-suave mb-4">$25.000.000</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Navigation arrows for offers -->
+                    <div class="swiper-button-prev swiper-button-prev-offers swiper-button-custom"></div>
+                    <div class="swiper-button-next swiper-button-next-offers swiper-button-custom"></div>
+                </div>
+                <!-- Counter for "X of Y" offers -->
+                <div class="swiper-pagination-counter-offers swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-offers"></div>
+                <p class="text-sm mt-8 animate-in delay-800">
+                    *Precios finales que incluyen todo lo necesario para tu nueva piscina. Incluye: visita y medición del terreno, excavación, retiro de tierra, mano de obra, materiales, sistema de luces LED, pintura de piscina de color a elección, bordes atérmicos color a elección, sistema de filtrado y la bomba del agua. Todos los materiales y productos que utilizamos son línea premium para lograr la mejor piscina calidad/precio. Sin letra chica ni sorpresas, pagás ese monto dividido en tres etapas (inicio de obra, un pago intermedio y el último cuando finalizamos), esperás entre 10 y 15 días ¡y listo! ya estarás disfrutando con tu familia. 
+                </p>
+            </div>
+        </section>
+
+        <!-- Section: Coatings (with existing carousel) -->
+        <section id="revestimientos" class="section-padding bg-gray-100">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-4 animate-in">
+                        Podés Personalizar tu Piscina con Estos Revestimientos
+                    </h2>
+                    <p class="text-lg text-gray-600 animate-in delay-100">De excelentísima calidad y durabilidad.</p>
+                </div>
+
+                <!-- Card carousel (existing Swiper structure) -->
+                <div class="swiper-container-revestimientos swiper-container-custom">
+                    <div class="swiper-wrapper" id="revestimientos-carousel">
+                        <!-- Cards will be inserted here dynamically with JavaScript -->
+                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-prev swiper-button-prev-revestimientos swiper-button-custom"></div>
+                    <div class="swiper-button-next swiper-button-next-revestimientos swiper-button-custom"></div>
+                </div>
+                <!-- Counter for "X of Y" moved outside swiper-container -->
+                <div class="swiper-pagination-counter-revestimientos swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-revestimientos"></div>
+            </div>
+        </section>
+
+        <!-- Section: Cool Edge (NEW CAROUSEL) -->
+        <section id="borde-atermico" class="section-reduced-spacing bg-gray-100 text-wec-azul-principal">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-4 animate-in">
+                        Dale el Toque Final: Personalizá tu Borde Atérmico
+                    </h2>
+                    <p class="text-lg text-gray-600 animate-in delay-100">Comodidad y seguridad para tu espacio de relax.</p>
+                </div>
+
+                <!-- Carousel for Cool Edge -->
+                <div class="swiper-container-borde-atermico swiper-container-custom">
+                    <div class="swiper-wrapper" id="borde-atermico-carousel">
+                        <!-- Cool Edge items will be inserted here dynamically -->
+                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-prev swiper-button-prev-borde-atermico swiper-button-custom"></div>
+                    <div class="swiper-button-next swiper-button-next-borde-atermico swiper-button-custom"></div>
+                </div>
+                <!-- Counter for "X of Y" Cool Edge -->
+                <div class="swiper-pagination-counter-borde-atermico swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-borde-atermico"></div>
+            </div>
+        </section>
+
+        <!-- Section: Products to buy (NEW CAROUSEL) - MOVED HERE -->
+        <section id="productos-comprar" class="section-reduced-spacing bg-gray-100">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-4 animate-in">
+                        Para Exigentes: más personalización
+                    </h2>
+                    <p class="text-lg text-gray-600 animate-in delay-100">Son accesorios línea Vulcano para más confort.</p>
+                </div>
+
+                <!-- Carousel for Products to buy -->
+                <div class="swiper-container-productos-comprar swiper-container-custom">
+                    <div class="swiper-wrapper" id="productos-comprar-carousel">
+                        <!-- Products to buy items will be inserted here dynamically -->
+                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-prev swiper-button-prev-productos-comprar swiper-button-custom"></div>
+                    <div class="swiper-button-next swiper-button-next-productos-comprar swiper-button-custom"></div>
+                </div>
+                <!-- Counter for "X of Y" Products to buy -->
+                <div class="swiper-pagination-counter-productos-comprar swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-productos-comprar"></div>
+            </div>
+        </section>
+
+        <!-- Section: Customization (REDESIGNED) -->
+        <section id="personalizacion" class="section-reduced-spacing bg-wec-azul-principal text-white">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-8 animate-in">
+                    También podés personalizar tu piscina con:
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="customization-item animate-in delay-100">
+                        <!-- Icon for Climatization (Thermometer/Sun) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 21v-2.25m-6.364-.386l1.591-1.591M3 12H5.25m-.386-6.364l1.591 1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                        </svg>
+                        <p>Climatización</p>
+                    </div>
+                    <div class="customization-item animate-in delay-200">
+                        <!-- Icon for Wet Beach (Water Wave/Beach Chair) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15V6a3 3 0 00-3-3 3 3 0 00-3 3v3.75H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0h.008v.008H21v-.008zm0 0h.008v.008H21v-.008zm-9 0h.008v.008H12v-.008zM12 15.75h.008v.008H12v-.008z" />
+                        </svg>
+                        <p>Playa Húmeda</p>
+                    </div>
+                    <div class="customization-item animate-in delay-300">
+                        <!-- New Icon for Different Depths (Ruler/Depth) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l-3.75-3.75M12 19.5l3.75-3.75M12 4.5h2.25c2.002 0 3.75 1.12 3.75 2.5s-1.748 2.5-3.75 2.5H12" />
+                        </svg>
+                        <p>Diferentes Profundidades</p>
+                    </div>
+                    <div class="customization-item animate-in delay-400">
+                        <!-- New Icon for And much more! (Down arrow) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                        <p>¡Y mucho más!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: We work with Vulcano premium line (NEW CAROUSEL) -->
+        <section id="vulcano-premium" class="section-reduced-spacing bg-gray-100">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-4 animate-in">
+                        Trabajamos con línea Vulcano premium
+                    </h2>
+                    <p class="text-lg text-gray-600 animate-in delay-100">Así logramos garantizar la calidad y durabilidad de tu piscina.</p>
+                </div>
+
+                <!-- Carousel for Vulcano Premium -->
+                <div class="swiper-container-vulcano-premium swiper-container-custom">
+                    <div class="swiper-wrapper" id="vulcano-premium-carousel">
+                        <!-- Vulcano Premium items will be inserted here dynamically -->
+                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-prev swiper-button-prev-vulcano-premium swiper-button-custom"></div>
+                    <div class="swiper-button-next swiper-button-next-vulcano-premium swiper-button-custom"></div>
+                </div>
+                <!-- Counter for "X of Y" Vulcano Premium -->
+                <div class="swiper-pagination-counter-vulcano-premium swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-vulcano-premium"></div>
+            </div>
+        </section>
+
+        <!-- Section: Photo Gallery (Now carousel and relocated) -->
+        <section id="galeria" class="section-reduced-spacing bg-gray-100">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-4 animate-in">
+                        Galería de Fotos 
+                    </h2>
+                    <p class="text-lg text-gray-600 animate-in delay-100">Algunas imágenes de nuestros trabajos recientes.</p>
+                </div>
+
+                <!-- Carousel for gallery -->
+                <div class="swiper-container-gallery swiper-container-custom">
+                    <div class="swiper-wrapper" id="gallery-carousel">
+                        <!-- Gallery items will be inserted here dynamically -->
+                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-prev swiper-button-prev-gallery swiper-button-custom"></div>
+                    <div class="swiper-button-next swiper-button-next-gallery swiper-button-custom"></div>
+                </div>
+                <!-- Counter for "X of Y" gallery -->
+                <div class="swiper-pagination-counter-gallery swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-gallery"></div>
+            </div>
+        </section>
+
+        <!-- Section: About Us (NEW SECTION) -->
+        <section id="sobre-nosotros" class="section-reduced-spacing bg-gray-100">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-8 animate-in">
+                    Sobre Nosotros
+                </h2>
+                <img src="logo.jpg" alt="Image of Logo de WEC Piscinas" class="mx-auto h-40 w-auto mb-8 rounded-full shadow-lg animate-in delay-200" onerror="this.src='https://placehold.co/150x150/1A73E8/FFFFFF?text=LOGO'">
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed animate-in delay-400">
+                 En WEC Piscinas, llevamos más de 10 años dedicados a transformar los sueños de nuestros clientes en realidades acuáticas. Nacimos como una empresa familiar con una visión clara: ofrecer piscinas de material de la más alta calidad, combinando diseño y funcionalidad con una construcción impecable.
+
+Nuestros valores fundamentales son la honestidad, el compromiso con el cliente y la búsqueda constante de la excelencia. Creemos que cada piscina es un proyecto único, un espacio para la relajación, la diversión y la creación de recuerdos inolvidables.
+
+Contamos con un equipo de profesionales apasionados y experimentados, todos unidos por el objetivo de superar tus expectativas.   
+                </p>
+            </div>
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="bg-wec-azul-principal text-white py-8">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-base">
+                    <a href="https://www.wecpiscinas.com.ar" target="_blank" class="hover:underline text-white">www.wecpiscinas.com.ar</a>
+                </p>
+                <p class="text-base">info@wecpiscinas.com.ar</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Floating WhatsApp button -->
+    <a href="https://wa.me/5491151063817?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20consultar%20sobre%20su%20oferta%20de%20oto%C3%B1o-invierno." target="_blank" class="whatsapp-float-button">
+        <img src="whatsapp.jpg" alt="WhatsApp de WEC Piscinas" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
+    </a>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revestimientos data (copied from index.html)
+            const revestimientos = [
+                { img: 'tarjeta1.jpg', nombre: 'Venecita Nature Bali' },
+                { img: 'tarjeta2.jpg', nombre: 'Venecita Verde Agua' },
+                { img: 'tarjeta3.jpg', nombre: 'Venecita Blanco' },
+                { img: 'tarjeta4.jpg', nombre: 'Venecita color Arena' },
+                { img: 'tarjeta5.jpg', nombre: 'Venecita Gris' },
+                { img: 'tarjeta6.jpg', nombre: 'Venecita Verde Tornasol' },
+                { img: 'tarjeta7.jpg', nombre: 'Venecita Celeste Claro' },
+                { img: 'tarjeta8.jpg', nombre: 'Venecita Niebla Celeste' },
+                { img: 'tarjeta9.jpg', nombre: 'Venecita Colores Mix. Bco/Cel/Azul' },
+                { img: 'tarjeta10.jpg', nombre: 'Venecita Mix. Celes/azul' },
+                { img: 'tarjeta11.jpg', nombre: 'Venecita Agua Marina Verde' },
+                { img: 'tarjeta12.jpg', nombre: 'Venecita Niebla Azul' },
+                { img: 'tarjeta13.jpg', nombre: 'Piedra Bali ' }
+            ];
+
+            // Data for the new photo and video gallery (reducida a 5 elementos)
+            const galleryItems = [
+                { type: 'image', src: 'foto1.jpg', alt: 'Piscina exterior con jardín' },
+                { type: 'image', src: 'foto2.jpg', alt: 'Piscina con cascada' },
+                { type: 'image', src: 'foto3.jpg', alt: 'Piscina iluminada de noche' },
+                { type: 'image', src: 'foto4.jpg', alt: 'Piscina familiar' },
+                { type: 'image', src: 'foto5.jpg', alt: 'Piscina con vista panorámica' },
+                { type: 'image', src: 'foto6.jpg', alt: 'Piscina de diseño moderno' },
+                { type: 'image', src: 'foto7.jpg', alt: 'Piscina rodeada de naturaleza' }
+            ];
+
+            // Data for the new Cool Edge carousel
+            const bordeAtermicoItems = [
+                { img: 'Borde1.jpg', nombre: 'Blanco' },
+                { img: 'Borde2.jpg', nombre: 'Marfil' },
+                { img: 'Borde3.jpg', nombre: 'París' },
+                { img: 'Borde4.jpg', nombre: 'Gris' },
+                { img: 'Borde5.jpg', nombre: 'Perla' } // New "Perla" card
+            ];
+
+            // Data for the new "We work with Vulcano premium line" carousel (5 cards)
+            const vulcanoPremiumItems = [
+                { img: 'vulcano1.jpg', nombre: 'Bomba de calor POOL-INVERTER' },
+                { img: 'vulcano2.jpg', nombre: 'SuperLED 12W' },
+                { img: 'vulcano3.jpg', nombre: 'Filtro VC-20 para piscina' },
+                { img: 'vulcano4.jpg', nombre: 'Bomba para piscina BAP 033' },
+                { img: 'vulcano5.jpg', nombre: 'Controlador 72W para luminaria RGB' }
+            ];
+
+            // Data for the new "Products to buy" carousel (10 cards)
+            const productosComprarItems = [
+                { img: 'producto1.jpg', nombre: 'Ducha solar para piscina columna gris' },
+                { img: 'producto2.jpg', nombre: 'Ducha solar para piscina hoja gris' },
+                { img: 'producto3.jpg', nombre: 'Escalera Confort 4 AISI' },
+                { img: 'producto4.jpg', nombre: 'Escalera Confort 2 AISI' },
+                { img: 'producto5.jpg', nombre: 'Escalera Confort 3 ABS' },
+                { img: 'producto6.jpg', nombre: 'Pasamanos corto para vereda ø38,1 mm' },
+                { img: 'producto7.jpg', nombre: 'Pasamanos corto para 2 escalones' },
+                { img: 'producto8.jpg', nombre: 'Base SQUAL-18 para trampolín' },
+                { img: 'producto9.jpg', nombre: 'Plataforma FV-180 para trampolín' },
+                { img: 'producto10.jpg', nombre: 'Cascada Arrecife 79' }
+            ];
+
+
+            // Get carousel containers and counters
+            const revestimientosCarouselContainer = document.getElementById('revestimientos-carousel');
+            const revestimientosPaginationCounter = document.getElementById('swiper-pagination-counter-revestimientos');
+            const galleryCarouselContainer = document.getElementById('gallery-carousel');
+            const galleryPaginationCounter = document.getElementById('swiper-pagination-counter-gallery');
+            const offersCarouselContainer = document.querySelector('.swiper-container-offers .swiper-wrapper'); // Select the wrapper for offers
+            const offersPaginationCounter = document.getElementById('swiper-pagination-counter-offers');
+            const bordeAtermicoCarouselContainer = document.getElementById('borde-atermico-carousel');
+            const bordeAtermicoPaginationCounter = document.getElementById('swiper-pagination-counter-borde-atermico');
+            const vulcanoPremiumCarouselContainer = document.getElementById('vulcano-premium-carousel');
+            const vulcanoPremiumPaginationCounter = document.getElementById('swiper-pagination-counter-vulcano-premium');
+            const productosComprarCarouselContainer = document.getElementById('productos-comprar-carousel');
+            const productosComprarPaginationCounter = document.getElementById('swiper-pagination-counter-productos-comprar');
+
+
+            // Function to generate and append carousel slides
+            function generateCarouselSlides(data, container, slideClass, imgHeight = '300px', hasText = true) {
+                container.innerHTML = ''; // Clear existing content before generating
+                data.forEach((item) => {
+                    let slideHtml = '';
+                    if (item.type === 'image' || !item.type) { // Default to image if type is not specified
+                        slideHtml = `
+                            <div class="swiper-slide ${slideClass}">
+                                <img src="${item.img || item.src}" alt="${item.alt || item.nombre}"
+                                     onerror="this.src='https://placehold.co/250x${parseInt(imgHeight)}/e0e0e0/555555?text=Imagen+no+disponible'">
+                                ${hasText ? `<h3 class="text-lg font-semibold text-wec-azul-principal mb-2">${item.nombre}</h3>` : ''}
+                            </div>
+                        `;
+                    } else if (item.type === 'video') {
+                        slideHtml = `
+                            <div class="swiper-slide ${slideClass}">
+                                <div class="video-container">
+                                    <img src="${item.poster}" alt="Video thumbnail" class="w-full h-full object-cover rounded-xl"
+                                         onerror="this.src='https://placehold.co/250x${parseInt(imgHeight)}/e0e0e0/555555?text=Video+no+disponible'">
+                                    <!-- Play icon using SVG for simplicity and consistency -->
+                                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    container.insertAdjacentHTML('beforeend', slideHtml);
+                });
+            }
+
+            // Generate revestimientos cards
+            generateCarouselSlides(revestimientos, revestimientosCarouselContainer, 'swiper-slide-revestimiento swiper-slide-custom', '300px', true);
+
+            // Generate Borde Atérmico cards
+            generateCarouselSlides(bordeAtermicoItems, bordeAtermicoCarouselContainer, 'swiper-slide-revestimiento swiper-slide-custom', '300px', true);
+
+            // Generate Vulcano Premium cards
+            generateCarouselSlides(vulcanoPremiumItems, vulcanoPremiumCarouselContainer, 'swiper-slide-vulcano-premium swiper-slide-custom', '300px', true);
+
+            // Generate Productos para comprar cards
+            generateCarouselSlides(productosComprarItems, productosComprarCarouselContainer, 'swiper-slide-productos-comprar swiper-slide-custom', '300px', true);
+
+            // Generate gallery items
+            generateCarouselSlides(galleryItems, galleryCarouselContainer, 'swiper-slide-gallery swiper-slide-custom', '350px', false);
+
+
+            // Initialize Swiper for Revestimientos
+            new Swiper('.swiper-container-revestimientos', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next-revestimientos',
+                    prevEl: '.swiper-button-prev-revestimientos',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 50,
+                    },
+                },
+                on: {
+                    init: function () {
+                        if (revestimientosPaginationCounter) {
+                            revestimientosPaginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        if (revestimientosPaginationCounter) {
+                            revestimientosPaginationCounter.textContent = `${this.realIndex + 1} de ${revestimientos.length}`;
+                        }
+                    },
+                }
+            });
+
+            // Initialize Swiper for Offers (makes it a carousel on mobile, grid on desktop)
+            new Swiper('.swiper-container-offers', {
+                slidesPerView: 1, // Default to 1 card per view for mobile
+                spaceBetween: 30,
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next-offers',
+                    prevEl: '.swiper-button-prev-offers',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    768: {
+                        slidesPerView: 2, /* 2 cards per view on larger tablets */
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 3, /* 3 cards per view on desktop */
+                        spaceBetween: 50,
+                    },
+                },
+                 on: {
+                    init: function () {
+                        if (offersPaginationCounter) {
+                            offersPaginationCounter.textContent = `${this.realIndex + 1} de ${this.slides.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        if (offersPaginationCounter) {
+                            offersPaginationCounter.textContent = `${this.realIndex + 1} de ${this.slides.length}`;
+                        }
+                    },
+                }
+            });
+
+            // Initialize Swiper for Borde Atérmico (NEW)
+            new Swiper('.swiper-container-borde-atermico', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next-borde-atermico',
+                    prevEl: '.swiper-button-prev-borde-atermico',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    768: {
+                        slidesPerView: 2, /* 2 cards per view on larger screens */
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 3, /* 3 cards per view on even larger screens */
+                        spaceBetween: 50,
+                    },
+                },
+                on: {
+                    init: function () {
+                        if (bordeAtermicoPaginationCounter) {
+                            bordeAtermicoPaginationCounter.textContent = `${this.realIndex + 1} de ${bordeAtermicoItems.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        if (bordeAtermicoPaginationCounter) {
+                            bordeAtermicoPaginationCounter.textContent = `${this.realIndex + 1} de ${bordeAtermicoItems.length}`;
+                        }
+                    },
+                }
+            });
+
+            // Initialize Swiper for Productos para comprar (NEW) - MOVED HERE
+            new Swiper('.swiper-container-productos-comprar', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next-productos-comprar',
+                    prevEl: '.swiper-button-prev-productos-comprar',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 50,
+                    },
+                },
+                on: {
+                    init: function () {
+                        if (productosComprarPaginationCounter) {
+                            productosComprarPaginationCounter.textContent = `${this.realIndex + 1} de ${productosComprarItems.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        if (productosComprarPaginationCounter) {
+                            productosComprarPaginationCounter.textContent = `${this.realIndex + 1} de ${productosComprarItems.length}`;
+                        }
+                    },
+                }
+            });
+
+            // Initialize Swiper for Vulcano Premium (NEW)
+            new Swiper('.swiper-container-vulcano-premium', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next-vulcano-premium',
+                    prevEl: '.swiper-button-prev-vulcano-premium',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 50,
+                    },
+                },
+                on: {
+                    init: function () {
+                        if (vulcanoPremiumPaginationCounter) {
+                            vulcanoPremiumPaginationCounter.textContent = `${this.realIndex + 1} de ${vulcanoPremiumItems.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        if (vulcanoPremiumPaginationCounter) {
+                            vulcanoPremiumPaginationCounter.textContent = `${this.realIndex + 1} de ${vulcanoPremiumItems.length}`;
+                        }
+                    },
+                }
+            });
+
+            // Initialize Swiper for Gallery
+            new Swiper('.swiper-container-gallery', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next-gallery',
+                    prevEl: '.swiper-button-prev-gallery',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    768: {
+                        slidesPerView: 2, /* Show 2 images per view on larger screens */
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 3, /* Show 3 images per view on even larger screens */
+                        spaceBetween: 50,
+                    },
+                },
+                on: {
+                    init: function () {
+                        if (galleryPaginationCounter) {
+                            galleryPaginationCounter.textContent = `${this.realIndex + 1} de ${galleryItems.length}`;
+                        }
+                    },
+                    slideChange: function () {
+                        if (galleryPaginationCounter) {
+                            galleryPaginationCounter.textContent = `${this.realIndex + 1} de ${galleryItems.length}`;
+                        }
+                    },
+                }
+            });
+
+
+            // Logic for scroll-in animations
+            const animateElements = document.querySelectorAll('.animate-in');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: If you want the animation to occur only once
+                        // observer.unobserve(entry.target);
+                    } else {
+                        // Optional: If you want the animation to reset when not visible
+                        // entry.target.classList.remove('active');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Percentage of the element visible to activate the animation
+            });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Logic for the scroll button
+            const scrollArrow = document.querySelector('.scroll-down-arrow');
+            if (scrollArrow) {
+                scrollArrow.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
