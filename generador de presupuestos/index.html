@@ -17,7 +17,7 @@
         }
         /* Custom modal styles */
         .modal {
-            display: none; /* Hidden by default - CORRECTED from display: flex; */
+            display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
             z-index: 1000; /* Sit on top */
             left: 0;
@@ -26,8 +26,8 @@
             height: 100%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            align-items: center; /* Centered vertically by flex */
-            justify-content: center; /* Centered horizontally by flex */
+            align-items: center; /* Centered vertically */
+            justify-content: center; /* Centered horizontally */
         }
         .modal-content {
             background-color: #fff;
@@ -51,13 +51,50 @@
             text-decoration: none;
             cursor: pointer;
         }
+        /* Styles for Sumar/Restar buttons */
+        .operation-stacked-buttons button {
+            padding: 0.1rem 0.3rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border-radius: 0.2rem;
+            border: 1px solid #d1d5db;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 20px;
+        }
+        .operation-stacked-buttons button + button {
+            margin-top: 2px;
+        }
+        .operation-stacked-buttons button.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+        .operation-stacked-buttons button.inactive {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            border-color: #d1d5db;
+        }
+        .operation-stacked-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        /* Monospaced font for alignment */
+        .price-align {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
     </style>
 </head>
 <body class="p-4 sm:p-6 md:p-8">
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-6 sm:p-8 md:p-10">
         <h1 class="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-6">Generador de Presupuestos WEC Piscinas</h1>
 
-        <div class="mb-8 p-4 bg-gray-50 rounded-lg">
+        <div id="addItemSection" class="mb-8 p-4 bg-gray-50 rounded-lg">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Agregar Concepto</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
@@ -66,13 +103,17 @@
                 </div>
                 <div>
                     <label for="quantity" class="block text-sm font-medium text-gray-700">Cantidad</label>
-                    <!-- Changed type to text and added inputmode="numeric" -->
                     <input type="text" id="quantity" value="1" min="1" inputmode="numeric" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
                 </div>
                 <div>
                     <label for="price" class="block text-sm font-medium text-gray-700">Precio Unitario ($)</label>
-                    <!-- Removed value="0.00" for an empty default -->
-                    <input type="text" id="price" min="0" step="0.01" inputmode="numeric" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
+                    <div class="mt-1 flex items-end">
+                        <input type="text" id="price" min="0" step="0.01" inputmode="numeric" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
+                        <div class="operation-stacked-buttons flex flex-col ml-1">
+                            <button id="addOperation" class="active"> + </button>
+                            <button id="subtractOperation" class="inactive"> - </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <button id="addItem" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out">
@@ -80,7 +121,23 @@
             </button>
         </div>
 
-        <!-- New section for Payment Method -->
+        <div id="discountSection" class="mb-8 p-4 bg-gray-50 rounded-lg">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Aplicar Descuento</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="discountConcept" class="block text-sm font-medium text-gray-700">Concepto del Descuento</label>
+                    <input type="text" id="discountConcept" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
+                </div>
+                <div>
+                    <label for="discountPercentage" class="block text-sm font-medium text-gray-700">Porcentaje (%)</label>
+                    <input type="text" id="discountPercentage" value="" min="0" max="100" inputmode="numeric" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
+                </div>
+            </div>
+            <button id="applyDiscount" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out">
+                Aplicar Descuento
+            </button>
+        </div>
+
         <div class="mb-8 p-4 bg-gray-50 rounded-lg">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Forma de Pago</h2>
             <div>
@@ -97,14 +154,14 @@
         <div class="mb-8">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Ítems del Presupuesto</h2>
             <div class="overflow-x-auto rounded-lg shadow">
-                <table id="itemsTable" class="min-w-full divide-y divide-gray-200">
+                <table id="itemsTable" class="min-w-full divide-y divide-gray-200 table-fixed">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Concepto</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Unitario</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            <th scope="col" class="w-[40%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Concepto</th>
+                            <th scope="col" class="w-[15%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                            <th scope="col" class="w-[15%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Unitario</th>
+                            <th scope="col" class="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                            <th scope="col" class="w-[10%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -126,7 +183,6 @@
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
-        <!-- Modal content -->
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <p id="modalMessage" class="text-lg text-gray-800"></p>
@@ -137,6 +193,7 @@
     <!-- jsPDF library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
+        // Get references to HTML elements
         const conceptInput = document.getElementById('concept');
         const quantityInput = document.getElementById('quantity');
         const priceInput = document.getElementById('price');
@@ -144,61 +201,115 @@
         const itemsTableBody = document.querySelector('#itemsTable tbody');
         const totalAmountSpan = document.getElementById('totalAmount');
         const downloadPdfButton = document.getElementById('downloadPdf');
-        const paymentMethodSelect = document.getElementById('paymentMethod'); // New: Payment method select element
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const discountConceptInput = document.getElementById('discountConcept');
+        const discountPercentageInput = document.getElementById('discountPercentage');
+        const applyDiscountButton = document.getElementById('applyDiscount'); 
+        const addItemSection = document.getElementById('addItemSection');
+        const discountSection = document.getElementById('discountSection');
 
-        // Modal elements
+        const addOperationButton = document.getElementById('addOperation');
+        const subtractOperationButton = document.getElementById('subtractOperation');
+
         const modal = document.getElementById("myModal");
         const modalMessage = document.getElementById("modalMessage");
         const closeButton = document.querySelector(".close-button");
         const modalCloseButton = document.getElementById("modalCloseButton");
 
-        let items = []; // Array to store budget items
+        // Initialize variables for items and editing
+        let items = [];
+        let editingIndex = -1;
+        let currentItemOperation = 'add'; // 'add' or 'subtract'
 
-        // Function to display modal message
+        // Function to show a modal with a given message
         function showModal(message) {
             modalMessage.textContent = message;
-            modal.style.display = "flex"; // Show the modal
+            modal.style.display = "flex";
         }
 
-        // Close modal when close button (x) is clicked
+        // Event listeners for closing the modal
         closeButton.onclick = function() {
             modal.style.display = "none";
         }
 
-        // Close modal when close button is clicked
         modalCloseButton.onclick = function() {
             modal.style.display = "none";
         }
 
-        // Close modal when clicking outside the modal content
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         }
 
-        // Helper function to format numbers for AR locale
-        function formatCurrency(value) {
-            return value.toLocaleString('es-AR', {
+        // Function to format currency for HTML display with a non-breaking space for alignment
+        function formatCurrencyForHtmlDisplay(value) {
+            const formattedNum = Math.abs(value).toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
+            const negativeSignPlaceholder = '\u2007'; // Figure space for alignment
+
+            if (value < 0) {
+                return `-$${formattedNum}`;
+            } else {
+                return `${negativeSignPlaceholder}$${formattedNum}`;
+            }
         }
 
-        // Helper function to capitalize the first letter of a string
+        // Function to format currency for PDF display with consistent "$" alignment
+        function formatCurrencyForPdfDisplay(value) {
+            const formattedNum = Math.abs(value).toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            // Add a leading space for positive values to align with the negative sign for negative values.
+            if (value < 0) {
+                return `-$${formattedNum}`;
+            } else {
+                return ` $${formattedNum}`; 
+            }
+        }
+
+        // Function to capitalize the first letter of a string
         function capitalizeFirstLetter(string) {
             if (!string) return '';
             return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
         }
 
-        // Function to add a new item to the list
-        addItemButton.addEventListener('click', () => {
-            const concept = capitalizeFirstLetter(conceptInput.value.trim()); // Capitalize first letter
-            // Parse inputs as floats, converting comma to dot if necessary for parsing
-            const quantity = parseFloat(quantityInput.value.replace(',', '.'));
-            const price = parseFloat(priceInput.value.replace(',', '.'));
+        // Function to update the visual state of the operation buttons
+        function updateOperationButtons() {
+            if (currentItemOperation === 'add') {
+                addOperationButton.classList.add('active');
+                addOperationButton.classList.remove('inactive');
+                subtractOperationButton.classList.add('inactive');
+                subtractOperationButton.classList.remove('active');
+            } else {
+                subtractOperationButton.classList.add('active');
+                subtractOperationButton.classList.remove('inactive');
+                addOperationButton.classList.add('inactive');
+                addOperationButton.classList.remove('active');
+            }
+        }
 
-            // Validate inputs
+        // Event listeners for operation buttons
+        addOperationButton.addEventListener('click', () => {
+            currentItemOperation = 'add';
+            updateOperationButtons();
+        });
+
+        subtractOperationButton.addEventListener('click', () => {
+            currentItemOperation = 'subtract';
+            updateOperationButtons();
+        });
+
+        // Event listener for adding/editing an item
+        addItemButton.addEventListener('click', () => {
+            const concept = capitalizeFirstLetter(conceptInput.value.trim());
+            const quantity = parseFloat(quantityInput.value.replace(',', '.'));
+            let price = parseFloat(priceInput.value.replace(',', '.'));
+
+            // Input validation
             if (!concept) {
                 showModal('Por favor, ingrese un concepto.');
                 return;
@@ -212,15 +323,26 @@
                 return;
             }
 
-            const subtotal = quantity * price;
+            let subtotal = quantity * price;
+            if (currentItemOperation === 'subtract') {
+                subtotal = -subtotal;
+            }
 
-            // Remove existing fee item before adding a new regular item
+            // Remove fee and discount items before adding/editing
             removeFeeItem();
-            items.push({ concept, quantity, price, subtotal, isFee: false });
+            removeDiscountItem();
+
+            // Handle editing or adding new item
+            if (editingIndex > -1) {
+                items[editingIndex] = { concept, quantity, price, subtotal, isFee: false, isDiscount: false, operationType: currentItemOperation };
+                editingIndex = -1;
+                addItemButton.textContent = 'Agregar Ítem';
+            } else {
+                items.push({ concept, quantity, price, subtotal, isFee: false, isDiscount: false, operationType: currentItemOperation });
+            }
             
-            // Re-apply fee if applicable after adding a new item
-            applyPaymentMethodFee();
-            renderItems();
+            // Reapply fees and discounts (this will call renderItems internally)
+            applyExistingDiscount(); 
             clearInputs();
         });
 
@@ -228,100 +350,244 @@
         function clearInputs() {
             conceptInput.value = '';
             quantityInput.value = '1';
-            priceInput.value = ''; // Cleared to empty string
+            priceInput.value = '';
             conceptInput.focus();
+            currentItemOperation = 'add';
+            updateOperationButtons();
         }
 
         // Function to render items in the table
         function renderItems() {
-            itemsTableBody.innerHTML = ''; // Clear existing rows
+            itemsTableBody.innerHTML = '';
             let total = 0;
 
             items.forEach((item, index) => {
                 const row = itemsTableBody.insertRow();
-                row.classList.add('hover:bg-gray-100'); // Add hover effect to rows
-                // Conditional rendering for quantity and price based on isFee
-                const quantityDisplay = item.isFee ? '7.61%' : item.quantity.toString();
-                const priceDisplay = item.isFee ? '-' : `$${formatCurrency(item.price)}`;
+                row.classList.add('hover:bg-gray-100');
+                
+                let quantityDisplay = item.quantity.toString();
+                let priceDisplay; 
+
+                if (item.isFee) {
+                    quantityDisplay = '7.61%';
+                    priceDisplay = ''; // No unit price for fees
+                } else if (item.isDiscount) {
+                    quantityDisplay = `${Math.abs(item.quantity).toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}%`;
+                    priceDisplay = ''; // No unit price for discounts
+                } else {
+                    // Check if the item's operation type is 'subtract' to determine price display
+                    if (item.operationType === 'subtract') {
+                        priceDisplay = formatCurrencyForHtmlDisplay(-item.price); // Display negative price
+                    } else {
+                        priceDisplay = formatCurrencyForHtmlDisplay(item.price); // Display positive price
+                    }
+                }
+
+                let subtotalDisplay = formatCurrencyForHtmlDisplay(item.subtotal);
 
                 row.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.concept}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${quantityDisplay}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${priceDisplay}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$${formatCurrency(item.subtotal)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 price-align">${priceDisplay}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 price-align">${subtotalDisplay}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        ${!item.isFee ? `<button class="text-red-600 hover:text-red-900 ml-4 delete-item" data-index="${index}">Eliminar</button>` : ''}
+                        ${!item.isFee ? `
+                            <button class="text-indigo-600 hover:text-indigo-900 edit-item" data-index="${index}" data-type="${item.isDiscount ? 'discount' : 'item'}">
+                                Editar
+                            </button>
+                            <button class="text-red-600 hover:text-red-900 ml-4 delete-item" data-index="${index}" data-type="${item.isDiscount ? 'discount' : 'item'}">Eliminar</button>
+                        ` : ''}
                     </td>
                 `;
                 total += item.subtotal;
             });
 
-            totalAmountSpan.textContent = `$${formatCurrency(total)}`; // Apply formatting to the total displayed on the web page
+            totalAmountSpan.innerHTML = formatCurrencyForHtmlDisplay(total);
 
             // Add event listeners for delete buttons
             document.querySelectorAll('.delete-item').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const index = parseInt(event.target.dataset.index);
-                    items.splice(index, 1); // Remove item from array
-                    
-                    // Re-apply fee if applicable after deleting an item
-                    removeFeeItem(); // Remove existing fee first
-                    applyPaymentMethodFee(); // Re-calculate and add fee
-                    renderItems(); // Re-render the table
+                    const type = event.target.dataset.type;
+                    if (type === 'item') {
+                        items.splice(index, 1);
+                        applyExistingDiscount(); // Recalculate everything after a regular item is deleted.
+                    } else if (type === 'discount') {
+                        deleteDiscountItem(index); // This function will now call applyExistingDiscount
+                    }
+                });
+            });
+
+            document.querySelectorAll('.edit-item').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const index = parseInt(event.currentTarget.dataset.index);
+                    const type = event.currentTarget.dataset.type;
+                    if (type === 'item') {
+                        editItem(index);
+                    } else if (type === 'discount') {
+                        editDiscountItem(index);
+                    }
                 });
             });
         }
+        
+        function editItem(index) {
+            const itemToEdit = items[index];
+            conceptInput.value = itemToEdit.concept;
+            quantityInput.value = itemToEdit.quantity;
+            priceInput.value = itemToEdit.price;
+            currentItemOperation = itemToEdit.operationType || 'add';
+            updateOperationButtons();
 
-        // Function to remove the fee item from the items array
+            editingIndex = index;
+            addItemButton.textContent = 'Guardar Cambios';
+            addItemSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
         function removeFeeItem() {
             items = items.filter(item => !item.isFee);
         }
 
-        // Function to apply payment method fee
+        function removeDiscountItem() {
+            items = items.filter(item => !item.isDiscount);
+        }
+
+        // Central function to apply/reapply discount and then fee
+        function applyExistingDiscount() {
+            // 1. Remove any existing discount item
+            items = items.filter(item => !item.isDiscount);
+
+            // 2. Calculate the base total for discount application (sum of non-fee items)
+            const baseTotalForDiscount = items.reduce((sum, item) => sum + (item.isFee ? 0 : item.subtotal), 0);
+
+            // 3. If there's an active discount percentage, calculate and add the discount item
+            if (lastDiscount.percentage > 0) {
+                const discountAmount = baseTotalForDiscount * (lastDiscount.percentage / 100);
+                items.push({
+                    concept: lastDiscount.concept,
+                    quantity: lastDiscount.percentage,
+                    price: 0, // No unit price for discount
+                    subtotal: -discountAmount, // Discount is a negative value
+                    isFee: false,
+                    isDiscount: true,
+                    operationType: 'subtract'
+                });
+                // Store the index of the newly added discount for future edits
+                lastDiscount.index = items.findIndex(item => item.isDiscount && item.concept === lastDiscount.concept && item.quantity === lastDiscount.percentage);
+            } else {
+                lastDiscount.index = -1; // Reset index if no discount applied
+            }
+
+            // 4. After discount is handled (added or removed), recalculate the payment fee.
+            // This call will then also trigger renderItems().
+            applyPaymentMethodFee();
+        }
+
+
+        // Function to apply payment method fee (7.61% for card payments)
         function applyPaymentMethodFee() {
             const selectedMethod = paymentMethodSelect.value;
-            const feePercentage = 0.0761; // 7.61%
+            const feePercentage = 0.0761;
 
-            removeFeeItem(); // Always remove existing fee before re-calculating
+            // 1. Remove any existing fee item to avoid duplicates or incorrect recalculations
+            items = items.filter(item => !item.isFee);
 
             if (selectedMethod === 'Tarjeta de Crédito' || selectedMethod === 'Tarjeta de Débito') {
-                const baseTotal = items.reduce((sum, item) => sum + (item.isFee ? 0 : item.subtotal), 0); // Exclude existing fee from base total
-                const feeAmount = baseTotal * feePercentage;
+                // Calculate the total for fee calculation.
+                // This total should now correctly include the regular items and the applied discount (which is already in the `items` array).
+                let totalForFeeCalculation = items.reduce((sum, item) => sum + (item.isFee ? 0 : item.subtotal), 0); // Sum everything except fees (which were just removed)
+                
+                const feeAmount = totalForFeeCalculation * feePercentage;
                 items.push({ 
                     concept: 'Costo de la transacción con tarjeta', 
-                    quantity: '7.61%', // Display as percentage
-                    price: '-', // Display as hyphen
+                    quantity: 7.61, // Display as percentage
+                    price: 0, // No unit price for fee
                     subtotal: feeAmount, 
-                    isFee: true 
+                    isFee: true,
+                    isDiscount: false,
+                    operationType: 'add'
                 });
             }
+            // Finally, render all items
             renderItems();
         }
 
-        // Add event listener for payment method change
-        paymentMethodSelect.addEventListener('change', applyPaymentMethodFee);
+        let lastDiscount = {
+            concept: '',
+            percentage: 0,
+            index: -1
+        };
 
-        // Initialize quote number from localStorage or default
+        applyDiscountButton.addEventListener('click', () => {
+            const discountConcept = capitalizeFirstLetter(discountConceptInput.value.trim());
+            const discountPercentage = parseFloat(discountPercentageInput.value.replace(',', '.'));
+
+            if (!discountConcept) {
+                showModal('Por favor, ingrese un concepto para el descuento.');
+                return;
+            }
+            if (isNaN(discountPercentage) || discountPercentage < 0 || discountPercentage > 100) {
+                showModal('Por favor, ingrese un porcentaje de descuento válido entre 0 y 100.');
+                return;
+            }
+
+            // Update lastDiscount object before calling applyExistingDiscount
+            if (lastDiscount.index !== -1 && items[lastDiscount.index] && items[lastDiscount.index].isDiscount) {
+                lastDiscount.percentage = discountPercentage;
+                lastDiscount.concept = discountConcept; 
+            } else {
+                lastDiscount.concept = discountConcept;
+                lastDiscount.percentage = discountPercentage;
+            }
+            
+            applyExistingDiscount(); // This will now always handle removal/addition of discount and fee, and rendering.
+            resetDiscountForm();
+        });
+
+
+        function editDiscountItem(index) {
+            const itemToEdit = items[index];
+            discountConceptInput.value = itemToEdit.concept;
+            discountPercentageInput.value = itemToEdit.quantity;
+            lastDiscount.index = index;
+            applyDiscountButton.textContent = 'Guardar Cambios Descuento';
+            discountSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteDiscountItem(index) {
+            items.splice(index, 1);
+            lastDiscount = { concept: '', percentage: 0, index: -1 }; // Reset last discount
+            resetDiscountForm(); // Clears form
+            applyExistingDiscount(); // Recalculate all (discount and fee, and render)
+        }
+
+        function resetDiscountForm() {
+            discountConceptInput.value = '';
+            discountPercentageInput.value = '';
+            applyDiscountButton.textContent = 'Aplicar Descuento';
+            lastDiscount.index = -1;
+        }
+
+        paymentMethodSelect.addEventListener('change', applyExistingDiscount); // Call applyExistingDiscount to re-evaluate everything
+
         function getNextQuoteNumber() {
             const lastQuoteData = JSON.parse(localStorage.getItem('lastQuoteData')) || {};
-            let lastNumber = lastQuoteData.number || 233; // Starts at 234/25, so previous was 233
-            let lastYear = lastQuoteData.year || new Date().getFullYear(); // Use current year as default if not set
+            let lastNumber = lastQuoteData.number || 233;
+            let lastYear = lastQuoteData.year || new Date().getFullYear();
 
             const currentYear = new Date().getFullYear();
 
             if (currentYear !== lastYear) {
-                lastNumber = 1; // Reset counter for new year
+                lastNumber = 1;
                 lastYear = currentYear;
             } else {
-                lastNumber++; // Increment for same year
+                lastNumber++;
             }
 
             localStorage.setItem('lastQuoteData', JSON.stringify({ number: lastNumber, year: lastYear }));
             return `${lastNumber}/${String(currentYear).slice(-2)}`;
         }
 
-
-        // Function to download the PDF
         downloadPdfButton.addEventListener('click', () => {
             if (items.length === 0) {
                 showModal('No hay ítems para generar el presupuesto. Por favor, agregue algunos.');
@@ -332,29 +598,22 @@
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
 
-                // Company Info
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(24);
-                // "WEC Piscinas" position: moved very slightly more to the left (from 20 to 15)
                 doc.text("WEC Piscinas", 15, 20);
-
-                // Removed the logo image line entirely as requested.
 
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(10);
-                // Adjusted X position for contact info
                 const contactInfoX = 20;
-                doc.text("Cel: 1151063817", contactInfoX, 30); // Changed from Tel to Cel
+                doc.text("Cel: 1151063817", contactInfoX, 30);
                 doc.text("Email: info@wecpiscinas.com.ar", contactInfoX, 35);
                 doc.text("www.wecpiscinas.com.ar", contactInfoX, 40);
 
-                // Title
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(18);
-                const titleRightAlignX = doc.internal.pageSize.width - 20; // X position for right alignment of title
+                const titleRightAlignX = doc.internal.pageSize.width - 20;
                 doc.text("PRESUPUESTO", titleRightAlignX, 40, { align: 'right' });
 
-                // Date, Time and Quote Number - All lines start from the same X position
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(10);
                 const today = new Date();
@@ -362,129 +621,132 @@
                 const time = today.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
                 const quoteNumber = getNextQuoteNumber();
 
-                // Adjusted starting X for these lines to be further to the right
-                // Calculate the widest string to ensure proper alignment for all
                 const widestStringWidth = Math.max(
                     doc.getStringUnitWidth(`Fecha: ${date}`),
                     doc.getStringUnitWidth(`Hora: ${time}`),
                     doc.getStringUnitWidth(`N°: ${quoteNumber}`)
                 ) * doc.internal.getFontSize() / doc.internal.scaleFactor;
 
-                const infoLinesStartX = doc.internal.pageSize.width - 20 - widestStringWidth; // Align the entire block to the right, maintaining left alignment within the block.
+                const infoLinesStartX = doc.internal.pageSize.width - 20 - widestStringWidth;
 
-                let currentInfoY = 47; // Starting Y for info
-
-                // For Fecha
+                let currentInfoY = 47;
                 doc.text(`Fecha: ${date}`, infoLinesStartX, currentInfoY, { align: 'left' });
                 currentInfoY += 5;
-
-                // For Hora
                 doc.text(`Hora: ${time}`, infoLinesStartX, currentInfoY, { align: 'left' });
                 currentInfoY += 5;
-
-                // For N°
                 doc.text(`N°: ${quoteNumber}`, infoLinesStartX, currentInfoY, { align: 'left' });
 
-
-                // Table Header positions and widths
-                const startY = 80; // Adjusted startY to accommodate new header lines
-                const col1X = 20; // Concept
-                const col2X = 90; // Cantidad
-                const col3X = 120; // P. Unitario
-                const col4X = 160; // Subtotal
-                const col5X = 190; // End of table
+                const startY = 80;
+                const colConceptLeftX = 20;
+                const colCantidadLeftX = 92; 
+                const colPrecioUnitarioLeftX = 118; 
+                const colSubtotalLeftX = 150;     
+                const col_end_x = 190;
                 const cellHeight = 7;
-                const tableWidth = col5X - col1X;
+                const cellPadding = 2;
+                // Adjusted textLeftOffset to move content 2 units to the right relative to cellPadding
+                const textLeftOffset = -2; // Used to shift text LEFT from cellPadding. A positive value shifts right.
+                                           // To move 2 units right, we ADD 2 to the X position. 
+                                           // So, for `X + padding - offset`, it means `X + padding + 2`
+                                           // This means we need `textLeftOffset = -2` to achieve `X + padding - (-2)` => `X + padding + 2`
 
-                // Draw table header
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(10);
-                doc.setFillColor(230, 230, 230); // Light gray background for header
-                doc.rect(col1X, startY, tableWidth, cellHeight, 'F'); // Header background
-                doc.setDrawColor(150, 150, 150); // Medium gray for lines
-                doc.setLineWidth(0.2); // Thin lines
-                doc.rect(col1X, startY, tableWidth, cellHeight, 'S'); // Outer border of header
+                doc.setFillColor(230, 230, 230);
+                doc.rect(colConceptLeftX, startY, col_end_x - colConceptLeftX, cellHeight, 'F');
+                doc.setDrawColor(150, 150, 150);
+                doc.setLineWidth(0.2);
+                doc.rect(colConceptLeftX, startY, col_end_x - colConceptLeftX, cellHeight, 'S');
 
-                doc.text("Concepto", col1X + 2, startY + 5);
-                doc.text("Cantidad", col2X + 2, startY + 5);
-                doc.text("P. Unitario", col3X + 2, startY + 5);
-                doc.text("Subtotal", col4X + 2, startY + 5);
+                // Adjust title text positions to align with content padding
+                doc.text("Concepto", colConceptLeftX + cellPadding, startY + 5);
+                doc.text("Cantidad", colCantidadLeftX + cellPadding + textLeftOffset, startY + 5); // Applied offset to header
+                doc.text("P. Unitario", colPrecioUnitarioLeftX + cellPadding + textLeftOffset, startY + 5); // Applied offset to header
+                doc.text("Subtotal", colSubtotalLeftX + cellPadding + textLeftOffset, startY + 5); // Applied offset to header
 
-                // Draw vertical lines for header
-                doc.line(col2X, startY, col2X, startY + cellHeight);
-                doc.line(col3X, startY, col3X, startY + cellHeight);
-                doc.line(col4X, startY, col4X, startY + cellHeight);
+                doc.line(colCantidadLeftX - 2, startY, colCantidadLeftX - 2, startY + cellHeight);
+                doc.line(colPrecioUnitarioLeftX - 2, startY, colPrecioUnitarioLeftX - 2, startY + cellHeight);
+                doc.line(colSubtotalLeftX - 2, startY, colSubtotalLeftX - 2, startY + cellHeight);
 
-                // Table Rows
                 doc.setFont('helvetica', 'normal');
                 let currentY = startY + cellHeight;
                 let total = 0;
 
                 items.forEach(item => {
-                    doc.setDrawColor(150, 150, 150); // Medium gray for lines
-                    doc.setLineWidth(0.2); // Thin lines
+                    doc.setDrawColor(150, 150, 150);
+                    doc.setLineWidth(0.2);
 
-                    // Draw horizontal line for the top of the current row
-                    doc.line(col1X, currentY, col5X, currentY);
-
+                    doc.line(colConceptLeftX, currentY, col_end_x, currentY);
                     currentY += cellHeight;
-                    doc.text(item.concept, col1X + 2, currentY - 2); // Adjust text position for vertical centering
-                    // Conditional display for quantity and price in PDF
-                    doc.text(item.isFee ? '7.61%' : item.quantity.toString(), col2X + 2, currentY - 2); 
-                    doc.text(item.isFee ? '-' : `$${formatCurrency(item.price)}`, col3X + 2, currentY - 2); 
-                    doc.text(`$${formatCurrency(item.subtotal)}`, col4X + 2, currentY - 2); // Formatted subtotal
+                    
+                    let pdfQuantityDisplay = item.quantity.toString();
+                    let pdfPriceDisplay = '';
+                    let pdfSubtotalDisplay = ''; 
+
+                    if (item.isFee) {
+                        pdfQuantityDisplay = '7.61%';
+                        pdfPriceDisplay = ''; // No unit price for fees
+                    } else if (item.isDiscount) {
+                        pdfQuantityDisplay = `${Math.abs(item.quantity).toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}%`;
+                        pdfPriceDisplay = ''; // No unit price for discounts
+                    } else {
+                         // Ensure negative sign is passed to formatCurrencyForPdfDisplay for Price Unitario
+                         const effectivePrice = item.operationType === 'subtract' ? -item.price : item.price;
+                         pdfPriceDisplay = formatCurrencyForPdfDisplay(effectivePrice);
+                    }
+                    
+                    pdfSubtotalDisplay = formatCurrencyForPdfDisplay(item.subtotal);
+
+                    doc.text(item.concept, colConceptLeftX + cellPadding, currentY - 2);
+                    // Applying the textLeftOffset to shift content left within its cell
+                    doc.text(pdfQuantityDisplay, colCantidadLeftX + cellPadding + textLeftOffset, currentY - 2);
+                    doc.text(pdfPriceDisplay, colPrecioUnitarioLeftX + cellPadding + textLeftOffset, currentY - 2);
+                    doc.text(pdfSubtotalDisplay, colSubtotalLeftX + cellPadding + textLeftOffset, currentY - 2);
+                    
                     total += item.subtotal;
 
-                    // Draw vertical lines for the current row
-                    doc.line(col1X, currentY - cellHeight, col1X, currentY); // Left border
-                    doc.line(col2X, currentY - cellHeight, col2X, currentY);
-                    doc.line(col3X, currentY - cellHeight, col3X, currentY);
-                    doc.line(col4X, currentY - cellHeight, col4X, currentY);
-                    doc.line(col5X, currentY - cellHeight, col5X, currentY); // Right border
+                    doc.line(colConceptLeftX, currentY - cellHeight, colConceptLeftX, currentY);
+                    doc.line(colCantidadLeftX - 2, currentY - cellHeight, colCantidadLeftX - 2, currentY);
+                    doc.line(colPrecioUnitarioLeftX - 2, currentY - cellHeight, colPrecioUnitarioLeftX - 2, currentY);
+                    doc.line(colSubtotalLeftX - 2, currentY - cellHeight, colSubtotalLeftX - 2, currentY);
+                    doc.line(col_end_x, currentY - cellHeight, col_end_x, currentY);
                 });
 
-                // Draw final horizontal line for the bottom of the table
-                doc.line(col1X, currentY, col5X, currentY);
+                doc.line(colConceptLeftX, currentY, col_end_x, currentY);
 
-                // Payment Method below table - Adjusted X position to be more to the left
                 const selectedPaymentMethod = paymentMethodSelect.value;
                 currentY += 10;
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(10);
-                const paymentMethodX = 20; // Moved payment method more to the left
-                doc.text(`Forma de pago: ${selectedPaymentMethod}`, paymentMethodX, currentY);
+                doc.text(`Forma de pago: ${selectedPaymentMethod}`, 20, currentY);
 
-
-                // Total Line - Adjusted X positions to be more to the right
                 currentY += 10;
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(12);
-                const totalLabelX_new = doc.internal.pageSize.width - 55; // Adjusted position for "TOTAL:" label
-                const totalAmountX_new = doc.internal.pageSize.width - 20; // Adjusted position for total amount (right-aligned)
-                doc.text("TOTAL:", totalLabelX_new, currentY, { align: 'right' });
-                doc.text(`$${formatCurrency(total)}`, totalAmountX_new, currentY, { align: 'right' });
+                const totalAmountX = col_end_x - cellPadding;
+                const totalLabelX = totalAmountX - 30; 
+                doc.text("TOTAL:", totalLabelX, currentY, { align: 'right' });
+                
+                let pdfTotalDisplay = formatCurrencyForPdfDisplay(total);
+                doc.text(pdfTotalDisplay, totalAmountX, currentY, { align: 'right' });
 
-                // Note
                 currentY += 20;
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(9);
                 doc.text("Nota: el presente presupuesto tiene una vigencia de 30 días corridos, luego puede sufrir modificaciones sin previo aviso.", 20, currentY);
 
-                // Add page numbers and "No tiene valor fiscal"
                 const pageCount = doc.internal.getNumberOfPages();
                 for (let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
                     doc.setFontSize(8);
                     const footerY = doc.internal.pageSize.height - 10;
-                    // "No tiene valor fiscal" centered
                     doc.text(`No tiene valor fiscal`, doc.internal.pageSize.width / 2, footerY, { align: 'center' });
-                    doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.width - 20, footerY, { align: 'right' }); // Page number
+                    doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.width - 20, footerY, { align: 'right' });
                 }
 
-                // Format date and time for filename
-                const fileNameDate = today.toLocaleDateString('en-CA').replace(/-/g, ''); //YYYYMMDD
-                const fileNameTime = today.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }).replace(/:/g, ''); // HHMM
-                const fileNameQuoteNumber = quoteNumber.replace(/\//g, '-'); // Replace / with - for filename compatibility
+                const fileNameDate = today.toLocaleDateString('en-CA').replace(/-/g, '');
+                const fileNameTime = today.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }).replace(/:/g, '');
+                const fileNameQuoteNumber = quoteNumber.replace(/\//g, '-');
 
                 doc.save(`Presupuesto_${fileNameDate}_${fileNameTime}_N${fileNameQuoteNumber}.pdf`);
             } catch (error) {
@@ -493,9 +755,9 @@
             }
         });
 
-        // Initial render (empty table) and apply fee if needed on load
         renderItems();
-        applyPaymentMethodFee(); // Apply fee on initial load if a card payment method is pre-selected
+        applyExistingDiscount(); // Call this once on initial load to setup correctly
+        updateOperationButtons();
     </script>
 </body>
 </html>
