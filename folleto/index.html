@@ -29,6 +29,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Colores personalizados de la marca, copiados del index.html */
+        .bg-wec-celeste-principal { background-color: #00BFFF; }
+        .text-wec-celeste-principal { color: #00BFFF; }
+        .border-wec-celeste-principal { border-color: #00BFFF; }
+        .bg-wec-celeste-secundario { background-color: #87CEEB; }
+        .bg-wec-azul-profundo { background-color: #1E90FF; }
+        .text-wec-azul-profundo { color: #1E90FF; }
+
         /* Global box-sizing for consistent layout */
         * {
             box-sizing: border-box;
@@ -59,13 +67,13 @@
 
         /* Custom brand colors based on www.wecpiscinas.com.ar */
         /* Main Blue (WEC Deep Blue) */
-        .bg-wec-azul-principal { background-color: #1A73E8; } /* Adjusted to a more common and vibrant blue */
-        .text-wec-azul-principal { color: #1A73E8; }
-        .border-wec-azul-principal { border-color: #1A73E8; }
+        .bg-wec-azul-principal { background-color: #1E90FF; } /* Adjusted to use new deep blue */
+        .text-wec-azul-principal { color: #1E90FF; }
+        .border-wec-azul-principal { border-color: #1E90FF; }
         /* Soft Light Blue (WEC Main Light Blue - used for subtle accents) */
-        .bg-wec-celeste-suave { background-color: #66B2FF; } /* Adjusted to be softer */
-        .text-wec-celeste-suave { color: #66B2FF; }
-        .border-wec-celeste-suave { border-color: #66B2FF; }
+        .bg-wec-celeste-suave { background-color: #87CEEB; } /* Adjusted to use new secondary celeste */
+        .text-wec-celeste-suave { color: #87CEEB; }
+        .border-wec-celeste-suave { border-color: #87CEEB; }
 
         /* General section styles */
         .section-padding {
@@ -94,7 +102,7 @@
         /* Scroll arrow animation */
         .scroll-down-arrow {
             position: absolute;
-            bottom: 30px; /* Adjust arrow position */
+            bottom: 80px; /* Increased from 30px to 80px to move it up */
             left: 50%;
             transform: translateX(-50%); /* Center arrow horizontally */
             z-index: 10;
@@ -155,43 +163,54 @@
             border: 1px solid #f8f8f8; /* Subtler image border */
         }
 
-        /* Carousel navigation arrows */
-        .swiper-button-next-custom, .swiper-button-prev-custom {
-            color: #1A73E8 !important; /* Main color */
-            background-color: rgba(255,255,255,0.9); /* Almost white background for arrows */
+        /* Navigation arrows aesthetics and position closer to edges on PC */
+        .swiper-button-next-revestimientos, .swiper-button-prev-revestimientos,
+        .swiper-button-next-borde-atermico, .swiper-button-prev-borde-atermico,
+        .swiper-button-next-offers, .swiper-button-prev-offers,
+        .swiper-button-next-productos-comprar, .swiper-button-prev-productos-comprar,
+        .swiper-button-next-vulcano-premium, .swiper-button-prev-vulcano-premium,
+        .swiper-button-next-gallery, .swiper-button-prev-gallery {
+            color: #1E90FF !important; /* Color de flechas */
+            background-color: rgba(255,255,255,0.8);
             border-radius: 50%;
-            width: 48px;
-            height: 48px;
+            width: 48px; /* Slightly larger for better touch target */
+            height: 48px; /* Slightly larger for better touch target */
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.1); /* Subtler shadow */
-            top: 50% !important;
-            transform: translateY(-50%) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Add shadow */
+            top: 50% !important; /* Center vertically */
+            transform: translateY(-50%) !important; /* Ensure vertical centering */
         }
-        .swiper-button-next-custom:hover, .swiper-button-prev-custom:hover {
-            background-color: rgba(26,115,232,0.1); /* Lighter background on hover */
-            transform: translateY(-50%) scale(1.05) !important; /* Subtler scale */
+        .swiper-button-next-revestimientos:hover, .swiper-button-prev-revestimientos:hover,
+        .swiper-button-next-borde-atermico:hover, .swiper-button-prev-borde-atermico:hover,
+        .swiper-button-next-offers:hover, .swiper-button-prev-offers:hover,
+        .swiper-button-next-productos-comprar:hover, .swiper-button-prev-productos-comprar:hover,
+        .swiper-button-next-vulcano-premium:hover, .swiper-button-prev-vulcano-premium:hover,
+        .swiper-button-next-gallery:hover, .swiper-button-prev-gallery:hover {
+            background-color: rgba(0,191,255,0.2); /* Fondo de flechas al pasar el ratón */
+            transform: translateY(-50%) scale(1.1) !important; /* Ensure vertical centering during hover */
         }
-        .swiper-button-next-custom:after, .swiper-button-prev-custom:after {
-            font-size: 1.6rem !important; /* Slightly reduced font size */
+        .swiper-button-next-revestimientos:after, .swiper-button-prev-revestimientos:after,
+        .swiper-button-next-borde-atermico:after, .swiper-button-prev-borde-atermico:after,
+        .swiper-button-next-offers:after, .swiper-button-prev-offers:after,
+        .swiper-button-next-productos-comprar:after, .swiper-button-prev-productos-comprar:after,
+        .swiper-button-next-vulcano-premium:after, .swiper-button-prev-vulcano-premium:after,
+        .swiper-button-next-gallery:after, .swiper-button-prev-gallery:after {
+            font-size: 1.8rem !important; /* Larger arrows */
         }
-        @media (max-width: 767px) { /* Adjust arrow size for mobile */
-            .swiper-button-next-custom, .swiper-button-prev-custom {
-                width: 8px; /* Even smaller width */
-                height: 8px; /* Even smaller height */
+        /* Arrows closer to edges on PC */
+        @media (min-width: 1024px) { /* Apply for desktop screens */
+            .swiper-button-prev-revestimientos, .swiper-button-prev-borde-atermico,
+            .swiper-button-prev-offers, .swiper-button-prev-productos-comprar,
+            .swiper-button-prev-vulcano-premium, .swiper-button-prev-gallery {
+                left: 10px !important; /* Move left arrow closer to edge */
             }
-            .swiper-button-next-custom:after, .swiper-button-prev-custom:after {
-                font-size: 0.25rem !important; /* Even smaller font size */
-            }
-        }
-        @media (min-width: 1024px) {
-            .swiper-button-prev-custom {
-                left: 20px !important; /* Slightly more towards the center on desktop */
-            }
-            .swiper-button-next-custom {
-                right: 20px !important; /* Slightly more towards the center on desktop */
+            .swiper-button-next-revestimientos, .swiper-button-next-borde-atermico,
+            .swiper-button-next-offers, .swiper-button-next-productos-comprar,
+            .swiper-button-next-vulcano-premium, .swiper-button-next-gallery {
+                right: 10px !important; /* Move right arrow closer to edge */
             }
         }
 
@@ -247,7 +266,7 @@
 
         /* Footer styling */
         footer {
-            background-color: #1A73E8; /* Main blue */
+            background-color: #1E90FF; /* Using new deep blue */
             color: white;
             padding: 2rem 0;
             text-align: center;
@@ -257,7 +276,7 @@
             transition: color 0.3s ease;
         }
         footer a:hover {
-            color: #66B2FF; /* Soft light blue on hover */
+            color: #87CEEB; /* Using new secondary celeste on hover */
         }
 
         /* Floating WhatsApp button */
@@ -335,7 +354,7 @@
         }
         .offer-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(26, 115, 232, 0.2); /* Subtler and bluish hover shadow */
+            box-shadow: 0 8px 20px rgba(30, 144, 255, 0.2); /* Using new deep blue */
         }
         .offer-card img {
             width: 100%;
@@ -348,8 +367,15 @@
             flex-direction: column;
             justify-content: space-between; /* Distributes content vertically */
         }
+        .offer-card .p-6 h3 { /* Apply to h3 inside p-6 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1.25rem; /* Reduced from text-2xl to text-xl */
+        }
         .offer-card .p-6 p {
-            min-height: 48px; /* Ensures minimum height for text content to normalize card heights */
+            height: 72px; /* Fixed height for consistent display */
+            overflow: hidden; /* Hide overflowing text */
             line-height: 1.5; /* Ensures consistent line spacing */
         }
         /* Customization icons styling */
@@ -367,18 +393,18 @@
         }
         .customization-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+            box-shadow: 0 4px 12px rgba(30, 144, 255, 0.2); /* Using new deep blue */
         }
         .customization-item svg {
             width: 60px;
             height: 60px;
             margin-bottom: 1rem;
-            color: #1A73E8; /* Main blue color for icons */
+            color: #1E90FF; /* Using new deep blue color for icons */
         }
         .customization-item p {
             font-size: 1.125rem; /* text-xl */
             font-weight: 600; /* semi-bold */
-            color: #1A73E8; /* Main blue color for text */
+            color: #1E90FF; /* Using new deep blue color for text */
             text-align: center;
         }
 
@@ -407,7 +433,7 @@
         <header class="bg-wec-azul-principal shadow-md py-4 fixed top-0 w-full z-50">
             <div class="container mx-auto max-w-screen-xl px-4 flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="logo.jpg" alt="Logo de WEC Piscinas" class="h-10 w-auto mr-3 object-contain rounded-full" onerror="this.src='https://placehold.co/100x50/1A73E8/FFFFFF?text=LOGO'">
+                    <img src="logo.jpg" alt="" class="h-10 w-auto mr-3 object-contain rounded-full" onerror="this.src='https://placehold.co/100x50/1E90FF/FFFFFF?text=LOGO'">
                     <span class="text-2xl md:text-3xl font-bold text-white">WEC Piscinas</span>
                 </div>
             </div>
@@ -482,40 +508,40 @@
                     <div class="swiper-wrapper">
                         <!-- Offer 1 -->
                         <div class="swiper-slide offer-card animate-in">
-                            <img src="proyecto1.jpg" alt="Piscina de 6x3 metros" onerror="this.src='https://placehold.co/400x200/1A73E8/FFFFFF?text=Piscina+6x3'">
+                            <img src="proyecto1.jpg" alt="Piscina de 6x3 metros" onerror="this.src='https://placehold.co/400x200/1E90FF/FFFFFF?text=Piscina+6x3'">
                             <div class="p-6">
-                                <h3 class="text-2xl font-bold text-wec-azul-principal mb-2">Piscina de 6x3 metros</h3>
+                                <h3 class="text-xl font-bold text-wec-azul-principal mb-2">Piscina de 6x3 metros</h3>
                                 <p class="text-gray-700 mb-4">Perfecta para espacios reducidos, ideal para relajarse y disfrutar.</p>
                                 <div class="text-4xl font-extrabold text-wec-celeste-suave mb-4">$11.000.000</div>
                             </div>
                         </div>
                         <!-- Offer 2 -->
                         <div class="swiper-slide offer-card animate-in">
-                            <img src="proyecto2.jpg" alt="Piscina de 7.5x3.5 metros" onerror="this.src='https://placehold.co/400x200/66B2FF/FFFFFF?text=Piscina+7.5x3.5'">
+                            <img src="proyecto2.jpg" alt="Piscina de 7.5x3.5 metros" onerror="this.src='https://placehold.co/400x200/87CEEB/FFFFFF?text=Piscina+7.5x3.5'">
                             <div class="p-6">
-                                <h3 class="text-2xl font-bold text-wec-azul-principal mb-2">Piscina de 7.5x3.5 metros</h3>
+                                <h3 class="text-xl font-bold text-wec-azul-principal mb-2">Piscina de 7.5x3.5 metros</h3>
                                 <p class="text-gray-700 mb-4">Un tamaño versátil para toda la familia, ideal para juegos y natación.</p>
                                 <div class="text-4xl font-extrabold text-wec-celeste-suave mb-4">$16.000.000</div>
                             </div>
                         </div>
                         <!-- Offer 3 -->
                         <div class="swiper-slide offer-card animate-in">
-                            <img src="proyecto3.jpg" alt="Piscina de 10x4.5 metros" onerror="this.src='https://placehold.co/400x200/1A73E8/FFFFFF?text=Piscina+10x4.5'">
+                            <img src="proyecto3.jpg" alt="Piscina de 10x4.5 metros" onerror="this.src='https://placehold.co/400x200/1E90FF/FFFFFF?text=Piscina+10x4.5'">
                             <div class="p-6">
-                                <h3 class="text-2xl font-bold text-wec-azul-principal mb-2">Piscina de 10x4.5 metros</h3>
+                                <h3 class="text-xl font-bold text-wec-azul-principal mb-2">Piscina de 10x4.5 metros</h3>
                                 <p class="text-gray-700 mb-4">La opción definitiva para los amantes de la natación y grandes reuniones.</p>
                                 <div class="text-4xl font-extrabold text-wec-celeste-suave mb-4">$25.000.000</div>
                             </div>
                         </div>
                     </div>
                     <!-- Navigation arrows for offers -->
-                    <div class="swiper-button-prev swiper-button-prev-offers swiper-button-custom"></div>
-                    <div class="swiper-button-next swiper-button-next-offers swiper-button-custom"></div>
+                    <div class="swiper-button-prev swiper-button-prev-offers"></div>
+                    <div class="swiper-button-next swiper-button-next-offers"></div>
                 </div>
                 <!-- Counter for "X of Y" offers -->
                 <div class="swiper-pagination-counter-offers swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-offers"></div>
                 <p class="text-sm mt-8 animate-in delay-800">
-                    *Precios finales que incluyen todo lo necesario para tu nueva piscina. Incluye: visita y medición del terreno, excavación, retiro de tierra, mano de obra, materiales, sistema de luces LED, pintura de piscina de color a elección, bordes atérmicos color a elección, sistema de filtrado y la bomba del agua. Todos los materiales y productos que utilizamos son línea premium para lograr la mejor piscina calidad/precio. Sin letra chica ni sorpresas, pagás ese monto dividido en tres etapas (inicio de obra, un pago intermedio y el último cuando finalizamos), esperás entre 10 y 15 días ¡y listo! ya estarás disfrutando con tu familia. 
+                    *Precios finales que incluyen todo lo necesario para tu nueva piscina. Incluye: visita y medición del terreno, excavación, retiro de tierra, mano de obra, materiales, sistema de luces LED, pintura de piscina de color a elección, bordes atérmicos color a elección, sistema de filtrado y la bomba del agua. Todos los materiales y productos que utilizamos son línea premium para lograr la mejor piscina calidad/precio. Sin letra chica ni sorpresas, pagás ese monto dividido en tres etapas (inicio de obra, un pago intermedio y el último cuando finalizamos), esperás entre 10 y 15 días ¡y listo! ya estarás disfrutando con tu familia.
                 </p>
             </div>
         </section>
@@ -536,8 +562,8 @@
                         <!-- Cards will be inserted here dynamically with JavaScript -->
                     </div>
                     <!-- Navigation arrows -->
-                    <div class="swiper-button-prev swiper-button-prev-revestimientos swiper-button-custom"></div>
-                    <div class="swiper-button-next swiper-button-next-revestimientos swiper-button-custom"></div>
+                    <div class="swiper-button-prev swiper-button-prev-revestimientos"></div>
+                    <div class="swiper-button-next swiper-button-next-revestimientos"></div>
                 </div>
                 <!-- Counter for "X of Y" moved outside swiper-container -->
                 <div class="swiper-pagination-counter-revestimientos swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-revestimientos"></div>
@@ -560,8 +586,8 @@
                         <!-- Cool Edge items will be inserted here dynamically -->
                     </div>
                     <!-- Navigation arrows -->
-                    <div class="swiper-button-prev swiper-button-prev-borde-atermico swiper-button-custom"></div>
-                    <div class="swiper-button-next swiper-button-next-borde-atermico swiper-button-custom"></div>
+                    <div class="swiper-button-prev swiper-button-prev-borde-atermico"></div>
+                    <div class="swiper-button-next swiper-button-next-borde-atermico"></div>
                 </div>
                 <!-- Counter for "X of Y" Cool Edge -->
                 <div class="swiper-pagination-counter-borde-atermico swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-borde-atermico"></div>
@@ -584,8 +610,8 @@
                         <!-- Products to buy items will be inserted here dynamically -->
                     </div>
                     <!-- Navigation arrows -->
-                    <div class="swiper-button-prev swiper-button-prev-productos-comprar swiper-button-custom"></div>
-                    <div class="swiper-button-next swiper-button-next-productos-comprar swiper-button-custom"></div>
+                    <div class="swiper-button-prev swiper-button-prev-productos-comprar"></div>
+                    <div class="swiper-button-next swiper-button-next-productos-comprar"></div>
                 </div>
                 <!-- Counter for "X of Y" Products to buy -->
                 <div class="swiper-pagination-counter-productos-comprar swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-productos-comprar"></div>
@@ -647,8 +673,8 @@
                         <!-- Vulcano Premium items will be inserted here dynamically -->
                     </div>
                     <!-- Navigation arrows -->
-                    <div class="swiper-button-prev swiper-button-prev-vulcano-premium swiper-button-custom"></div>
-                    <div class="swiper-button-next swiper-button-next-vulcano-premium swiper-button-custom"></div>
+                    <div class="swiper-button-prev swiper-button-prev-vulcano-premium"></div>
+                    <div class="swiper-button-next swiper-button-next-vulcano-premium"></div>
                 </div>
                 <!-- Counter for "X of Y" Vulcano Premium -->
                 <div class="swiper-pagination-counter-vulcano-premium swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-vulcano-premium"></div>
@@ -660,7 +686,7 @@
             <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-4 animate-in">
-                        Galería de Fotos 
+                        Galería de Fotos
                     </h2>
                     <p class="text-lg text-gray-600 animate-in delay-100">Algunas imágenes de nuestros trabajos recientes.</p>
                 </div>
@@ -671,8 +697,8 @@
                         <!-- Gallery items will be inserted here dynamically -->
                     </div>
                     <!-- Navigation arrows -->
-                    <div class="swiper-button-prev swiper-button-prev-gallery swiper-button-custom"></div>
-                    <div class="swiper-button-next swiper-button-next-gallery swiper-button-custom"></div>
+                    <div class="swiper-button-prev swiper-button-prev-gallery"></div>
+                    <div class="swiper-button-next swiper-button-next-gallery"></div>
                 </div>
                 <!-- Counter for "X of Y" gallery -->
                 <div class="swiper-pagination-counter-gallery swiper-pagination-counter-custom mx-auto" id="swiper-pagination-counter-gallery"></div>
@@ -685,13 +711,13 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-wec-azul-principal mb-8 animate-in">
                     Sobre Nosotros
                 </h2>
-                <img src="logo.jpg" alt="Image of Logo de WEC Piscinas" class="mx-auto h-40 w-auto mb-8 rounded-full shadow-lg animate-in delay-200" onerror="this.src='https://placehold.co/150x150/1A73E8/FFFFFF?text=LOGO'">
+                <img src="logo.jpg" alt="" class="mx-auto h-40 w-auto mb-8 rounded-full shadow-lg animate-in delay-200" onerror="this.src='https://placehold.co/150x150/1E90FF/FFFFFF?text=LOGO'">
                 <p class="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed animate-in delay-400">
                  En WEC Piscinas, llevamos más de 10 años dedicados a transformar los sueños de nuestros clientes en realidades acuáticas. Nacimos como una empresa familiar con una visión clara: ofrecer piscinas de material de la más alta calidad, combinando diseño y funcionalidad con una construcción impecable.
 
 Nuestros valores fundamentales son la honestidad, el compromiso con el cliente y la búsqueda constante de la excelencia. Creemos que cada piscina es un proyecto único, un espacio para la relajación, la diversión y la creación de recuerdos inolvidables.
 
-Contamos con un equipo de profesionales apasionados y experimentados, todos unidos por el objetivo de superar tus expectativas.   
+Contamos con un equipo de profesionales apasionados y experimentados, todos unidos por el objetivo de superar tus expectativas.
                 </p>
             </div>
         </section>
@@ -710,7 +736,7 @@ Contamos con un equipo de profesionales apasionados y experimentados, todos unid
 
     <!-- Floating WhatsApp button -->
     <a href="https://wa.me/5491151063817?text=Hola%20WEC%20Piscinas,%20me%20gustar%C3%ADa%20consultar%20sobre%20su%20oferta%20de%20oto%C3%B1o-invierno." target="_blank" class="whatsapp-float-button">
-        <img src="whatsapp.jpg" alt="WhatsApp de WEC Piscinas" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
+        <img src="whatsapp.jpg" alt="" onerror="this.src='https://placehold.co/60x60/25D366/FFFFFF?text=WA'">
     </a>
 
     <!-- Swiper JS -->
@@ -719,18 +745,18 @@ Contamos con un equipo de profesionales apasionados y experimentados, todos unid
         document.addEventListener('DOMContentLoaded', function() {
             // Revestimientos data (copied from index.html)
             const revestimientos = [
-                { img: 'tarjeta1.jpg', nombre: 'Venecita Nature Bali' },
-                { img: 'tarjeta2.jpg', nombre: 'Venecita Verde Agua' },
-                { img: 'tarjeta3.jpg', nombre: 'Venecita Blanco' },
-                { img: 'tarjeta4.jpg', nombre: 'Venecita color Arena' },
-                { img: 'tarjeta5.jpg', nombre: 'Venecita Gris' },
-                { img: 'tarjeta6.jpg', nombre: 'Venecita Verde Tornasol' },
-                { img: 'tarjeta7.jpg', nombre: 'Venecita Celeste Claro' },
-                { img: 'tarjeta8.jpg', nombre: 'Venecita Niebla Celeste' },
-                { img: 'tarjeta9.jpg', nombre: 'Venecita Colores Mix. Bco/Cel/Azul' },
-                { img: 'tarjeta10.jpg', nombre: 'Venecita Mix. Celes/azul' },
-                { img: 'tarjeta11.jpg', nombre: 'Venecita Agua Marina Verde' },
-                { img: 'tarjeta12.jpg', nombre: 'Venecita Niebla Azul' },
+                { img: 'tarjeta1.jpg', nombre: 'Venecitas Nature Bali' },
+                { img: 'tarjeta2.jpg', nombre: 'Venecitas Aqua' },
+                { img: 'tarjeta3.jpg', nombre: 'Venecitas Blanco' },
+                { img: 'tarjeta4.jpg', nombre: 'Venecitas color Arena' },
+                { img: 'tarjeta5.jpg', nombre: 'Venecitas Gris' },
+                { img: 'tarjeta6.jpg', nombre: 'Venecitas Verde Tornasol' },
+                { img: 'tarjeta7.jpg', nombre: 'Venecitas Celeste Claro' },
+                { img: 'tarjeta8.jpg', nombre: 'Venecitas Niebla Celeste' },
+                { img: 'tarjeta9.jpg', nombre: 'Venecitas Colores Mix. Bco/Cel/Azul' },
+                { img: 'tarjeta10.jpg', nombre: 'Venecitas Mix. Celes/azul' },
+                { img: 'tarjeta11.jpg', nombre: 'Venecitas Agua Marina Verde' },
+                { img: 'tarjeta12.jpg', nombre: 'Venecitas Niebla Azul' },
                 { img: 'tarjeta13.jpg', nombre: 'Piedra Bali ' }
             ];
 
