@@ -139,6 +139,20 @@
         </div>
 
         <div class="mb-8 p-4 bg-gray-50 rounded-lg">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Trabajo a realizar: (Opcional)</h2>
+            <textarea id="tasksToDo" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border" rows="4" placeholder="Ingrese el trabajo a realizar aquí..."></textarea>
+            <div id="tasksPreview" class="mt-1 p-2 bg-white rounded-md border border-gray-300 hidden whitespace-pre-wrap"></div>
+            <div class="mt-4 flex space-x-2">
+                <button id="saveTasks" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out">
+                    Guardar
+                </button>
+                <button id="editTasks" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out hidden">
+                    Editar
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-8 p-4 bg-gray-50 rounded-lg">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Forma de Pago</h2>
             <div>
                 <label for="paymentMethod" class="block text-sm font-medium text-gray-700">Seleccione la forma de pago:</label>
@@ -207,6 +221,12 @@
         const applyDiscountButton = document.getElementById('applyDiscount'); 
         const addItemSection = document.getElementById('addItemSection');
         const discountSection = document.getElementById('discountSection');
+        
+        // Referencias a elementos de "Trabajo a realizar"
+        const tasksToDoTextarea = document.getElementById('tasksToDo');
+        const tasksPreviewDiv = document.getElementById('tasksPreview'); // Nuevo elemento para la preview
+        const saveTasksButton = document.getElementById('saveTasks');
+        const editTasksButton = document.getElementById('editTasks');
 
         const addOperationButton = document.getElementById('addOperation');
         const subtractOperationButton = document.getElementById('subtractOperation');
@@ -220,6 +240,7 @@
         let items = [];
         let editingIndex = -1;
         let currentItemOperation = 'add'; // 'add' or 'subtract'
+        let savedTasksText = ''; // Variable para almacenar el texto de "Trabajo a realizar" que irá al PDF
 
         // Function to show a modal with a given message
         function showModal(message) {
@@ -570,6 +591,43 @@
 
         paymentMethodSelect.addEventListener('change', applyExistingDiscount); // Call applyExistingDiscount to re-evaluate everything
 
+        // Funciones para la sección "Trabajo a realizar"
+        function updateTasksUI() {
+            if (savedTasksText) {
+                tasksToDoTextarea.value = savedTasksText; // Asegura que el textarea siempre tenga el valor guardado
+                tasksToDoTextarea.style.display = 'none'; // Oculta el textarea
+                tasksPreviewDiv.textContent = savedTasksText;
+                tasksPreviewDiv.classList.remove('hidden'); // Muestra la preview
+                saveTasksButton.classList.add('hidden');
+                editTasksButton.classList.remove('hidden');
+            } else {
+                tasksToDoTextarea.value = '';
+                tasksToDoTextarea.style.display = 'block'; // Muestra el textarea
+                tasksPreviewDiv.classList.add('hidden'); // Oculta la preview
+                saveTasksButton.classList.remove('hidden');
+                editTasksButton.classList.add('hidden');
+            }
+        }
+
+        saveTasksButton.addEventListener('click', () => {
+            savedTasksText = tasksToDoTextarea.value.trim();
+            updateTasksUI();
+            if (savedTasksText === '') {
+                // No mostrar modal si está vacío, simplemente no se guardará en el PDF.
+            }
+        });
+
+        editTasksButton.addEventListener('click', () => {
+            tasksToDoTextarea.style.display = 'block'; // Muestra el textarea
+            tasksPreviewDiv.classList.add('hidden'); // Oculta la preview
+            saveTasksButton.classList.remove('hidden');
+            editTasksButton.classList.add('hidden');
+            tasksToDoTextarea.focus();
+        });
+        
+        // Inicializar el estado de la UI de "Trabajo a realizar" al cargar
+        updateTasksUI();
+
         function getNextQuoteNumber() {
             const lastQuoteData = JSON.parse(localStorage.getItem('lastQuoteData')) || {};
             let lastNumber = lastQuoteData.number || 233;
@@ -730,7 +788,23 @@
                 let pdfTotalDisplay = formatCurrencyForPdfDisplay(total);
                 doc.text(pdfTotalDisplay, totalAmountX, currentY, { align: 'right' });
 
-                currentY += 20;
+                // Add "Trabajo a realizar" section if savedTasksText is not empty
+                if (savedTasksText) {
+                    currentY += 15; // Add some space before the new section
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(10);
+                    doc.text("Trabajo a realizar:", 20, currentY);
+                    currentY += 5; // Space after title
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(9);
+                    // Split the text into lines and add them
+                    const splitText = doc.splitTextToSize(savedTasksText, doc.internal.pageSize.width - 40); // 20 units padding on each side
+                    doc.text(splitText, 20, currentY);
+                    currentY += (splitText.length * 4) + 5; // Adjust Y based on number of lines and add extra space
+                }
+
+
+                currentY += 5; // Add some extra space before the note
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(9);
                 doc.text("Nota: el presente presupuesto tiene una vigencia de 30 días corridos, luego puede sufrir modificaciones sin previo aviso.", 20, currentY);
