@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Obra</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Gestor de obras: registra ingresos, egresos, horas extras, adelantos y calcula la ganancia. Facilita la contabilidad.">
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
@@ -18,10 +18,10 @@
             background-color: #f3f4f6; /* gray-100 */
         }
         .modal {
-            transition: opacity 0.3s ease;
+            transition: opacity 0.15s ease;
         }
         .modal-content {
-            transition: transform 0.3s ease;
+            transition: transform 0.15s ease;
         }
         /* Scrollbar personalizado */
         ::-webkit-scrollbar {
@@ -125,71 +125,21 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* ring-indigo-500 with opacity */
         }
-        
-        /* Estilos para la tabla responsive en móviles */
-        @media (max-width: 639px) { /* breakpoint 'sm' de Tailwind */
-            .mobile-table thead {
-                display: none;
-            }
-            .mobile-table tbody {
-                display: block;
-                width: 100%;
-            }
-            .mobile-table tr {
-                display: block;
-                margin-bottom: 0.75rem; /* mb-3 */
-                border: 1px solid #d1d5db; /* border-gray-300 */
-                border-radius: 0.5rem; /* rounded-lg */
-                overflow: hidden; /* para los bordes redondeados */
-                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
-            }
-            .mobile-table td {
-                display: block;
-                text-align: right;
-                padding-left: 50%; /* Espacio para el label */
-                position: relative;
-                border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
-                padding-top: 0.75rem; /* p-3 */
-                padding-bottom: 0.75rem;
-                padding-right: 0.75rem;
-            }
-            .mobile-table tr:last-child td:last-child {
-                border-bottom: 0;
-            }
-            .mobile-table td:before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0.75rem; /* p-3 */
-                padding-right: 0.75rem;
-                width: 45%; /* 50% - padding */
-                text-align: left;
-                font-weight: 600; /* font-semibold */
-                color: #374151; /* text-gray-700 */
-            }
-            /* Caso especial para acciones */
-            .mobile-table td[data-label="Acciones"] {
-                text-align: center;
-                padding-left: 0.75rem;
-            }
-             .mobile-table td[data-label="Acciones"]:before {
-                display: none; /* No mostrar label, solo centrar botones */
-            }
-        }
     </style>
 </head>
 <body class="text-gray-700">
 
     <!-- App Container -->
-    <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div id="app" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         
         <!-- Header -->
         <header class="flex flex-col sm:flex-row justify-between items-center mb-8 pb-4 border-b border-gray-300">
-            <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center justify-center sm:justify-start">
                 <img src="logo.jpg" alt="Logo Gestor de Obra" class="h-10 w-auto mr-3" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block'">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block mr-2 text-gray-800 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
                 <span>Gestor de Obra</span>
             </h1>
-            <div class="mt-4 sm:mt-0 flex items-center space-x-2">
+            <div class="mt-4 sm:mt-0 flex flex-wrap w-full sm:w-auto justify-center sm:justify-start gap-2">
                 <button id="open-personnel-modal-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out flex items-center text-sm font-semibold">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
                     Gestionar Personal
@@ -203,7 +153,7 @@
 
         <!-- Main Content -->
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Projects List -->
+            <!-- Projects List Column -->
             <div class="lg:col-span-1 bg-gray-50 p-6 rounded-lg shadow-xl">
                 <h2 class="text-xl font-bold mb-4 text-gray-800">Obras Activas</h2>
                 <div id="projects-list" class="space-y-3 max-h-[70vh] overflow-y-auto pr-2">
@@ -225,8 +175,8 @@
         <!-- Historial de Obras -->
         <div id="archived-projects-container" class="mt-12">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-300">Historial de Obras</h2>
-            <div id="archived-projects-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <p class="text-gray-500 col-span-full">No hay obras finalizadas.</p>
+            <div id="archived-projects-list" class="space-y-3">
+                 <p class="text-gray-500">No hay obras finalizadas.</p>
             </div>
         </div>
         
@@ -296,7 +246,7 @@
                 </div>
                 
                 <div class="mt-4">
-                    <label for="transaction-amount" class="block text-sm font-medium text-gray-700">Monto</label>
+                    <label for="transaction-amount" id="transaction-amount-label" class="block text-sm font-medium text-gray-700">Monto</label>
                      <div class="flex items-center mt-1">
                         <input type="text" inputmode="decimal" id="transaction-amount" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 font-mono" placeholder="$ 0,00" required>
                     </div>
@@ -407,7 +357,7 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Configuración de Firebase (la que nos pasaste)
+            // Configuración de Firebase
             const firebaseConfig = {
               apiKey: "AIzaSyBeg-vvD96ALKzoYiY_YHmRgoWIlGlKd-c",
               authDomain: "gestor-de-obra-d67e8.firebaseapp.com",
@@ -422,7 +372,7 @@
             const db = getFirestore(app);
             const auth = getAuth(app);
 
-            // STATE MANAGEMENT (ahora se llena desde Firebase)
+            // STATE MANAGEMENT
             let state = {
                 projects: [],
                 personnel: [],
@@ -433,27 +383,32 @@
 
             // UTILITIES
             const formatCurrency = (amount) => {
-                if (typeof amount !== 'number') {
-                    amount = 0;
-                }
-                return new Intl.NumberFormat('es-AR', { 
-                    style: 'currency', 
-                    currency: 'ARS',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(amount);
+                if (typeof amount !== 'number') { amount = 0; }
+                return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
             };
             const formatDate = (isoString) => new Date(isoString).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' });
-            
-            // CORRECCIÓN: Asegurarse que la fecha YYYY-MM-DD se interprete como local
             const formatDateOnly = (dateString) => {
-                const date = new Date(dateString + 'T12:00:00'); // Usar T12:00 para evitar errores UTC
-                return date.toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                if (!dateString) return 'Fecha Inválida';
+                const date = new Date(dateString.split('T')[0] + 'T12:00:00Z'); 
+                return date.toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Argentina/Buenos_Aires' });
+            };
+            const getISODate = (dateString) => dateString.split('T')[0];
+
+            const capitalizeWords = (str) => {
+                if (!str) return '';
+                const smallWords = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta', 'para', 'por', 'segun', 'sin', 'so', 'sobre', 'tras', 'el', 'la', 'lo', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'u', 'que'];
+                return str.toLowerCase().split(' ').map((word, index) => {
+                    if (index > 0 && smallWords.includes(word) && word.length <= 3) {
+                        return word;
+                    }
+                    // Mantener EMILIO y ENZO en mayúsculas
+                    if (word.toUpperCase() === 'EMILIO' || word.toUpperCase() === 'ENZO') {
+                        return word.toUpperCase();
+                    }
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                }).join(' ');
             };
             
-            const getISODate = (dateString) => dateString.split('T')[0];
-            
-            // Formateador de moneda en el input
             function formatCurrencyInput(input) {
                 let value = input.value;
                 let cursorStart = input.selectionStart;
@@ -461,7 +416,7 @@
 
                 let valueDigits = value.replace(/[^0-9,]/g, '');
                 
-                if (valueDigits.length === 0 && originalLength > value.length) {
+                if (valueDigits.length === 0) {
                     input.value = '';
                     input.selectionStart = input.selectionEnd = 0;
                     return;
@@ -471,28 +426,33 @@
                 let integerPart = parts[0];
                 let decimalPart = parts[1];
 
+                if (integerPart.length > 1 && integerPart.startsWith('0')) {
+                    integerPart = integerPart.replace(/^0+/, '');
+                }
+                if (integerPart === "") { integerPart = "0"; }
+
                 integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 
-                let newValue = '$ ' + (integerPart || '0');
-                if (decimalPart !== undefined) {
-                    newValue += ',' + decimalPart.substring(0, 2);
-                }
+                let newValue = '$ ' + integerPart;
+                if (decimalPart !== undefined) { newValue += ',' + decimalPart.substring(0, 2); }
 
                 input.value = newValue;
+                
                 let newLength = newValue.length;
                 let cursorOffset = newLength - originalLength;
                 
                 if (cursorStart !== null) {
                     let newCursor = cursorStart + cursorOffset;
                     if (newCursor < 2) newCursor = 2;
-                    input.selectionStart = input.selectionEnd = newCursor;
+                    if (cursorOffset > 0 && (newValue[newCursor-1] === '.')) { newCursor++; }
+                     if (cursorOffset < 0 && (value[cursorStart] === '.')) { newCursor--; }
+                    input.selectionStart = input.selectionEnd = Math.max(2, newCursor); 
                 }
             }
 
-            // Parsear valor de moneda para guardarlo
             function parseCurrency(value) {
                 if (!value) return 0;
-                let numberValue = value.replace('$ ', '').replace(/\./g, '').replace(',', '.');
+                let numberValue = value.replace('$ ', '').trim().replace(/\./g, '').replace(',', '.');
                 return parseFloat(numberValue) || 0;
             }
 
@@ -536,7 +496,7 @@
                     const projectEl = document.createElement('div');
                     projectEl.className = `p-4 rounded-lg cursor-pointer transition shadow-sm border border-gray-300 ${activeClasses}`;
                     projectEl.dataset.id = project.id;
-                    projectEl.innerHTML = `<h3 class="font-semibold text-sm uppercase">${project.name}</h3>`;
+                    projectEl.innerHTML = `<h3 class="font-semibold text-sm">${capitalizeWords(project.name)}</h3>`; 
                     projectEl.addEventListener('click', () => {
                         state.activeProjectId = project.id;
                         renderAll();
@@ -550,7 +510,7 @@
                 const archivedProjects = state.projects.filter(p => p.status === 'archived');
 
                 if (archivedProjects.length === 0) {
-                    archivedProjectsListEl.innerHTML = `<p class="text-gray-500 col-span-full">No hay obras finalizadas.</p>`;
+                    archivedProjectsListEl.innerHTML = `<p class="text-gray-500">No hay obras finalizadas.</p>`;
                     return;
                 }
 
@@ -560,7 +520,7 @@
                     const projectEl = document.createElement('div');
                     projectEl.className = `p-4 rounded-lg cursor-pointer transition shadow-sm border border-gray-300 ${activeClasses}`;
                     projectEl.dataset.id = project.id;
-                    projectEl.innerHTML = `<h3 class="font-semibold text-sm uppercase">${project.name}</h3>`;
+                    projectEl.innerHTML = `<h3 class="font-semibold text-sm">${capitalizeWords(project.name)}</h3>`; 
                     projectEl.addEventListener('click', () => {
                         state.activeProjectId = project.id;
                         renderAll();
@@ -580,7 +540,7 @@
                     const pEl = document.createElement('div');
                     pEl.className = 'flex justify-between items-center p-2 border-b border-gray-300';
                     pEl.innerHTML = `
-                        <span class="uppercase text-sm">${p.name} - <span class="font-semibold text-blue-600 font-mono">${formatCurrency(p.dailyWage || 0)}/DÍA</span></span>
+                        <span class="text-sm">${capitalizeWords(p.name)} - <span class="font-semibold text-blue-600 font-mono">${formatCurrency(p.dailyWage || 0)}/DÍA</span></span>
                         <button data-id="${p.id}" class="delete-personnel-btn text-red-600 hover:text-red-900">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
                         </button>
@@ -619,7 +579,6 @@
                 const emilioFinal = emilioShare - emilioAdvances;
                 const enzoFinal = enzoShare - enzoAdvances;
                 
-                // CORRECCIÓN: Agrupar por día (YYYY-MM-DD)
                 const attendanceByDate = projectAttendances.reduce((acc, curr) => {
                     const dayKey = getISODate(curr.date);
                     if (!acc[dayKey]) acc[dayKey] = [];
@@ -627,6 +586,30 @@
                     if(person) acc[dayKey].push(person.name);
                     return acc;
                 }, {});
+
+                const attendanceHTML = Object.entries(attendanceByDate)
+                    .sort((a,b) => new Date(b[0]) - new Date(a[0]))
+                    .map(([date, personnelNames]) => {
+                        let dailyCost = 0;
+                        const capitalizedNames = personnelNames.map(name => {
+                            const personData = state.personnel.find(p => p.name.toUpperCase() === name.toUpperCase());
+                            if (personData) {
+                                dailyCost += personData.dailyWage || 0;
+                            }
+                            return capitalizeWords(name); 
+                        });
+                        
+                        return `
+                            <div class="bg-white p-3 rounded-md border border-gray-300 shadow-sm">
+                                <div class="flex justify-between items-center">
+                                    <p class="font-semibold text-gray-800">${formatDateOnly(date)}</p>
+                                    <!-- CAMBIO: Agregado signo menos -->
+                                    <p class="text-sm font-bold text-red-600 font-mono">-${formatCurrency(dailyCost)}</p>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1">${capitalizedNames.join(', ')}</p>
+                            </div>
+                        `;
+                    }).join('');
 
                 projectDetailsEl.innerHTML = `
                     <div class="bg-gray-50 p-6 rounded-lg shadow-xl space-y-10 relative">
@@ -640,7 +623,7 @@
                         <!-- Header Obra -->
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                             <div>
-                                <h2 class="text-2xl font-bold text-gray-800 uppercase">${project.name}</h2>
+                                <h2 class="text-2xl font-bold text-gray-800">${capitalizeWords(project.name)}</h2> 
                                 <p class="text-sm text-gray-500">Valor Total: <span class="font-semibold font-mono">${formatCurrency(project.totalValue || 0)}</span></p>
                             </div>
                             <div class="mt-4 sm:mt-0 flex flex-wrap gap-2">
@@ -660,6 +643,17 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
                                     Eliminar
                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acciones -->
+                        <div class="flex flex-col sm:flex-row justify-between items-center pb-6 border-b border-gray-300">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Acciones</h3>
+                            <div class="space-x-2 flex flex-wrap gap-2">
+                                <button id="add-income-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">+ Ingreso</button>
+                                <button id="add-expense-btn" class="text-sm bg-red-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-red-900 transition duration-300 ease-in-out font-semibold">- Egreso</button>
+                                <button id="add-extra-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">Horas Extras</button>
+                                <button id="add-advance-btn" class="text-sm bg-gray-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold">Adelanto</button>
                             </div>
                         </div>
                         
@@ -694,42 +688,47 @@
                             </div>
                         </div>
 
+                        <!-- Asistencia -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Asistencia de Personal</h3>
+                                <button id="add-attendance-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">Registrar Asistencia</button>
+                            </div>
+                            <div class="max-h-72 overflow-y-auto pr-2 border border-gray-300 rounded-lg p-4 space-y-3">
+                                ${attendanceHTML || '<p class="text-center text-gray-500 p-4">No hay registros de asistencia.</p>'}
+                            </div>
+                        </div>
+
                         <!-- Movimientos -->
                         <div>
                             <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Movimientos</h3>
-                                <div class="space-x-2 flex flex-wrap gap-2">
-                                    <button id="add-income-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">+ Ingreso</button>
-                                    <button id="add-expense-btn" class="text-sm bg-red-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-red-900 transition duration-300 ease-in-out font-semibold">- Egreso</button>
-                                    <button id="add-extra-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">Horas Extras</button>
-                                    <button id="add-advance-btn" class="text-sm bg-gray-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold">Adelanto</button>
-                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Historial de Movimientos</h3>
                             </div>
-                            <div class="max-h-96 overflow-y-auto sm:border sm:border-gray-300 sm:rounded-lg">
-                                <table class="w-full text-sm text-left text-gray-500 mobile-table">
-                                    <thead class="text-xs text-gray-700 bg-gray-100 hidden sm:table-header-group">
+                            <div class="max-h-96 overflow-y-auto overflow-x-auto border border-gray-300 rounded-lg">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 bg-gray-100">
                                         <tr>
-                                            <th scope="col" class="px-6 py-3">Fecha</th>
-                                            <th scope="col" class="px-6 py-3">Descripción</th>
-                                            <th scope="col" class="px-6 py-3">Monto</th>
-                                            <th scope="col" class="px-6 py-3">Usuario</th>
-                                            <th scope="col" class="px-6 py-3 text-center">Acciones</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Fecha</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Descripción</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Monto</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Usuario</th>
+                                            <th scope="col" class="px-6 py-3 text-center whitespace-nowrap">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         ${projectTransactions.sort((a,b) => new Date(b.date) - new Date(a.date)).map(t => `
-                                            <tr class="bg-white sm:border-b sm:border-gray-300 sm:hover:bg-gray-100" data-transaction-id="${t.id}">
-                                                <td data-label="Fecha">${formatDate(t.date)}</td>
-                                                <td data-label="Descripción" class="font-medium text-gray-800">
-                                                    <span class="uppercase">${t.description}</span>
-                                                    ${(t.personnelInvolved && t.personnelInvolved.length > 0) ? `<br><span class="text-xs text-gray-500 uppercase">Personal: ${t.personnelInvolved.join(', ')}</span>` : ''}
+                                            <tr class="bg-white border-b border-gray-300 hover:bg-gray-100" data-transaction-id="${t.id}">
+                                                <td class="px-6 py-4 whitespace-nowrap">${formatDate(t.date)}</td>
+                                                <td class="px-6 py-4 font-medium text-gray-800">
+                                                    <span>${capitalizeWords(t.description)}</span>
+                                                    ${(t.personnelInvolved && t.personnelInvolved.length > 0) ? `<br><span class="text-xs text-gray-500">Personal: ${t.personnelInvolved.map(capitalizeWords).join(', ')}</span>` : ''}
                                                 </td>
-                                                <td data-label="Monto" class="font-semibold font-mono ${t.type === 'income' ? 'text-blue-600' : (t.type === 'advance' ? 'text-indigo-600' : 'text-red-600')}">
+                                                <td class="px-6 py-4 font-semibold font-mono whitespace-nowrap ${t.type === 'income' ? 'text-blue-600' : (t.type === 'advance' ? 'text-indigo-600' : 'text-red-600')}">
                                                     ${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}
                                                 </td>
-                                                <td data-label="Usuario" class="uppercase">${t.user}</td>
-                                                <td data-label="Acciones">
-                                                    <div class="flex justify-end sm:justify-center items-center space-x-2">
+                                                <td class="px-6 py-4 uppercase whitespace-nowrap">${t.user}</td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex justify-center items-center space-x-2">
                                                         <button class="edit-transaction-btn action-btn text-indigo-600 hover:text-indigo-900">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>
                                                         </button>
@@ -745,26 +744,9 @@
                                 </table>
                             </div>
                         </div>
-                        
-                        <!-- Asistencia -->
-                        <div>
-                            <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Asistencia de Personal</h3>
-                                <button id="add-attendance-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">Registrar Asistencia</button>
-                            </div>
-                            <div class="max-h-72 overflow-y-auto pr-2 border border-gray-300 rounded-lg p-4 space-y-3">
-                                ${Object.keys(attendanceByDate).length > 0 ? Object.entries(attendanceByDate).sort((a,b) => new Date(b[0]) - new Date(a[0])).map(([date, personnel]) => `
-                                    <div class="bg-white p-3 rounded-md border border-gray-300 shadow-sm">
-                                        <p class="font-semibold text-gray-800">${formatDateOnly(date)}</p>
-                                        <p class="text-sm text-gray-500 uppercase">${personnel.join(', ')}</p>
-                                    </div>
-                                `).join('') : '<p class="text-center text-gray-500 p-4">No hay registros de asistencia.</p>'}
-                            </div>
-                        </div>
                     </div>
                 `;
                 
-                // Ocultar botón "Finalizar" si la obra ya está archivada
                 const archiveBtn = document.getElementById('archive-project-btn');
                 if (archiveBtn) {
                     if (project.status === 'archived') {
@@ -787,13 +769,12 @@
             function closeModal(modal) {
                 modal.classList.add('opacity-0');
                 modal.querySelector('.modal-content').classList.add('scale-95');
-                setTimeout(() => modal.classList.add('hidden'), 300);
+                setTimeout(() => modal.classList.add('hidden'), 150);
             }
             
-            // Modal de Confirmación
             let confirmCallback = null;
             function openConfirmModal(message, callback) {
-                document.getElementById('confirm-modal-message').innerText = message.toUpperCase();
+                document.getElementById('confirm-modal-message').innerText = message;
                 confirmCallback = callback;
                 openModal(confirmModal);
             }
@@ -811,17 +792,20 @@
                 const titleEl = document.getElementById('transaction-modal-title');
                 const personnelContainer = document.getElementById('extra-personnel-container');
                 const dateContainer = document.getElementById('transaction-date-container');
+                const amountLabel = document.getElementById('transaction-amount-label');
                 
                 document.getElementById('transaction-id').value = transactionToEdit ? transactionToEdit.id : '';
                 document.getElementById('transaction-type').value = type;
                 personnelContainer.classList.add('hidden');
                 dateContainer.classList.add('hidden');
+                amountLabel.innerText = 'Monto'; 
                 
                 let title = '';
                 if (type === 'income') title = 'Nuevo Ingreso';
                 if (type === 'expense') title = 'Nuevo Egreso';
                 if (type === 'extra') {
                     title = 'Registrar Horas Extras';
+                    amountLabel.innerText = 'Monto (POR PERSONA)'; 
                     personnelContainer.classList.remove('hidden');
                     dateContainer.classList.remove('hidden');
                     populateExtraPersonnelList(transactionToEdit ? transactionToEdit.personnelInvolved : []);
@@ -831,11 +815,15 @@
                 if(transactionToEdit) {
                      titleEl.innerText = `Editar ${title}`;
                      document.getElementById('transaction-description').value = transactionToEdit.description;
-                     document.getElementById('transaction-amount').value = formatCurrency(transactionToEdit.amount).replace('ARS', '').trim(); // Formatear para editar
+                     let amountToEdit = transactionToEdit.amount;
+                     if (type === 'extra' && transactionToEdit.personnelInvolved && transactionToEdit.personnelInvolved.length > 0) {
+                        amountToEdit = amountToEdit / transactionToEdit.personnelInvolved.length;
+                     }
+                     document.getElementById('transaction-amount').value = formatCurrency(amountToEdit).replace('ARS', '').trim();
                      document.querySelector(`input[name="user"][value="${transactionToEdit.user}"]`).checked = true;
                 } else {
                     titleEl.innerText = title;
-                    document.getElementById('transaction-amount').value = ''; // Limpiar para placeholder
+                    document.getElementById('transaction-amount').value = ''; 
                 }
                 openModal(transactionModal);
             }
@@ -848,11 +836,13 @@
                      return;
                 }
                 state.personnel.forEach(p => {
-                    const isChecked = selectedPersonnel.map(name => name.toUpperCase()).includes(p.name.toUpperCase());
+                    // CAMBIO: Usar p.name directo (sin toUpperCase) para la comparación
+                    const isChecked = selectedPersonnel.includes(p.name); 
                     listEl.innerHTML += `
                         <label class="flex items-center p-1 rounded-md hover:bg-gray-100 cursor-pointer">
+                            <!-- CAMBIO: value sigue siendo el nombre original -->
                             <input type="checkbox" name="extra-personnel" value="${p.name}" class="form-checkbox h-4 w-4 text-blue-600 rounded" ${isChecked ? 'checked' : ''}>
-                            <span class="ml-2 text-sm text-gray-700 uppercase">${p.name}</span>
+                            <span class="ml-2 text-sm text-gray-700">${capitalizeWords(p.name)}</span>
                         </label>
                     `;
                 });
@@ -870,7 +860,7 @@
                     listEl.innerHTML += `
                         <label class="flex items-center p-2 rounded-md hover:bg-gray-100">
                             <input type="checkbox" name="attendance-personnel" value="${p.id}" class="form-checkbox h-5 w-5 text-blue-600 rounded">
-                            <span class="ml-3 text-gray-700 uppercase">${p.name} (<span class="font-mono">${formatCurrency(p.dailyWage || 0)}</span>)</span>
+                            <span class="ml-3 text-gray-700">${capitalizeWords(p.name)} (<span class="font-mono">${formatCurrency(p.dailyWage || 0)}</span>)</span>
                         </label>
                     `;
                 });
@@ -883,15 +873,14 @@
                 document.getElementById('advance-id').value = transactionToEdit ? transactionToEdit.id : '';
                 if(transactionToEdit) {
                     document.getElementById('advance-person').value = transactionToEdit.person.toUpperCase();
-                    document.getElementById('advance-amount').value = formatCurrency(transactionToEdit.amount).replace('ARS', '').trim(); // Formatear para editar
+                    document.getElementById('advance-amount').value = formatCurrency(transactionToEdit.amount).replace('ARS', '').trim(); 
                     document.querySelector(`input[name="advance-user"][value="${transactionToEdit.user}"]`).checked = true;
                 } else {
-                     document.getElementById('advance-amount').value = ''; // Limpiar para placeholder
+                     document.getElementById('advance-amount').value = ''; 
                 }
                 openModal(advanceModal);
             }
 
-            // Modal de Resumen
             function renderSummaryModal(projectId) {
                 const project = state.projects.find(p => p.id === projectId);
                 if (!project) return;
@@ -913,12 +902,11 @@
                 const emilioFinal = emilioShare - emilioAdvances;
                 const enzoFinal = enzoShare - enzoAdvances;
 
-                document.getElementById('summary-title').innerText = `Resumen: ${project.name.toUpperCase()}`;
+                document.getElementById('summary-title').innerText = `Resumen: ${capitalizeWords(project.name)}`; 
                 const contentEl = document.getElementById('summary-content');
                 
                 let html = `
                     <div class="space-y-8">
-                        <!-- Resumen Financiero -->
                         <div>
                             <h3 class="text-lg font-semibold mb-2 text-gray-800 border-b border-gray-300 pb-1">Resumen Financiero</h3>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
@@ -928,8 +916,6 @@
                             </div>
                             <p class="mt-2 text-xs text-gray-500 pl-1">Detalle Egresos: ${formatCurrency(manualExpenses)} (Gastos) + ${formatCurrency(jornalesCost)} (Jornales)</p>
                         </div>
-
-                        <!-- Liquidación -->
                         <div>
                             <h3 class="text-lg font-semibold mb-4 text-gray-800 border-b border-gray-300 pb-1">Liquidación y Ganancias</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -949,32 +935,30 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Movimientos -->
                         <div>
                             <h3 class="text-lg font-semibold mb-4 text-gray-800 border-b border-gray-300 pb-1">Detalle de Movimientos</h3>
-                            <div class="max-h-96 overflow-y-auto pr-2 border border-gray-300 rounded-lg bg-white">
+                            <div class="max-h-96 overflow-y-auto overflow-x-auto pr-2 border border-gray-300 rounded-lg bg-white">
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 bg-gray-50 sticky top-0">
                                         <tr>
-                                            <th scope="col" class="px-6 py-3">Fecha</th>
-                                            <th scope="col" classs="px-6 py-3">Descripción</th>
-                                            <th scope="col" class="px-6 py-3">Monto</th>
-                                            <th scope="col" class="px-6 py-3">Usuario</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Fecha</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Descripción</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Monto</th>
+                                            <th scope="col" class="px-6 py-3 whitespace-nowrap">Usuario</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         ${projectTransactions.sort((a,b) => new Date(b.date) - new Date(a.date)).map(t => `
                                             <tr class="border-b border-gray-300 hover:bg-gray-100">
-                                                <td class="px-6 py-4">${formatDate(t.date)}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">${formatDate(t.date)}</td>
                                                 <td class="px-6 py-4 font-medium text-gray-800">
-                                                    <span class="uppercase">${t.description}</span>
-                                                    ${(t.personnelInvolved && t.personnelInvolved.length > 0) ? `<br><span class="text-xs text-gray-500 uppercase">Personal: ${t.personnelInvolved.join(', ')}</span>` : ''}
+                                                    <span>${capitalizeWords(t.description)}</span>
+                                                    ${(t.personnelInvolved && t.personnelInvolved.length > 0) ? `<br><span class="text-xs text-gray-500">Personal: ${t.personnelInvolved.map(capitalizeWords).join(', ')}</span>` : ''}
                                                 </td>
-                                                <td class="px-6 py-4 font-semibold font-mono ${t.type === 'income' ? 'text-blue-600' : (t.type === 'advance' ? 'text-indigo-600' : 'text-red-600')}">
+                                                <td class="px-6 py-4 font-semibold font-mono whitespace-nowrap ${t.type === 'income' ? 'text-blue-600' : (t.type === 'advance' ? 'text-indigo-600' : 'text-red-600')}">
                                                     ${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}
                                                 </td>
-                                                <td class="px-6 py-4 uppercase">${t.user}</td>
+                                                <td class="px-6 py-4 uppercase whitespace-nowrap">${t.user}</td>
                                             </tr>
                                         `).join('')}
                                         ${projectTransactions.length === 0 ? `<tr><td colspan="4" class="text-center p-4">No hay movimientos.</td></tr>` : ''}
@@ -988,19 +972,19 @@
                 openModal(summaryModal);
             }
 
-            // --- FORM SUBMISSIONS & ACTIONS (Refactorizados para Firebase) ---
+            // --- FORM SUBMISSIONS & ACTIONS ---
 
             document.getElementById('project-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                closeModal(projectModal); 
                 const name = document.getElementById('project-name').value;
                 const totalValue = document.getElementById('project-total-value').value;
                 try {
                     await addDoc(collection(db, "projects"), {
-                        name: name.toUpperCase(),
+                        name: name, 
                         totalValue: parseCurrency(totalValue),
                         status: 'active'
                     });
-                    closeModal(projectModal);
                 } catch (error) {
                     console.error("Error al agregar obra: ", error);
                     alert("Error al guardar la obra.");
@@ -1013,7 +997,7 @@
                 const wageInput = document.getElementById('personnel-daily-wage');
                 try {
                     await addDoc(collection(db, "personnel"), {
-                        name: nameInput.value.toUpperCase(),
+                        name: nameInput.value, 
                         dailyWage: parseCurrency(wageInput.value)
                     });
                     nameInput.value = '';
@@ -1026,6 +1010,7 @@
             
             document.getElementById('transaction-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                
                 const id = document.getElementById('transaction-id').value;
                 const typeInput = document.getElementById('transaction-type').value;
                 const type = typeInput === 'extra' ? 'expense' : typeInput;
@@ -1036,30 +1021,42 @@
                 let date;
                 if (typeInput === 'extra') {
                     const dateVal = document.getElementById('transaction-date').value;
-                    date = dateVal ? new Date(dateVal + 'T12:00:00').toISOString() : new Date().toISOString();
+                    if (!dateVal) {
+                        alert('POR FAVOR, SELECCIONE UNA FECHA PARA LAS HORAS EXTRAS.');
+                        return; 
+                    }
+                    date = new Date(dateVal + 'T12:00:00').toISOString();
                 } else {
                     date = new Date().toISOString();
+                }
+
+                let amount = parseCurrency(document.getElementById('transaction-amount').value);
+                if (typeInput === 'extra' && personnelInvolved.length > 0) {
+                    amount = amount * personnelInvolved.length;
                 }
 
                 const transactionData = {
                     projectId: state.activeProjectId,
                     type,
-                    description: document.getElementById('transaction-description').value.toUpperCase(),
-                    amount: parseCurrency(document.getElementById('transaction-amount').value),
+                    description: document.getElementById('transaction-description').value, 
+                    amount: amount, 
                     user: document.querySelector('input[name="user"]:checked').value,
                     date: date,
-                    personnelInvolved
+                    personnelInvolved 
                 };
-
+                
+                closeModal(transactionModal); 
                 try {
                     if (id) {
                         const docRef = doc(db, "transactions", id);
-                        const originalDate = (typeInput === 'extra') ? date : state.transactions.find(t => t.id === id).date;
-                        await updateDoc(docRef, { ...transactionData, date: originalDate });
+                        const existingTransaction = state.transactions.find(t => t.id === id);
+                        const originalDate = (existingTransaction) ? existingTransaction.date : new Date().toISOString();
+                        transactionData.date = (typeInput === 'extra') ? date : originalDate; 
+                        
+                        await updateDoc(docRef, transactionData);
                     } else {
                         await addDoc(collection(db, "transactions"), transactionData);
                     }
-                    closeModal(transactionModal);
                 } catch (error) {
                     console.error("Error al guardar transacción: ", error);
                     alert("Error al guardar el movimiento.");
@@ -1069,33 +1066,43 @@
             document.getElementById('attendance-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const dateInput = document.getElementById('attendance-date');
-                const date = new Date(dateInput.value + 'T12:00:00').toISOString();
+                if (!dateInput.value) {
+                    alert("Por favor, seleccione una fecha.");
+                    return;
+                }
+                
+                closeModal(attendanceModal); 
+                
+                const date = new Date(dateInput.value + 'T12:00:00').toISOString(); 
                 const selectedPersonnel = Array.from(document.querySelectorAll('input[name="attendance-personnel"]:checked')).map(cb => cb.value);
                 
                 try {
-                    const dateStart = getISODate(date) + "T00:00:00.000Z";
-                    const dateEnd = getISODate(date) + "T23:59:59.999Z";
+                    const dateKey = getISODate(date); 
 
                     const q = query(collection(db, "attendances"), 
-                        where("projectId", "==", state.activeProjectId), 
-                        where("date", ">=", dateStart),
-                        where("date", "<=", dateEnd)
+                        where("projectId", "==", state.activeProjectId)
                     );
                     const querySnapshot = await getDocs(q);
                     
-                    const deletePromises = querySnapshot.docs.map(d => deleteDoc(d.ref));
+                    const deletePromises = [];
+                    querySnapshot.docs.forEach(doc => {
+                        const docData = doc.data();
+                        if (getISODate(docData.date) === dateKey) {
+                            deletePromises.push(deleteDoc(doc.ref));
+                        }
+                    });
+
                     await Promise.all(deletePromises);
                     
                     const addPromises = selectedPersonnel.map(personnelId => 
                         addDoc(collection(db, "attendances"), {
                             projectId: state.activeProjectId,
                             personnelId,
-                            date
+                            date 
                         })
                     );
                     await Promise.all(addPromises);
                     
-                    closeModal(attendanceModal);
                 } catch (error) {
                     console.error("Error al guardar asistencia: ", error);
                     alert("Error al guardar la asistencia.");
@@ -1104,6 +1111,7 @@
 
             document.getElementById('advance-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                closeModal(advanceModal); 
                 const id = document.getElementById('advance-id').value;
                 const person = document.getElementById('advance-person').value;
                 const advanceData = {
@@ -1124,7 +1132,6 @@
                     } else {
                         await addDoc(collection(db, "transactions"), advanceData);
                     }
-                    closeModal(advanceModal);
                 } catch (error) {
                     console.error("Error al guardar adelanto: ", error);
                     alert("Error al guardar el adelanto.");
@@ -1132,9 +1139,10 @@
             });
 
             async function deleteProject(projectId) {
-                openConfirmModal('¿ELIMINAR ESTA OBRA? SE BORRARÁN TODOS SUS DATOS PERMANENTEMENTE.', async () => {
+                openConfirmModal('¿Eliminar esta obra? Se borrarán todos sus datos permanentemente.', async () => {
                     try {
-                        await deleteDoc(doc(db, "projects", projectId));
+                        const projectRef = doc(db, "projects", projectId);
+                        await deleteDoc(projectRef);
                         
                         const transQuery = query(collection(db, "transactions"), where("projectId", "==", projectId));
                         const transSnapshot = await getDocs(transQuery);
@@ -1149,6 +1157,8 @@
                         if (state.activeProjectId === projectId) {
                             state.activeProjectId = null;
                         }
+                        // Forzar re-renderizado después de eliminar
+                        renderAll(); 
                     } catch (error) {
                         console.error("Error al eliminar obra: ", error);
                         alert("Error al eliminar la obra.");
@@ -1175,7 +1185,7 @@
                     const button = e.target.closest('.delete-personnel-btn');
                     const pId = button.dataset.id;
                     
-                    openConfirmModal('¿ELIMINAR ESTA PERSONA? SE BORRARÁ DE TODAS LAS ASISTENCIAS.', async () => {
+                    openConfirmModal('¿Eliminar esta persona? Se borrará de todas las asistencias.', async () => {
                         try {
                             await deleteDoc(doc(db, "personnel", pId));
                             
@@ -1209,32 +1219,37 @@
 
                 const editBtn = e.target.closest('.edit-transaction-btn');
                 if(editBtn) {
-                    const transactionId = editBtn.closest('tr').dataset.transactionId;
-                    const transaction = state.transactions.find(t => t.id === transactionId);
-                    if (transaction.type === 'advance') {
-                        openAdvanceModal(transaction);
-                    } else if (transaction.personnelInvolved && transaction.personnelInvolved.length > 0) {
-                         openTransactionModal('extra', transaction);
-                    } else {
-                        openTransactionModal(transaction.type, transaction);
+                    const tr = editBtn.closest('tr[data-transaction-id]');
+                    if (tr) {
+                        const transactionId = tr.dataset.transactionId;
+                        const transaction = state.transactions.find(t => t.id === transactionId);
+                        if (transaction.type === 'advance') {
+                            openAdvanceModal(transaction);
+                        } else if (transaction.personnelInvolved && transaction.personnelInvolved.length > 0) {
+                             openTransactionModal('extra', transaction);
+                        } else {
+                            openTransactionModal(transaction.type, transaction);
+                        }
                     }
                 }
                 
                 const deleteBtn = e.target.closest('.delete-transaction-btn');
                 if(deleteBtn) {
-                    const transactionId = deleteBtn.closest('tr').dataset.transactionId;
-                    openConfirmModal('¿ELIMINAR ESTE MOVIMIENTO?', async () => {
-                        try {
-                            await deleteDoc(doc(db, "transactions", transactionId));
-                        } catch (error) {
-                            console.error("Error al eliminar movimiento: ", error);
-                            alert("Error al eliminar el movimiento.");
-                        }
-                    });
+                    const tr = deleteBtn.closest('tr[data-transaction-id]');
+                    if(tr) {
+                        const transactionId = tr.dataset.transactionId;
+                        openConfirmModal('¿Eliminar este movimiento?', async () => {
+                            try {
+                                await deleteDoc(doc(db, "transactions", transactionId));
+                            } catch (error) {
+                                console.error("Error al eliminar movimiento: ", error);
+                                alert("Error al eliminar el movimiento.");
+                            }
+                        });
+                    }
                 }
             });
             
-            // Event listeners para formato de moneda
             const currencyInputIds = [
                 'project-total-value', 'personnel-daily-wage',
                 'transaction-amount', 'advance-amount'
@@ -1243,33 +1258,28 @@
                 const inputEl = document.getElementById(id);
                 if (inputEl) {
                     inputEl.addEventListener('input', (e) => formatCurrencyInput(e.target));
-                    inputEl.addEventListener('blur', (e) => {
-                        let value = e.target.value;
-                        if (value.endsWith(',')) {
-                            e.target.value = value + '00';
-                        }
-                    });
                     inputEl.addEventListener('focus', (e) => {
-                        if (e.target.value === '' || e.target.value === '$ 0,00') {
+                        if (e.target.value === '$ 0,00') {
                             e.target.value = '';
+                        }
+                        e.target.select();
+                    });
+                    inputEl.addEventListener('blur', (e) => {
+                        if (e.target.value === '$ ' || e.target.value === '') {
+                            if (!e.target.hasAttribute('required')) {
+                                e.target.value = '$ 0,00';
+                            } else {
+                                e.target.value = ''; 
+                            }
+                        } else if (e.target.value.endsWith(',')) {
+                            e.target.value = e.target.value + '00';
                         }
                     });
                 }
             });
             
-            // Event listener para convertir a mayúsculas
-            document.addEventListener('input', (e) => {
-                if (e.target.tagName === 'INPUT' && e.target.type === 'text' && !e.target.classList.contains('font-mono')) { 
-                    const start = e.target.selectionStart;
-                    const end = e.target.selectionEnd;
-                    e.target.value = e.target.value.toUpperCase();
-                    e.target.setSelectionRange(start, end);
-                }
-            });
-
-            // Función para archivar
             async function archiveProject(projectId) {
-                openConfirmModal('¿FINALIZAR Y ARCHIVAR ESTA OBRA? YA NO APARECERÁ EN LA LISTA ACTIVA.', async () => {
+                openConfirmModal('¿Finalizar y archivar esta obra? Ya no aparecerá en la lista activa.', async () => {
                     try {
                         await updateDoc(doc(db, "projects", projectId), {
                             status: "archived"
@@ -1286,7 +1296,6 @@
             
             let listeners = [];
             function setupRealtimeListeners() {
-                // Limpiar listeners anteriores si existieran
                 listeners.forEach(unsub => unsub());
                 listeners = [];
 
@@ -1315,7 +1324,6 @@
                 listeners.push(unsubAttendances);
             }
 
-            // Iniciar sesión anónima
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     console.log("Usuario anónimo conectado:", user.uid);
@@ -1332,4 +1340,5 @@
     </script>
 </body>
 </html>
+
 
