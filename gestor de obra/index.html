@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Obra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js" type="module"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e5e7eb; /* gray-200 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb; /* blue-600 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1d4ed8; /* blue-700 */
+        }
+        .action-btn {
+            padding: 0.25rem; /* p-1 */
+            border-radius: 0.375rem; /* rounded-md */
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+            transition-duration: 200ms; /* duration-200 */
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+        }
+        /* Ocultar las flechas en los inputs de tipo número */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+        
+        /* Clase para alinear números */
+        .font-mono {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        /* Colores y estilos de foco */
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #6366f1; /* indigo-500 */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* ring-indigo-500 with opacity */
+        }
+        
+        /* Form Radio Button custom style */
+        .form-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            height: 1em;
+            width: 1em;
+            color: #2563eb; /* blue-600 */
+            background-color: #fff;
+            border-color: #d1d5db; /* gray-300 */
+            border-width: 1px;
+            border-radius: 100%;
+        }
+        .form-radio:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .form-radio:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* ring-indigo-500 with opacity */
+        }
+        .form-checkbox {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            height: 1em;
+            width: 1em;
+            color: #2563eb; /* blue-600 */
+            background-color: #fff;
+            border-color: #d1d5db; /* gray-300 */
+            border-width: 1px;
+            border-radius: 0.25rem; /* rounded */
+        }
+        .form-checkbox:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .form-checkbox:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* ring-indigo-500 with opacity */
+        }
+        
+        /* Estilos para la tabla responsive en móviles */
+        @media (max-width: 639px) { /* breakpoint 'sm' de Tailwind */
+            .mobile-table thead {
+                display: none;
+            }
+            .mobile-table tbody {
+                display: block;
+                width: 100%;
+            }
+            .mobile-table tr {
+                display: block;
+                margin-bottom: 0.75rem; /* mb-3 */
+                border: 1px solid #d1d5db; /* border-gray-300 */
+                border-radius: 0.5rem; /* rounded-lg */
+                overflow: hidden; /* para los bordes redondeados */
+                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+            }
+            .mobile-table td {
+                display: block;
+                text-align: right;
+                padding-left: 50%; /* Espacio para el label */
+                position: relative;
+                border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+                padding-top: 0.75rem; /* p-3 */
+                padding-bottom: 0.75rem;
+                padding-right: 0.75rem;
+            }
+            .mobile-table tr:last-child td:last-child {
+                border-bottom: 0;
+            }
+            .mobile-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0.75rem; /* p-3 */
+                padding-right: 0.75rem;
+                width: 45%; /* 50% - padding */
+                text-align: left;
+                font-weight: 600; /* font-semibold */
+                color: #374151; /* text-gray-700 */
+            }
+            /* Caso especial para acciones */
+            .mobile-table td[data-label="Acciones"] {
+                text-align: center;
+                padding-left: 0.75rem;
+            }
+             .mobile-table td[data-label="Acciones"]:before {
+                display: none; /* No mostrar label, solo centrar botones */
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <!-- App Container -->
+    <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Header -->
+        <header class="flex flex-col sm:flex-row justify-between items-center mb-8 pb-4 border-b border-gray-300">
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                <img src="logo.jpg" alt="Logo Gestor de Obra" class="h-10 w-auto mr-3" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block mr-2 text-gray-800 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                <span>Gestor de Obra</span>
+            </h1>
+            <div class="mt-4 sm:mt-0 flex items-center space-x-2">
+                <button id="open-personnel-modal-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out flex items-center text-sm font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                    Gestionar Personal
+                </button>
+                 <button id="open-project-modal-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out flex items-center text-sm font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Nueva Obra
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Projects List -->
+            <div class="lg:col-span-1 bg-gray-50 p-6 rounded-lg shadow-xl">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Obras Activas</h2>
+                <div id="projects-list" class="space-y-3 max-h-[70vh] overflow-y-auto pr-2">
+                    <p class="text-gray-500">Cargando obras...</p>
+                </div>
+            </div>
+
+            <!-- Project Details -->
+            <div id="project-details" class="lg:col-span-2 hidden"></div>
+             <div id="no-project-selected" class="lg:col-span-2 flex items-center justify-center bg-gray-50 p-6 rounded-lg shadow-xl h-full min-h-[400px]">
+                <div class="text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                    <h3 class="mt-2 text-lg font-medium text-gray-800">Selecciona una obra</h3>
+                    <p class="mt-1 text-sm text-gray-500">Elige una obra de la lista para ver sus detalles y gestionarla.</p>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Historial de Obras -->
+        <div id="archived-projects-container" class="mt-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-300">Historial de Obras</h2>
+            <div id="archived-projects-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <p class="text-gray-500 col-span-full">No hay obras finalizadas.</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Project Modal (Nueva Obra) -->
+    <div id="project-modal" class="modal fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-xl transform scale-95">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Nueva Obra</h2>
+            <form id="project-form">
+                <div>
+                    <label for="project-name" class="block text-sm font-medium text-gray-700">Nombre de la Obra</label>
+                    <input type="text" id="project-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div class="mt-4">
+                    <label for="project-total-value" class="block text-sm font-medium text-gray-700">Valor Total (Presupuesto)</label>
+                    <div class="flex items-center mt-1">
+                        <input type="text" inputmode="decimal" id="project-total-value" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 font-mono" placeholder="$ 0,00" required>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" class="cancel-modal-btn bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold text-sm">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold text-sm">Guardar Obra</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Personnel Modal (Gestionar Personal) -->
+    <div id="personnel-modal" class="modal fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-lg p-6 rounded-lg shadow-xl transform scale-95">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Gestionar Personal</h2>
+            <form id="personnel-form" class="mb-4">
+                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                    <input type="text" id="personnel-name" placeholder="Nombre del Personal" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    <div class="flex items-center w-full sm:w-auto">
+                        <input type="text" inputmode="decimal" id="personnel-daily-wage" placeholder="Jornal por Día" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 font-mono" required>
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out flex-shrink-0 font-semibold text-sm">Agregar</button>
+                </div>
+            </form>
+            <div id="personnel-list-container" class="mt-4 max-h-64 overflow-y-auto pr-2"></div>
+            <div class="mt-6 flex justify-end">
+                <button type="button" class="cancel-modal-btn bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold text-sm">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Modal (Ingreso/Egreso/Horas Extras) -->
+    <div id="transaction-modal" class="modal fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-xl transform scale-95">
+            <h2 class="text-xl font-bold mb-4 text-gray-800" id="transaction-modal-title">Nuevo Movimiento</h2>
+            <form id="transaction-form" class="max-h-[80vh] overflow-y-auto p-1">
+                <input type="hidden" id="transaction-id">
+                <input type="hidden" id="transaction-type">
+                
+                <div id="transaction-date-container" class="hidden mt-4">
+                    <label for="transaction-date" class="block text-sm font-medium text-gray-700">Fecha</label>
+                    <input type="date" id="transaction-date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div class="mt-4">
+                    <label for="transaction-description" class="block text-sm font-medium text-gray-700">Descripción</label>
+                    <input type="text" id="transaction-description" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                
+                <div class="mt-4">
+                    <label for="transaction-amount" class="block text-sm font-medium text-gray-700">Monto</label>
+                     <div class="flex items-center mt-1">
+                        <input type="text" inputmode="decimal" id="transaction-amount" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 font-mono" placeholder="$ 0,00" required>
+                    </div>
+                </div>
+                
+                <div id="extra-personnel-container" class="hidden mt-4">
+                    <label class="block text-sm font-medium text-gray-700">Imputar a Personal</label>
+                    <div id="extra-personnel-list" class="mt-2 max-h-32 overflow-y-auto space-y-1 border border-gray-300 rounded-md p-2"></div>
+                </div>
+                
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700">Asentado por:</label>
+                    <div class="mt-2 flex space-x-4 text-sm">
+                        <label class="inline-flex items-center"><input type="radio" name="user" value="Emilio" class="form-radio text-blue-600" checked> <span class="ml-2 uppercase">EMILIO</span></label>
+                        <label class="inline-flex items-center"><input type="radio" name="user" value="Enzo" class="form-radio text-blue-600"> <span class="ml-2 uppercase">ENZO</span></label>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" class="cancel-modal-btn bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold text-sm">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold text-sm">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Attendance Modal (Asistencia) -->
+     <div id="attendance-modal" class="modal fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-xl transform scale-95">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Registrar Asistencia</h2>
+            <form id="attendance-form">
+                <div>
+                    <label for="attendance-date" class="block text-sm font-medium text-gray-700">Fecha</label>
+                    <input type="date" id="attendance-date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div id="attendance-personnel-list" class="mt-4 max-h-60 overflow-y-auto space-y-2"></div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" class="cancel-modal-btn bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold text-sm">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold text-sm">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Advance Modal (Adelanto) -->
+    <div id="advance-modal" class="modal fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-xl transform scale-95">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Registrar Adelanto</h2>
+            <form id="advance-form">
+                <input type="hidden" id="advance-id">
+                <div>
+                    <label for="advance-person" class="block text-sm font-medium text-gray-700">Adelanto para:</label>
+                    <select id="advance-person" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 uppercase">
+                        <option>EMILIO</option>
+                        <option>ENZO</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <label for="advance-amount" class="block text-sm font-medium text-gray-700">Monto</label>
+                    <div class="flex items-center mt-1">
+                        <input type="text" inputmode="decimal" id="advance-amount" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 font-mono" placeholder="$ 0,00" required>
+                    </div>
+                </div>
+                 <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700">Asentado por:</label>
+                    <div class="mt-2 flex space-x-4 text-sm">
+                        <label class="inline-flex items-center"><input type="radio" name="advance-user" value="Emilio" class="form-radio text-blue-600" checked> <span class="ml-2 uppercase">EMILIO</span></label>
+                        <label class="inline-flex items-center"><input type="radio" name="advance-user" value="Enzo" class="form-radio text-blue-600"> <span class="ml-2 uppercase">ENZO</span></label>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" class="cancel-modal-btn bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold text-sm">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold text-sm">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación Genérico -->
+    <div id="confirm-modal" class="modal fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-sm p-6 rounded-lg shadow-xl transform scale-95">
+            <h2 class="text-lg font-bold mb-4 text-gray-800">Confirmación</h2>
+            <p id="confirm-modal-message" class="text-gray-700 mb-6">¿Está seguro?</p>
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="confirm-modal-cancel" class="cancel-modal-btn bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold text-sm">Cancelar</button>
+                <button type="button" id="confirm-modal-accept" class="bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-900 transition duration-300 ease-in-out font-semibold text-sm">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Resumen (Pantalla Completa) -->
+    <div id="summary-modal" class="modal fixed inset-0 bg-white p-4 sm:p-8 z-50 hidden opacity-0 overflow-y-auto">
+        <div class="modal-content w-full max-w-4xl mx-auto transform scale-95">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-300">
+                <h2 id="summary-title" class="text-2xl sm:text-3xl font-bold text-gray-800">Resumen de Obra</h2>
+                <button type="button" class="cancel-modal-btn bg-gray-200 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold text-sm">Cerrar</button>
+            </div>
+            <div id="summary-content" class="space-y-8 text-gray-800">
+                <!-- El contenido del resumen se generará aquí -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importar funciones de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getFirestore, collection, doc, addDoc, getDocs, updateDoc, deleteDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuración de Firebase (la que nos pasaste)
+            const firebaseConfig = {
+              apiKey: "AIzaSyBeg-vvD96ALKzoYiY_YHmRgoWIlGlKd-c",
+              authDomain: "gestor-de-obra-d67e8.firebaseapp.com",
+              projectId: "gestor-de-obra-d67e8",
+              storageBucket: "gestor-de-obra-d67e8.firebasestorage.app",
+              messagingSenderId: "633485488139",
+              appId: "1:633485488139:web:81bc1f9e6ae30c0679570e"
+            };
+
+            // Inicializar Firebase
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+
+            // STATE MANAGEMENT (ahora se llena desde Firebase)
+            let state = {
+                projects: [],
+                personnel: [],
+                transactions: [],
+                attendances: [],
+                activeProjectId: null,
+            };
+
+            // UTILITIES
+            const formatCurrency = (amount) => {
+                if (typeof amount !== 'number') {
+                    amount = 0;
+                }
+                return new Intl.NumberFormat('es-AR', { 
+                    style: 'currency', 
+                    currency: 'ARS',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(amount);
+            };
+            const formatDate = (isoString) => new Date(isoString).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' });
+            
+            // CORRECCIÓN: Asegurarse que la fecha YYYY-MM-DD se interprete como local
+            const formatDateOnly = (dateString) => {
+                const date = new Date(dateString + 'T12:00:00'); // Usar T12:00 para evitar errores UTC
+                return date.toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            };
+            
+            const getISODate = (dateString) => dateString.split('T')[0];
+            
+            // Formateador de moneda en el input
+            function formatCurrencyInput(input) {
+                let value = input.value;
+                let cursorStart = input.selectionStart;
+                let originalLength = value.length;
+
+                let valueDigits = value.replace(/[^0-9,]/g, '');
+                
+                if (valueDigits.length === 0 && originalLength > value.length) {
+                    input.value = '';
+                    input.selectionStart = input.selectionEnd = 0;
+                    return;
+                }
+
+                let parts = valueDigits.split(',');
+                let integerPart = parts[0];
+                let decimalPart = parts[1];
+
+                integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                
+                let newValue = '$ ' + (integerPart || '0');
+                if (decimalPart !== undefined) {
+                    newValue += ',' + decimalPart.substring(0, 2);
+                }
+
+                input.value = newValue;
+                let newLength = newValue.length;
+                let cursorOffset = newLength - originalLength;
+                
+                if (cursorStart !== null) {
+                    let newCursor = cursorStart + cursorOffset;
+                    if (newCursor < 2) newCursor = 2;
+                    input.selectionStart = input.selectionEnd = newCursor;
+                }
+            }
+
+            // Parsear valor de moneda para guardarlo
+            function parseCurrency(value) {
+                if (!value) return 0;
+                let numberValue = value.replace('$ ', '').replace(/\./g, '').replace(',', '.');
+                return parseFloat(numberValue) || 0;
+            }
+
+            // DOM ELEMENTS
+            const projectModal = document.getElementById('project-modal');
+            const personnelModal = document.getElementById('personnel-modal');
+            const transactionModal = document.getElementById('transaction-modal');
+            const attendanceModal = document.getElementById('attendance-modal');
+            const advanceModal = document.getElementById('advance-modal');
+            const confirmModal = document.getElementById('confirm-modal');
+            const summaryModal = document.getElementById('summary-modal');
+            const projectsListEl = document.getElementById('projects-list');
+            const archivedProjectsListEl = document.getElementById('archived-projects-list');
+            const projectDetailsEl = document.getElementById('project-details');
+            const noProjectSelectedEl = document.getElementById('no-project-selected');
+
+            // RENDER FUNCTIONS
+            function renderAll() {
+                renderProjectsList();
+                renderArchivedProjectsList();
+                renderPersonnelListModal();
+                if (state.activeProjectId) {
+                    renderProjectDetails(state.activeProjectId);
+                } else {
+                    projectDetailsEl.classList.add('hidden');
+                    noProjectSelectedEl.classList.remove('hidden');
+                }
+            }
+            
+            function renderProjectsList() {
+                projectsListEl.innerHTML = '';
+                const activeProjects = state.projects.filter(p => p.status === 'active');
+
+                if (activeProjects.length === 0) {
+                    projectsListEl.innerHTML = `<p class="text-gray-500">No hay obras creadas. Agrega una para comenzar.</p>`;
+                    return;
+                }
+                activeProjects.forEach(project => {
+                    const isActive = project.id === state.activeProjectId;
+                    const activeClasses = isActive ? 'bg-blue-600 text-white' : 'bg-white hover:bg-gray-100';
+                    const projectEl = document.createElement('div');
+                    projectEl.className = `p-4 rounded-lg cursor-pointer transition shadow-sm border border-gray-300 ${activeClasses}`;
+                    projectEl.dataset.id = project.id;
+                    projectEl.innerHTML = `<h3 class="font-semibold text-sm uppercase">${project.name}</h3>`;
+                    projectEl.addEventListener('click', () => {
+                        state.activeProjectId = project.id;
+                        renderAll();
+                    });
+                    projectsListEl.appendChild(projectEl);
+                });
+            }
+
+            function renderArchivedProjectsList() {
+                archivedProjectsListEl.innerHTML = '';
+                const archivedProjects = state.projects.filter(p => p.status === 'archived');
+
+                if (archivedProjects.length === 0) {
+                    archivedProjectsListEl.innerHTML = `<p class="text-gray-500 col-span-full">No hay obras finalizadas.</p>`;
+                    return;
+                }
+
+                archivedProjects.forEach(project => {
+                    const isActive = project.id === state.activeProjectId;
+                    const activeClasses = isActive ? 'bg-indigo-600 text-white' : 'bg-white hover:bg-gray-100';
+                    const projectEl = document.createElement('div');
+                    projectEl.className = `p-4 rounded-lg cursor-pointer transition shadow-sm border border-gray-300 ${activeClasses}`;
+                    projectEl.dataset.id = project.id;
+                    projectEl.innerHTML = `<h3 class="font-semibold text-sm uppercase">${project.name}</h3>`;
+                    projectEl.addEventListener('click', () => {
+                        state.activeProjectId = project.id;
+                        renderAll();
+                    });
+                    archivedProjectsListEl.appendChild(projectEl);
+                });
+            }
+            
+            function renderPersonnelListModal() {
+                const container = document.getElementById('personnel-list-container');
+                container.innerHTML = '';
+                 if (state.personnel.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 text-center py-4">No hay personal registrado.</p>`;
+                    return;
+                }
+                state.personnel.forEach(p => {
+                    const pEl = document.createElement('div');
+                    pEl.className = 'flex justify-between items-center p-2 border-b border-gray-300';
+                    pEl.innerHTML = `
+                        <span class="uppercase text-sm">${p.name} - <span class="font-semibold text-blue-600 font-mono">${formatCurrency(p.dailyWage || 0)}/DÍA</span></span>
+                        <button data-id="${p.id}" class="delete-personnel-btn text-red-600 hover:text-red-900">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
+                        </button>
+                    `;
+                    container.appendChild(pEl);
+                });
+            }
+
+            function renderProjectDetails(projectId) {
+                const project = state.projects.find(p => p.id === projectId);
+                if (!project) return;
+                
+                projectDetailsEl.classList.remove('hidden');
+                noProjectSelectedEl.classList.add('hidden');
+
+                const projectTransactions = state.transactions.filter(t => t.projectId === projectId);
+                const projectAttendances = state.attendances.filter(a => a.projectId === projectId);
+                
+                const jornalesCost = projectAttendances.reduce((sum, attendance) => {
+                    const person = state.personnel.find(p => p.id === attendance.personnelId);
+                    return sum + (person ? (person.dailyWage || 0) : 0);
+                }, 0);
+
+                const manualExpenses = projectTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+                const totalExpenses = manualExpenses + jornalesCost;
+                
+                const incomes = projectTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+                const totalProfit = incomes - totalExpenses;
+                
+                const emilioShare = totalProfit * 0.7;
+                const enzoShare = totalProfit * 0.3;
+
+                const emilioAdvances = projectTransactions.filter(t => t.type === 'advance' && t.person.toUpperCase() === 'EMILIO').reduce((sum, t) => sum + t.amount, 0);
+                const enzoAdvances = projectTransactions.filter(t => t.type === 'advance' && t.person.toUpperCase() === 'ENZO').reduce((sum, t) => sum + t.amount, 0);
+
+                const emilioFinal = emilioShare - emilioAdvances;
+                const enzoFinal = enzoShare - enzoAdvances;
+                
+                // CORRECCIÓN: Agrupar por día (YYYY-MM-DD)
+                const attendanceByDate = projectAttendances.reduce((acc, curr) => {
+                    const dayKey = getISODate(curr.date);
+                    if (!acc[dayKey]) acc[dayKey] = [];
+                    const person = state.personnel.find(p => p.id === curr.personnelId);
+                    if(person) acc[dayKey].push(person.name);
+                    return acc;
+                }, {});
+
+                projectDetailsEl.innerHTML = `
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-xl space-y-10 relative">
+                        
+                        <button id="close-project-details" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors duration-200 z-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        
+                        <!-- Header Obra -->
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800 uppercase">${project.name}</h2>
+                                <p class="text-sm text-gray-500">Valor Total: <span class="font-semibold font-mono">${formatCurrency(project.totalValue || 0)}</span></p>
+                            </div>
+                            <div class="mt-4 sm:mt-0 flex flex-wrap gap-2">
+                                 <button id="open-summary-modal-btn" class="text-sm bg-indigo-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-indigo-700 transition duration-300 ease-in-out flex items-center font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    Resumen
+                                </button>
+                                <button id="archive-project-btn" class="text-sm bg-gray-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-gray-700 transition duration-300 ease-in-out flex items-center font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V3" />
+                                    </svg>
+                                    Finalizar
+                                </button>
+                                <button id="delete-project-btn" class="text-sm bg-red-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-red-900 transition duration-300 ease-in-out flex items-center font-semibold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Resumen Financiero -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2 text-gray-800">Resumen Financiero</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200"><p class="text-sm text-blue-700">Ingresos Totales</p><p class="text-xl font-bold text-blue-900 font-mono">${formatCurrency(incomes)}</p></div>
+                                <div class="bg-red-50 p-4 rounded-lg border border-red-200"><p class="text-sm text-red-700">Egresos Totales</p><p class="text-xl font-bold text-red-900 font-mono">${formatCurrency(totalExpenses)}</p></div>
+                                <div class="bg-gray-100 p-4 rounded-lg border border-gray-300"><p class="text-sm text-gray-700">Ganancia Bruta</p><p class="text-xl font-bold text-gray-800 font-mono">${formatCurrency(totalProfit)}</p></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Liquidación -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Liquidación y Ganancias</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white p-4 rounded-lg border border-gray-300 space-y-2 shadow-sm">
+                                    <p class="font-bold text-gray-800">Liquidación de Emilio</p>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Ganancia (70%)</span> <span class="font-medium font-mono">${formatCurrency(emilioShare)}</span></div>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Adelantos</span> <span class="font-medium text-red-600 font-mono">-${formatCurrency(emilioAdvances)}</span></div>
+                                    <hr class="border-gray-300">
+                                    <div class="flex justify-between font-bold text-md"><span class="text-gray-800">Total a Cobrar</span> <span class="text-blue-600 font-mono">${formatCurrency(emilioFinal)}</span></div>
+                                </div>
+                                 <div class="bg-white p-4 rounded-lg border border-gray-300 space-y-2 shadow-sm">
+                                    <p class="font-bold text-gray-800">Liquidación de Enzo</p>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Ganancia (30%)</span> <span class="font-medium font-mono">${formatCurrency(enzoShare)}</span></div>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Adelantos</span> <span class="font-medium text-red-600 font-mono">-${formatCurrency(enzoAdvances)}</span></div>
+                                    <hr class="border-gray-300">
+                                    <div class="flex justify-between font-bold text-md"><span class="text-gray-800">Total a Cobrar</span> <span class="text-blue-600 font-mono">${formatCurrency(enzoFinal)}</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Movimientos -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Movimientos</h3>
+                                <div class="space-x-2 flex flex-wrap gap-2">
+                                    <button id="add-income-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">+ Ingreso</button>
+                                    <button id="add-expense-btn" class="text-sm bg-red-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-red-900 transition duration-300 ease-in-out font-semibold">- Egreso</button>
+                                    <button id="add-extra-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">Horas Extras</button>
+                                    <button id="add-advance-btn" class="text-sm bg-gray-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold">Adelanto</button>
+                                </div>
+                            </div>
+                            <div class="max-h-96 overflow-y-auto sm:border sm:border-gray-300 sm:rounded-lg">
+                                <table class="w-full text-sm text-left text-gray-500 mobile-table">
+                                    <thead class="text-xs text-gray-700 bg-gray-100 hidden sm:table-header-group">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">Fecha</th>
+                                            <th scope="col" class="px-6 py-3">Descripción</th>
+                                            <th scope="col" class="px-6 py-3">Monto</th>
+                                            <th scope="col" class="px-6 py-3">Usuario</th>
+                                            <th scope="col" class="px-6 py-3 text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${projectTransactions.sort((a,b) => new Date(b.date) - new Date(a.date)).map(t => `
+                                            <tr class="bg-white sm:border-b sm:border-gray-300 sm:hover:bg-gray-100" data-transaction-id="${t.id}">
+                                                <td data-label="Fecha">${formatDate(t.date)}</td>
+                                                <td data-label="Descripción" class="font-medium text-gray-800">
+                                                    <span class="uppercase">${t.description}</span>
+                                                    ${(t.personnelInvolved && t.personnelInvolved.length > 0) ? `<br><span class="text-xs text-gray-500 uppercase">Personal: ${t.personnelInvolved.join(', ')}</span>` : ''}
+                                                </td>
+                                                <td data-label="Monto" class="font-semibold font-mono ${t.type === 'income' ? 'text-blue-600' : (t.type === 'advance' ? 'text-indigo-600' : 'text-red-600')}">
+                                                    ${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}
+                                                </td>
+                                                <td data-label="Usuario" class="uppercase">${t.user}</td>
+                                                <td data-label="Acciones">
+                                                    <div class="flex justify-end sm:justify-center items-center space-x-2">
+                                                        <button class="edit-transaction-btn action-btn text-indigo-600 hover:text-indigo-900">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>
+                                                        </button>
+                                                        <button class="delete-transaction-btn action-btn text-red-600 hover:text-red-900">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                        ${projectTransactions.length === 0 ? `<tr><td colspan="5" class="text-center p-4">No hay movimientos registrados.</td></tr>` : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Asistencia -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Asistencia de Personal</h3>
+                                <button id="add-attendance-btn" class="text-sm bg-blue-600 text-white px-3 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300 ease-in-out font-semibold">Registrar Asistencia</button>
+                            </div>
+                            <div class="max-h-72 overflow-y-auto pr-2 border border-gray-300 rounded-lg p-4 space-y-3">
+                                ${Object.keys(attendanceByDate).length > 0 ? Object.entries(attendanceByDate).sort((a,b) => new Date(b[0]) - new Date(a[0])).map(([date, personnel]) => `
+                                    <div class="bg-white p-3 rounded-md border border-gray-300 shadow-sm">
+                                        <p class="font-semibold text-gray-800">${formatDateOnly(date)}</p>
+                                        <p class="text-sm text-gray-500 uppercase">${personnel.join(', ')}</p>
+                                    </div>
+                                `).join('') : '<p class="text-center text-gray-500 p-4">No hay registros de asistencia.</p>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Ocultar botón "Finalizar" si la obra ya está archivada
+                const archiveBtn = document.getElementById('archive-project-btn');
+                if (archiveBtn) {
+                    if (project.status === 'archived') {
+                        archiveBtn.classList.add('hidden');
+                    } else {
+                        archiveBtn.classList.remove('hidden');
+                    }
+                }
+            }
+
+            // MODAL HANDLING
+            function openModal(modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => { 
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.modal-content').classList.remove('scale-95');
+                }, 10);
+            }
+
+            function closeModal(modal) {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+            
+            // Modal de Confirmación
+            let confirmCallback = null;
+            function openConfirmModal(message, callback) {
+                document.getElementById('confirm-modal-message').innerText = message.toUpperCase();
+                confirmCallback = callback;
+                openModal(confirmModal);
+            }
+            
+            document.getElementById('confirm-modal-accept').addEventListener('click', () => {
+                if (confirmCallback) {
+                    confirmCallback();
+                }
+                closeModal(confirmModal);
+            });
+
+            function openTransactionModal(type, transactionToEdit = null) {
+                const form = document.getElementById('transaction-form');
+                form.reset();
+                const titleEl = document.getElementById('transaction-modal-title');
+                const personnelContainer = document.getElementById('extra-personnel-container');
+                const dateContainer = document.getElementById('transaction-date-container');
+                
+                document.getElementById('transaction-id').value = transactionToEdit ? transactionToEdit.id : '';
+                document.getElementById('transaction-type').value = type;
+                personnelContainer.classList.add('hidden');
+                dateContainer.classList.add('hidden');
+                
+                let title = '';
+                if (type === 'income') title = 'Nuevo Ingreso';
+                if (type === 'expense') title = 'Nuevo Egreso';
+                if (type === 'extra') {
+                    title = 'Registrar Horas Extras';
+                    personnelContainer.classList.remove('hidden');
+                    dateContainer.classList.remove('hidden');
+                    populateExtraPersonnelList(transactionToEdit ? transactionToEdit.personnelInvolved : []);
+                    document.getElementById('transaction-date').value = transactionToEdit ? getISODate(transactionToEdit.date) : getISODate(new Date().toISOString());
+                }
+                
+                if(transactionToEdit) {
+                     titleEl.innerText = `Editar ${title}`;
+                     document.getElementById('transaction-description').value = transactionToEdit.description;
+                     document.getElementById('transaction-amount').value = formatCurrency(transactionToEdit.amount).replace('ARS', '').trim(); // Formatear para editar
+                     document.querySelector(`input[name="user"][value="${transactionToEdit.user}"]`).checked = true;
+                } else {
+                    titleEl.innerText = title;
+                    document.getElementById('transaction-amount').value = ''; // Limpiar para placeholder
+                }
+                openModal(transactionModal);
+            }
+            
+            function populateExtraPersonnelList(selectedPersonnel = []) {
+                const listEl = document.getElementById('extra-personnel-list');
+                listEl.innerHTML = '';
+                if (state.personnel.length === 0) {
+                     listEl.innerHTML = '<p class="text-gray-500 text-sm">No hay personal registrado.</p>';
+                     return;
+                }
+                state.personnel.forEach(p => {
+                    const isChecked = selectedPersonnel.map(name => name.toUpperCase()).includes(p.name.toUpperCase());
+                    listEl.innerHTML += `
+                        <label class="flex items-center p-1 rounded-md hover:bg-gray-100 cursor-pointer">
+                            <input type="checkbox" name="extra-personnel" value="${p.name}" class="form-checkbox h-4 w-4 text-blue-600 rounded" ${isChecked ? 'checked' : ''}>
+                            <span class="ml-2 text-sm text-gray-700 uppercase">${p.name}</span>
+                        </label>
+                    `;
+                });
+            }
+
+            function openAttendanceModal() {
+                document.getElementById('attendance-form').reset();
+                document.getElementById('attendance-date').value = getISODate(new Date().toISOString());
+                const listEl = document.getElementById('attendance-personnel-list');
+                listEl.innerHTML = '';
+                if (state.personnel.length === 0) {
+                    listEl.innerHTML = '<p class="text-gray-500">Primero debe agregar personal.</p>';
+                }
+                state.personnel.forEach(p => {
+                    listEl.innerHTML += `
+                        <label class="flex items-center p-2 rounded-md hover:bg-gray-100">
+                            <input type="checkbox" name="attendance-personnel" value="${p.id}" class="form-checkbox h-5 w-5 text-blue-600 rounded">
+                            <span class="ml-3 text-gray-700 uppercase">${p.name} (<span class="font-mono">${formatCurrency(p.dailyWage || 0)}</span>)</span>
+                        </label>
+                    `;
+                });
+                openModal(attendanceModal);
+            }
+            
+            function openAdvanceModal(transactionToEdit = null) {
+                const form = document.getElementById('advance-form');
+                form.reset();
+                document.getElementById('advance-id').value = transactionToEdit ? transactionToEdit.id : '';
+                if(transactionToEdit) {
+                    document.getElementById('advance-person').value = transactionToEdit.person.toUpperCase();
+                    document.getElementById('advance-amount').value = formatCurrency(transactionToEdit.amount).replace('ARS', '').trim(); // Formatear para editar
+                    document.querySelector(`input[name="advance-user"][value="${transactionToEdit.user}"]`).checked = true;
+                } else {
+                     document.getElementById('advance-amount').value = ''; // Limpiar para placeholder
+                }
+                openModal(advanceModal);
+            }
+
+            // Modal de Resumen
+            function renderSummaryModal(projectId) {
+                const project = state.projects.find(p => p.id === projectId);
+                if (!project) return;
+
+                const projectTransactions = state.transactions.filter(t => t.projectId === projectId);
+                const projectAttendances = state.attendances.filter(a => a.projectId === projectId);
+                const jornalesCost = projectAttendances.reduce((sum, attendance) => {
+                    const person = state.personnel.find(p => p.id === attendance.personnelId);
+                    return sum + (person ? (person.dailyWage || 0) : 0);
+                }, 0);
+                const manualExpenses = projectTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+                const totalExpenses = manualExpenses + jornalesCost;
+                const incomes = projectTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+                const totalProfit = incomes - totalExpenses;
+                const emilioShare = totalProfit * 0.7;
+                const enzoShare = totalProfit * 0.3;
+                const emilioAdvances = projectTransactions.filter(t => t.type === 'advance' && t.person.toUpperCase() === 'EMILIO').reduce((sum, t) => sum + t.amount, 0);
+                const enzoAdvances = projectTransactions.filter(t => t.type === 'advance' && t.person.toUpperCase() === 'ENZO').reduce((sum, t) => sum + t.amount, 0);
+                const emilioFinal = emilioShare - emilioAdvances;
+                const enzoFinal = enzoShare - enzoAdvances;
+
+                document.getElementById('summary-title').innerText = `Resumen: ${project.name.toUpperCase()}`;
+                const contentEl = document.getElementById('summary-content');
+                
+                let html = `
+                    <div class="space-y-8">
+                        <!-- Resumen Financiero -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2 text-gray-800 border-b border-gray-300 pb-1">Resumen Financiero</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200"><p class="text-sm text-blue-700">Ingresos Totales</p><p class="text-2xl font-bold text-blue-900 font-mono">${formatCurrency(incomes)}</p></div>
+                                <div class="bg-red-50 p-4 rounded-lg border border-red-200"><p class="text-sm text-red-700">Egresos Totales</p><p class="text-2xl font-bold text-red-900 font-mono">${formatCurrency(totalExpenses)}</p></div>
+                                <div class="bg-gray-100 p-4 rounded-lg border border-gray-300"><p class="text-sm text-gray-700">Ganancia Bruta</p><p class="text-2xl font-bold text-gray-800 font-mono">${formatCurrency(totalProfit)}</p></div>
+                            </div>
+                            <p class="mt-2 text-xs text-gray-500 pl-1">Detalle Egresos: ${formatCurrency(manualExpenses)} (Gastos) + ${formatCurrency(jornalesCost)} (Jornales)</p>
+                        </div>
+
+                        <!-- Liquidación -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800 border-b border-gray-300 pb-1">Liquidación y Ganancias</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white p-4 rounded-lg border border-gray-300 space-y-2 shadow-sm">
+                                    <p class="font-bold text-gray-800">Liquidación de Emilio</p>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Ganancia (70%)</span> <span class="font-medium font-mono">${formatCurrency(emilioShare)}</span></div>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Adelantos</span> <span class="font-medium text-red-600 font-mono">-${formatCurrency(emilioAdvances)}</span></div>
+                                    <hr class="border-gray-300 my-2">
+                                    <div class="flex justify-between font-bold text-lg"><span class="text-gray-800">Total a Cobrar</span> <span class="text-blue-600 font-mono">${formatCurrency(emilioFinal)}</span></div>
+                                </div>
+                                 <div class="bg-white p-4 rounded-lg border border-gray-300 space-y-2 shadow-sm">
+                                    <p class="font-bold text-gray-800">Liquidación de Enzo</p>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Ganancia (30%)</span> <span class="font-medium font-mono">${formatCurrency(enzoShare)}</span></div>
+                                    <div class="flex justify-between text-sm"><span class="text-gray-500">Adelantos</span> <span class="font-medium text-red-600 font-mono">-${formatCurrency(enzoAdvances)}</span></div>
+                                    <hr class="border-gray-300 my-2">
+                                    <div class="flex justify-between font-bold text-lg"><span class="text-gray-800">Total a Cobrar</span> <span class="text-blue-600 font-mono">${formatCurrency(enzoFinal)}</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Movimientos -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800 border-b border-gray-300 pb-1">Detalle de Movimientos</h3>
+                            <div class="max-h-96 overflow-y-auto pr-2 border border-gray-300 rounded-lg bg-white">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 bg-gray-50 sticky top-0">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">Fecha</th>
+                                            <th scope="col" classs="px-6 py-3">Descripción</th>
+                                            <th scope="col" class="px-6 py-3">Monto</th>
+                                            <th scope="col" class="px-6 py-3">Usuario</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${projectTransactions.sort((a,b) => new Date(b.date) - new Date(a.date)).map(t => `
+                                            <tr class="border-b border-gray-300 hover:bg-gray-100">
+                                                <td class="px-6 py-4">${formatDate(t.date)}</td>
+                                                <td class="px-6 py-4 font-medium text-gray-800">
+                                                    <span class="uppercase">${t.description}</span>
+                                                    ${(t.personnelInvolved && t.personnelInvolved.length > 0) ? `<br><span class="text-xs text-gray-500 uppercase">Personal: ${t.personnelInvolved.join(', ')}</span>` : ''}
+                                                </td>
+                                                <td class="px-6 py-4 font-semibold font-mono ${t.type === 'income' ? 'text-blue-600' : (t.type === 'advance' ? 'text-indigo-600' : 'text-red-600')}">
+                                                    ${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}
+                                                </td>
+                                                <td class="px-6 py-4 uppercase">${t.user}</td>
+                                            </tr>
+                                        `).join('')}
+                                        ${projectTransactions.length === 0 ? `<tr><td colspan="4" class="text-center p-4">No hay movimientos.</td></tr>` : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contentEl.innerHTML = html;
+                openModal(summaryModal);
+            }
+
+            // --- FORM SUBMISSIONS & ACTIONS (Refactorizados para Firebase) ---
+
+            document.getElementById('project-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('project-name').value;
+                const totalValue = document.getElementById('project-total-value').value;
+                try {
+                    await addDoc(collection(db, "projects"), {
+                        name: name.toUpperCase(),
+                        totalValue: parseCurrency(totalValue),
+                        status: 'active'
+                    });
+                    closeModal(projectModal);
+                } catch (error) {
+                    console.error("Error al agregar obra: ", error);
+                    alert("Error al guardar la obra.");
+                }
+            });
+            
+            document.getElementById('personnel-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const nameInput = document.getElementById('personnel-name');
+                const wageInput = document.getElementById('personnel-daily-wage');
+                try {
+                    await addDoc(collection(db, "personnel"), {
+                        name: nameInput.value.toUpperCase(),
+                        dailyWage: parseCurrency(wageInput.value)
+                    });
+                    nameInput.value = '';
+                    wageInput.value = '';
+                } catch (error) {
+                    console.error("Error al agregar personal: ", error);
+                    alert("Error al guardar el personal.");
+                }
+            });
+            
+            document.getElementById('transaction-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('transaction-id').value;
+                const typeInput = document.getElementById('transaction-type').value;
+                const type = typeInput === 'extra' ? 'expense' : typeInput;
+                const personnelInvolved = typeInput === 'extra' 
+                    ? Array.from(document.querySelectorAll('input[name="extra-personnel"]:checked')).map(cb => cb.value)
+                    : [];
+                
+                let date;
+                if (typeInput === 'extra') {
+                    const dateVal = document.getElementById('transaction-date').value;
+                    date = dateVal ? new Date(dateVal + 'T12:00:00').toISOString() : new Date().toISOString();
+                } else {
+                    date = new Date().toISOString();
+                }
+
+                const transactionData = {
+                    projectId: state.activeProjectId,
+                    type,
+                    description: document.getElementById('transaction-description').value.toUpperCase(),
+                    amount: parseCurrency(document.getElementById('transaction-amount').value),
+                    user: document.querySelector('input[name="user"]:checked').value,
+                    date: date,
+                    personnelInvolved
+                };
+
+                try {
+                    if (id) {
+                        const docRef = doc(db, "transactions", id);
+                        const originalDate = (typeInput === 'extra') ? date : state.transactions.find(t => t.id === id).date;
+                        await updateDoc(docRef, { ...transactionData, date: originalDate });
+                    } else {
+                        await addDoc(collection(db, "transactions"), transactionData);
+                    }
+                    closeModal(transactionModal);
+                } catch (error) {
+                    console.error("Error al guardar transacción: ", error);
+                    alert("Error al guardar el movimiento.");
+                }
+            });
+            
+            document.getElementById('attendance-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const dateInput = document.getElementById('attendance-date');
+                const date = new Date(dateInput.value + 'T12:00:00').toISOString();
+                const selectedPersonnel = Array.from(document.querySelectorAll('input[name="attendance-personnel"]:checked')).map(cb => cb.value);
+                
+                try {
+                    const dateStart = getISODate(date) + "T00:00:00.000Z";
+                    const dateEnd = getISODate(date) + "T23:59:59.999Z";
+
+                    const q = query(collection(db, "attendances"), 
+                        where("projectId", "==", state.activeProjectId), 
+                        where("date", ">=", dateStart),
+                        where("date", "<=", dateEnd)
+                    );
+                    const querySnapshot = await getDocs(q);
+                    
+                    const deletePromises = querySnapshot.docs.map(d => deleteDoc(d.ref));
+                    await Promise.all(deletePromises);
+                    
+                    const addPromises = selectedPersonnel.map(personnelId => 
+                        addDoc(collection(db, "attendances"), {
+                            projectId: state.activeProjectId,
+                            personnelId,
+                            date
+                        })
+                    );
+                    await Promise.all(addPromises);
+                    
+                    closeModal(attendanceModal);
+                } catch (error) {
+                    console.error("Error al guardar asistencia: ", error);
+                    alert("Error al guardar la asistencia.");
+                }
+            });
+
+            document.getElementById('advance-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('advance-id').value;
+                const person = document.getElementById('advance-person').value;
+                const advanceData = {
+                    projectId: state.activeProjectId,
+                    type: 'advance',
+                    person: person.toUpperCase(),
+                    amount: parseCurrency(document.getElementById('advance-amount').value),
+                    user: document.querySelector('input[name="advance-user"]:checked').value,
+                    date: new Date().toISOString()
+                };
+                advanceData.description = `ADELANTO PARA ${advanceData.person}`;
+
+                try {
+                    if(id) {
+                        const docRef = doc(db, "transactions", id);
+                        const originalDate = state.transactions.find(t => t.id === id).date;
+                        await updateDoc(docRef, { ...advanceData, date: originalDate });
+                    } else {
+                        await addDoc(collection(db, "transactions"), advanceData);
+                    }
+                    closeModal(advanceModal);
+                } catch (error) {
+                    console.error("Error al guardar adelanto: ", error);
+                    alert("Error al guardar el adelanto.");
+                }
+            });
+
+            async function deleteProject(projectId) {
+                openConfirmModal('¿ELIMINAR ESTA OBRA? SE BORRARÁN TODOS SUS DATOS PERMANENTEMENTE.', async () => {
+                    try {
+                        await deleteDoc(doc(db, "projects", projectId));
+                        
+                        const transQuery = query(collection(db, "transactions"), where("projectId", "==", projectId));
+                        const transSnapshot = await getDocs(transQuery);
+                        const deleteTransPromises = transSnapshot.docs.map(d => deleteDoc(d.ref));
+                        await Promise.all(deleteTransPromises);
+
+                        const attQuery = query(collection(db, "attendances"), where("projectId", "==", projectId));
+                        const attSnapshot = await getDocs(attQuery);
+                        const deleteAttPromises = attSnapshot.docs.map(d => deleteDoc(d.ref));
+                        await Promise.all(deleteAttPromises);
+
+                        if (state.activeProjectId === projectId) {
+                            state.activeProjectId = null;
+                        }
+                    } catch (error) {
+                        console.error("Error al eliminar obra: ", error);
+                        alert("Error al eliminar la obra.");
+                    }
+                });
+            }
+            
+            // --- EVENT LISTENERS ---
+            
+            document.addEventListener('click', (e) => {
+                const cancelBtn = e.target.closest('.cancel-modal-btn');
+                if (cancelBtn) {
+                    closeModal(cancelBtn.closest('.modal'));
+                }
+                if (e.target.closest('#open-project-modal-btn')) {
+                    document.getElementById('project-form').reset();
+                    openModal(projectModal);
+                }
+                if (e.target.closest('#open-personnel-modal-btn')) openModal(personnelModal);
+            });
+
+            personnelModal.addEventListener('click', (e) => {
+                 if (e.target.closest('.delete-personnel-btn')) {
+                    const button = e.target.closest('.delete-personnel-btn');
+                    const pId = button.dataset.id;
+                    
+                    openConfirmModal('¿ELIMINAR ESTA PERSONA? SE BORRARÁ DE TODAS LAS ASISTENCIAS.', async () => {
+                        try {
+                            await deleteDoc(doc(db, "personnel", pId));
+                            
+                            const attQuery = query(collection(db, "attendances"), where("personnelId", "==", pId));
+                            const attSnapshot = await getDocs(attQuery);
+                            const deleteAttPromises = attSnapshot.docs.map(d => deleteDoc(d.ref));
+                            await Promise.all(deleteAttPromises);
+                        } catch (error) {
+                             console.error("Error al eliminar personal: ", error);
+                             alert("Error al eliminar el personal.");
+                        }
+                    });
+                }
+            });
+            
+            projectDetailsEl.addEventListener('click', (e) => {
+                if (e.target.closest('#close-project-details')) {
+                    state.activeProjectId = null;
+                    renderAll();
+                }
+                
+                const buttonId = e.target.closest('button')?.id;
+                if (buttonId === 'add-income-btn') openTransactionModal('income');
+                if (buttonId === 'add-expense-btn') openTransactionModal('expense');
+                if (buttonId === 'add-extra-btn') openTransactionModal('extra');
+                if (buttonId === 'add-attendance-btn') openAttendanceModal();
+                if (buttonId === 'add-advance-btn') openAdvanceModal();
+                if (buttonId === 'open-summary-modal-btn') renderSummaryModal(state.activeProjectId);
+                if (buttonId === 'archive-project-btn') archiveProject(state.activeProjectId);
+                if (buttonId === 'delete-project-btn') deleteProject(state.activeProjectId);
+
+                const editBtn = e.target.closest('.edit-transaction-btn');
+                if(editBtn) {
+                    const transactionId = editBtn.closest('tr').dataset.transactionId;
+                    const transaction = state.transactions.find(t => t.id === transactionId);
+                    if (transaction.type === 'advance') {
+                        openAdvanceModal(transaction);
+                    } else if (transaction.personnelInvolved && transaction.personnelInvolved.length > 0) {
+                         openTransactionModal('extra', transaction);
+                    } else {
+                        openTransactionModal(transaction.type, transaction);
+                    }
+                }
+                
+                const deleteBtn = e.target.closest('.delete-transaction-btn');
+                if(deleteBtn) {
+                    const transactionId = deleteBtn.closest('tr').dataset.transactionId;
+                    openConfirmModal('¿ELIMINAR ESTE MOVIMIENTO?', async () => {
+                        try {
+                            await deleteDoc(doc(db, "transactions", transactionId));
+                        } catch (error) {
+                            console.error("Error al eliminar movimiento: ", error);
+                            alert("Error al eliminar el movimiento.");
+                        }
+                    });
+                }
+            });
+            
+            // Event listeners para formato de moneda
+            const currencyInputIds = [
+                'project-total-value', 'personnel-daily-wage',
+                'transaction-amount', 'advance-amount'
+            ];
+            currencyInputIds.forEach(id => {
+                const inputEl = document.getElementById(id);
+                if (inputEl) {
+                    inputEl.addEventListener('input', (e) => formatCurrencyInput(e.target));
+                    inputEl.addEventListener('blur', (e) => {
+                        let value = e.target.value;
+                        if (value.endsWith(',')) {
+                            e.target.value = value + '00';
+                        }
+                    });
+                    inputEl.addEventListener('focus', (e) => {
+                        if (e.target.value === '' || e.target.value === '$ 0,00') {
+                            e.target.value = '';
+                        }
+                    });
+                }
+            });
+            
+            // Event listener para convertir a mayúsculas
+            document.addEventListener('input', (e) => {
+                if (e.target.tagName === 'INPUT' && e.target.type === 'text' && !e.target.classList.contains('font-mono')) { 
+                    const start = e.target.selectionStart;
+                    const end = e.target.selectionEnd;
+                    e.target.value = e.target.value.toUpperCase();
+                    e.target.setSelectionRange(start, end);
+                }
+            });
+
+            // Función para archivar
+            async function archiveProject(projectId) {
+                openConfirmModal('¿FINALIZAR Y ARCHIVAR ESTA OBRA? YA NO APARECERÁ EN LA LISTA ACTIVA.', async () => {
+                    try {
+                        await updateDoc(doc(db, "projects", projectId), {
+                            status: "archived"
+                        });
+                        state.activeProjectId = null;
+                    } catch (error) {
+                         console.error("Error al archivar obra: ", error);
+                         alert("Error al archivar la obra.");
+                    }
+                });
+            }
+            
+            // --- INICIALIZACIÓN Y AUTENTICACIÓN ---
+            
+            let listeners = [];
+            function setupRealtimeListeners() {
+                // Limpiar listeners anteriores si existieran
+                listeners.forEach(unsub => unsub());
+                listeners = [];
+
+                const unsubProjects = onSnapshot(collection(db, "projects"), (snapshot) => {
+                    state.projects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderAll();
+                }, (error) => console.error("Error al cargar obras:", error));
+                listeners.push(unsubProjects);
+
+                const unsubPersonnel = onSnapshot(collection(db, "personnel"), (snapshot) => {
+                    state.personnel = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderAll();
+                }, (error) => console.error("Error al cargar personal:", error));
+                listeners.push(unsubPersonnel);
+
+                const unsubTransactions = onSnapshot(collection(db, "transactions"), (snapshot) => {
+                    state.transactions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderAll();
+                }, (error) => console.error("Error al cargar transacciones:", error));
+                listeners.push(unsubTransactions);
+
+                const unsubAttendances = onSnapshot(collection(db, "attendances"), (snapshot) => {
+                    state.attendances = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderAll();
+                }, (error) => console.error("Error al cargar asistencias:", error));
+                listeners.push(unsubAttendances);
+            }
+
+            // Iniciar sesión anónima
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    console.log("Usuario anónimo conectado:", user.uid);
+                    setupRealtimeListeners();
+                } else {
+                    signInAnonymously(auth).catch((error) => {
+                        console.error("Error al iniciar sesión anónima:", error);
+                        alert("Error de conexión con la base de datos.");
+                    });
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
+
