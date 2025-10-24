@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Obra</title>
     
+    <!-- Descripción para compartir -->
+    <meta name="description" content="Gestor de obras: registra ingresos, egresos, horas extras, adelantos y calcula la ganancia. Facilita la contabilidad.">
+    
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     <!-- Theme Color para PWA -->
     <meta name="theme-color" content="#2563eb"/> 
     <!-- Icono para Apple -->
     <link rel="apple-touch-icon" href="icons/icon-192x192.png"> 
-    
-    <!-- Descripción para compartir -->
-    <meta name="description" content="Gestor de obras: registra ingresos, egresos, horas extras, adelantos y calcula la ganancia. Facilita la contabilidad.">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
@@ -396,13 +396,53 @@
                 if (typeof amount !== 'number') { amount = 0; }
                 return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
             };
-            const formatDate = (isoString) => new Date(isoString).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' });
+            const formatDate = (isoString) => {
+                if (!isoString) return '';
+                try {
+                    // Intenta crear una fecha; si falla, retorna cadena vacía
+                    const date = new Date(isoString);
+                    if (isNaN(date.getTime())) return ''; 
+                    return date.toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' });
+                } catch (e) {
+                    return ''; // En caso de cualquier error al parsear
+                }
+            };
             const formatDateOnly = (dateString) => {
                 if (!dateString) return 'Fecha Inválida';
-                const date = new Date(dateString.split('T')[0] + 'T12:00:00Z'); 
-                return date.toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Argentina/Buenos_Aires' });
+                try {
+                    // Asegura que se interprete como UTC para evitar problemas de zona horaria al formatear
+                    const date = new Date(dateString.split('T')[0] + 'T12:00:00Z'); 
+                     if (isNaN(date.getTime())) return 'Fecha Inválida'; 
+                    return date.toLocaleDateString('es-AR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'UTC' });
+                } catch(e) {
+                     return 'Fecha Inválida';
+                }
             };
-            const getISODate = (dateString) => dateString.split('T')[0];
+            const getISODate = (dateString) => {
+                 try {
+                     // Si es un objeto Date, conviértelo a ISO y toma la parte de la fecha
+                     if (dateString instanceof Date) {
+                         return dateString.toISOString().split('T')[0];
+                     }
+                     // Si es una cadena, intenta parsearla y luego tomar la parte de la fecha
+                     const date = new Date(dateString);
+                      if (isNaN(date.getTime())) return ''; // Manejo de fecha inválida
+                     return date.toISOString().split('T')[0];
+                 } catch (e) {
+                     return ''; // Manejo de error general
+                 }
+            };
+             // Función para combinar fecha seleccionada con hora actual
+            const combineDateWithCurrentTime = (dateString) => {
+                const selectedDate = new Date(dateString + 'T00:00:00'); // Establece la hora a 00:00 localmente
+                const now = new Date();
+                selectedDate.setHours(now.getHours());
+                selectedDate.setMinutes(now.getMinutes());
+                selectedDate.setSeconds(now.getSeconds());
+                selectedDate.setMilliseconds(now.getMilliseconds());
+                return selectedDate.toISOString();
+            };
+
 
             const capitalizeWords = (str) => {
                 if (!str) return '';
@@ -1040,15 +1080,23 @@
                     : [];
                 
                 let date;
-                if (typeInput === 'extra') {
-                    const dateVal = document.getElementById('transaction-date').value;
-                    if (!dateVal) {
-                        alert('POR FAVOR, SELECCIONE UNA FECHA PARA LAS HORAS EXTRAS.');
-                        return; 
-                    }
-                    date = new Date(dateVal + 'T12:00:00').toISOString();
+                 // CAMBIO: Determinar la fecha correcta
+                if (id) {
+                     // Editando: Mantener la fecha original
+                     const existingTransaction = state.transactions.find(t => t.id === id);
+                     date = existingTransaction ? existingTransaction.date : new Date().toISOString(); 
                 } else {
-                    date = new Date().toISOString();
+                     // Nuevo movimiento
+                     if (typeInput === 'extra') {
+                        const dateVal = document.getElementById('transaction-date').value;
+                        if (!dateVal) {
+                            alert('POR FAVOR, SELECCIONE UNA FECHA PARA LAS HORAS EXTRAS.');
+                            return; 
+                        }
+                        date = combineDateWithCurrentTime(dateVal); // Fecha seleccionada + Hora actual
+                    } else {
+                        date = new Date().toISOString(); // Hora actual para Ingreso, Egreso, Adelanto
+                    }
                 }
 
                 let amount = parseCurrency(document.getElementById('transaction-amount').value);
@@ -1062,20 +1110,19 @@
                     description: document.getElementById('transaction-description').value, 
                     amount: amount, 
                     user: document.querySelector('input[name="user"]:checked').value,
-                    date: date,
+                    date: date, // Usar la variable 'date' calculada
                     personnelInvolved 
                 };
                 
                 closeModal(transactionModal); 
                 try {
                     if (id) {
+                        // Al editar, solo actualizamos los campos que no son la fecha
                         const docRef = doc(db, "transactions", id);
-                        const existingTransaction = state.transactions.find(t => t.id === id);
-                        const originalDate = (existingTransaction) ? existingTransaction.date : new Date().toISOString();
-                        transactionData.date = (typeInput === 'extra') ? date : originalDate; 
-                        
-                        await updateDoc(docRef, transactionData);
+                        const { date: originalDate, ...updateData } = transactionData; // Excluir 'date' de la actualización
+                        await updateDoc(docRef, updateData);
                     } else {
+                        // Al crear, guardamos todo incluyendo la fecha calculada
                         await addDoc(collection(db, "transactions"), transactionData);
                     }
                 } catch (error) {
@@ -1094,6 +1141,7 @@
                 
                 closeModal(attendanceModal); 
                 
+                // Usar hora fija (mediodía) para consistencia al agrupar por fecha
                 const date = new Date(dateInput.value + 'T12:00:00').toISOString(); 
                 const selectedPersonnel = Array.from(document.querySelectorAll('input[name="attendance-personnel"]:checked')).map(cb => cb.value);
                 
@@ -1119,7 +1167,7 @@
                         addDoc(collection(db, "attendances"), {
                             projectId: state.activeProjectId,
                             personnelId,
-                            date 
+                            date // Guardar la fecha con hora fija
                         })
                     );
                     await Promise.all(addPromises);
@@ -1132,25 +1180,40 @@
 
             document.getElementById('advance-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                closeModal(advanceModal); 
+                
                 const id = document.getElementById('advance-id').value;
                 const person = document.getElementById('advance-person').value;
+                
+                let date;
+                // CAMBIO: Determinar fecha para adelanto
+                 if (id) {
+                     // Editando: Mantener fecha original
+                     const existingTransaction = state.transactions.find(t => t.id === id);
+                     date = existingTransaction ? existingTransaction.date : new Date().toISOString(); 
+                 } else {
+                      // Nuevo: Usar fecha y hora actual
+                     date = new Date().toISOString();
+                 }
+
                 const advanceData = {
                     projectId: state.activeProjectId,
                     type: 'advance',
                     person: person.toUpperCase(),
                     amount: parseCurrency(document.getElementById('advance-amount').value),
                     user: document.querySelector('input[name="advance-user"]:checked').value,
-                    date: new Date().toISOString()
+                    date: date // Usar la variable 'date' calculada
                 };
                 advanceData.description = `ADELANTO PARA ${advanceData.person}`;
 
+                closeModal(advanceModal); 
                 try {
                     if(id) {
+                        // Al editar, solo actualizamos campos que no son la fecha
                         const docRef = doc(db, "transactions", id);
-                        const originalDate = state.transactions.find(t => t.id === id).date;
-                        await updateDoc(docRef, { ...advanceData, date: originalDate });
+                        const { date: originalDate, ...updateData } = advanceData; // Excluir 'date'
+                        await updateDoc(docRef, updateData);
                     } else {
+                        // Al crear, guardamos todo
                         await addDoc(collection(db, "transactions"), advanceData);
                     }
                 } catch (error) {
@@ -1250,6 +1313,7 @@
                         if (transaction.type === 'advance') {
                             openAdvanceModal(transaction);
                         } else if (transaction.personnelInvolved && transaction.personnelInvolved.length > 0) {
+                             // Si es 'extra', abrimos con tipo 'extra' para que muestre la fecha
                              openTransactionModal('extra', transaction);
                         } else {
                             openTransactionModal(transaction.type, transaction);
@@ -1373,6 +1437,16 @@
                     });
                 }
             });
+             // --- Registro del Service Worker para PWA ---
+             if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js').then(registration => {
+                        console.log('ServiceWorker registrado con éxito:', registration.scope);
+                    }, err => {
+                        console.log('Registro de ServiceWorker fallido:', err);
+                    });
+                });
+            }
 
         });
     </script>
