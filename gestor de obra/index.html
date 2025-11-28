@@ -671,12 +671,24 @@
                         });
                         
                         return `
-                            <div class="bg-white p-3 rounded-md border border-gray-300 shadow-sm">
-                                <div class="flex justify-between items-center">
-                                    <p class="font-semibold text-gray-800">${formatDateOnly(date)}</p>
-                                    <p class="text-sm font-bold text-red-600 font-mono">-${formatCurrency(dailyCost)}</p>
+                            <div class="bg-white p-3 rounded-md border border-gray-300 shadow-sm group">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">${formatDateOnly(date)}</p>
+                                        <p class="text-sm text-gray-500 mt-1">${capitalizedNames.join(', ')}</p>
+                                    </div>
+                                    <div class="flex flex-col items-end space-y-1">
+                                        <p class="text-sm font-bold text-red-600 font-mono">-${formatCurrency(dailyCost)}</p>
+                                        <div class="flex space-x-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                                            <button class="edit-attendance-btn p-1 text-indigo-600 hover:text-indigo-800 bg-indigo-50 rounded" data-date="${date}" title="Editar Asistencia">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>
+                                            </button>
+                                            <button class="delete-attendance-btn p-1 text-red-600 hover:text-red-800 bg-red-50 rounded" data-date="${date}" title="Borrar Día">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="text-sm text-gray-500 mt-1">${capitalizedNames.join(', ')}</p>
                             </div>
                         `;
                     }).join('');
@@ -937,18 +949,31 @@
                 });
             }
 
-            function openAttendanceModal() {
+            function openAttendanceModal(dateToEdit = null) {
                 document.getElementById('attendance-form').reset();
-                document.getElementById('attendance-date').value = getISODate(new Date().toISOString());
+                
+                // Si pasamos una fecha, la usamos, si no, fecha de hoy
+                const targetDate = dateToEdit ? dateToEdit : getISODate(new Date().toISOString());
+                document.getElementById('attendance-date').value = targetDate;
+
+                // Identificar qué IDs de personal ya tienen presente en esta fecha y proyecto
+                let presentPersonnelIds = [];
+                if (dateToEdit) {
+                    presentPersonnelIds = state.attendances
+                        .filter(a => a.projectId === state.activeProjectId && getISODate(a.date) === dateToEdit)
+                        .map(a => a.personnelId);
+                }
+
                 const listEl = document.getElementById('attendance-personnel-list');
                 listEl.innerHTML = '';
                 if (state.personnel.length === 0) {
                     listEl.innerHTML = '<p class="text-gray-500">Primero debe agregar personal.</p>';
                 }
                 state.personnel.forEach(p => {
+                    const isChecked = presentPersonnelIds.includes(p.id) ? 'checked' : '';
                     listEl.innerHTML += `
-                        <label class="flex items-center p-2 rounded-md hover:bg-gray-100">
-                            <input type="checkbox" name="attendance-personnel" value="${p.id}" class="form-checkbox h-5 w-5 text-blue-600 rounded">
+                        <label class="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer">
+                            <input type="checkbox" name="attendance-personnel" value="${p.id}" class="form-checkbox h-5 w-5 text-blue-600 rounded" ${isChecked}>
                             <span class="ml-3 text-gray-700">${capitalizeWords(p.name)} (<span class="font-mono">${formatCurrency(p.dailyWage || 0)}</span>)</span>
                         </label>
                     `;
@@ -1375,6 +1400,7 @@
                     }
                 }
                 
+                // --- Lógica existente para borrar Transacciones ---
                 const deleteBtn = e.target.closest('.delete-transaction-btn');
                 if(deleteBtn) {
                     const tr = deleteBtn.closest('tr[data-transaction-id]');
@@ -1390,8 +1416,36 @@
                         });
                     }
                 }
-            });
-            
+
+                // --- NUEVO: Editar Asistencia ---
+                const editAttBtn = e.target.closest('.edit-attendance-btn');
+                if (editAttBtn) {
+                    const date = editAttBtn.dataset.date;
+                    openAttendanceModal(date);
+                }
+
+                // --- NUEVO: Borrar Asistencia (Día completo) ---
+                const deleteAttBtn = e.target.closest('.delete-attendance-btn');
+                if (deleteAttBtn) {
+                    const dateKey = deleteAttBtn.dataset.date;
+                    openConfirmModal(`¿Borrar toda la asistencia del día ${formatDateOnly(dateKey)}?`, async () => {
+                        try {
+                            // Buscar todas las asistencias de ese día y proyecto
+                            const attToDelete = state.attendances.filter(a => 
+                                a.projectId === state.activeProjectId && getISODate(a.date) === dateKey
+                            );
+                            
+                            const deletePromises = attToDelete.map(a => deleteDoc(doc(db, "attendances", a.id)));
+                            await Promise.all(deletePromises);
+                            
+                        } catch (error) {
+                            console.error("Error al borrar asistencia: ", error);
+                            alert("Error al borrar la asistencia.");
+                        }
+                    });
+                }
+            }); // Cierre del projectDetailsEl.addEventListener
+
             const currencyInputIds = [
                 'project-total-value', 'personnel-daily-wage',
                 'transaction-amount', 'advance-amount', 'edit-project-total-value' // AGREGADO
