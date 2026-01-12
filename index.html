@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -667,32 +668,7 @@
     }
     </script>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17160847773">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-17160847773');
-</script>
 <!-- Event snippet for Envio de formulario para clientes potenciales conversion page -->
-<script>
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    };
-    gtag('event', 'conversion', {
-        'send_to': 'AW-17160847773/aAC8CirqtoEJ2D9Y',
-        'value': 1.0,
-        'currency': 'ARS',
-        'event_callback': callback
-    });
-    return false;
-  }
-</script>
 </head>
 <body class="bg-white overflow-x-hidden">
     <!-- Google Tag Manager (noscript) -->
@@ -1441,15 +1417,7 @@
             window.addEventListener('resize', checkScrollIndicatorVisibility);
             checkScrollIndicatorVisibility();
 
-            // Script para seguimiento de conversión de WhatsApp
-            document.querySelectorAll('.whatsapp-conversion-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // gtag_report_conversion se llama con la URL del enlace como argumento.
-                    // Esto permite que el seguimiento de conversión de Google Ads
-                    // redirija al usuario a la URL de WhatsApp después de registrar la conversión.
-                    gtag_report_conversion(this.href);
-                });
-            });
+            
         });
     </script>
 </body>
